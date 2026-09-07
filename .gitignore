@@ -62,7 +62,8 @@ unlinked_spec.ds
 **/ios/**/*.mode2v3
 **/ios/**/*.moved-aside
 **/ios/**/*.pbxuser
-**/ios/**/*.perspectivev3
+**/ios/**/*.persThere isn’t anything to compare.
+main and master are entirely different commit historiepectivev3
 **/ios/**/*sync/
 **/ios/**/.sconsign.dblite
 **/ios/**/.tags*
@@ -117,3 +118,5 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
+
+.env
