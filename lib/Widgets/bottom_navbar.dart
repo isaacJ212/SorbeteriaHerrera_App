@@ -63,6 +63,18 @@ class BottomNavbar extends StatelessWidget {
                       size: 22,
                     ),
                   ),
+                  const SizedBox(height: 4),
+                  Text(
+                    elemento.label,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: activo ? FontWeight.w600 : FontWeight.w400,
+                      color: activo
+                          ? const Color(0xFF10251F)
+                          : Color(0xFF8A9691),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                 ],
               ),
             ),
