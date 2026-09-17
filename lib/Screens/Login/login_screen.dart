@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:herrera_app/Widgets/app_text_field.dart';
+import 'package:herrera_app/routes/app_router.dart';
+import 'package:herrera_app/routes/app_routes.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -27,7 +29,20 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF09A982),
-      body: Stack(children: [_buildCircles()]),
+      body: Stack(
+        children: [
+          _buildCircles(),
+          Center(
+            child: Padding(
+              padding: const EdgeInsetsGeometry.symmetric(horizontal: 20),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 400),
+                child: _buildLoginCard(),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -187,12 +202,12 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       decoration: InputDecoration(
         labelText: 'Contraseña',
-        labelStyle: const TextStyle(color: const Color((0xFF10251F))),
-        prefixIcon: const Icon(Icons.lock_outline, color: Color(0xFF64736D)),
+        labelStyle: const TextStyle(color: Colors.black87),
+        prefixIcon: const Icon(Icons.lock_outline, color: Colors.black54),
         suffixIcon: IconButton(
           icon: Icon(
             _isObscure ? Icons.visibility_off : Icons.visibility,
-            color: Color(0xFF64736D),
+            color: Colors.black54,
           ),
           onPressed: () {
             setState(() {
@@ -201,14 +216,22 @@ class _LoginScreenState extends State<LoginScreen> {
           },
         ),
         filled: true,
-        fillColor: const Color(0xFFDAE3EB),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
-        ),
+        fillColor: Colors.white,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 16,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.black, width: 1.5),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.black, width: 1.5),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFF09A982), width: 2),
         ),
       ),
     );
@@ -216,16 +239,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _handleLogin() {
     if (_formKey.currentState!.validate()) {
-      // Aquí iría la lógica de login (sin conectar a API por ahora)
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Intentando login con: ${_userNameController.text}'),
-          backgroundColor: const Color(0xFF09A982),
-        ),
-      );
-
-      // Simular navegación o acción
-      // Navigator.pushReplacement(...);
+      if (_userNameController.text == 'Admin' &&
+          _passwordController.text == 'Admin123') {
+        Navigator.pushNamed(context, AppRoutes.dashboard);
+        return;
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Nombre de Usuario o Contraseña Invalidas',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
     }
   }
 }
