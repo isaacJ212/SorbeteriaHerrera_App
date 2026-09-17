@@ -6,4 +6,7 @@ abstract class AppRoutes {
   static const String reporteVenta = '/reporteVenta';
   static const String reporteInventario = '/reporteInventario';
   static const String notFound = '/not-found';
+
+
+  static const String miAccount = '/myAccount';
 }
