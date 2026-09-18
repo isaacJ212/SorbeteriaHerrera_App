@@ -1,3 +1,5 @@
+import 'package:herrera_app/Screens/UserDetails/user_detail_screen.dart';
+
 import 'app_routes.dart';
 import 'package:flutter/material.dart';
 import '../Screens/Login/login_screen.dart';
@@ -31,6 +33,8 @@ abstract class AppRouter {
         );
       case AppRoutes.miAccount:
         return MaterialPageRoute(builder: (_) => const MyAccountScreen());
+      case AppRoutes.userDetails :
+        return MaterialPageRoute(builder: (_) => const UserDetailScreen());
       case AppRoutes.notFound:
         return MaterialPageRoute(builder: (_) => const NotFoundScreen());
       default:
