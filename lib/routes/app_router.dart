@@ -1,3 +1,5 @@
+import 'package:herrera_app/Screens/UserDetails/user_detail_screen.dart';
+
 import 'app_routes.dart';
 import 'package:flutter/material.dart';
 import '../Screens/Login/login_screen.dart';
@@ -7,6 +9,8 @@ import '../Screens/Detalle_de_Producto/detalle_de_producto_screen.dart';
 import '../Screens/Reporte_de_Venta/reporte_de_venta_screen.dart';
 import '../Screens/Reporte_de_Inventario/reporte_de_inventario_screen.dart';
 import '../Screens/NotFound/not_found_screen.dart';
+
+import '../Screens/MyAccount/my_account.dart';
 
 abstract class AppRouter {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -32,10 +36,16 @@ abstract class AppRouter {
         return MaterialPageRoute(
           builder: (_) => const ReporteDeInventarioScreen(),
         );
+      case AppRoutes.miAccount:
+        return MaterialPageRoute(builder: (_) => const MyAccountScreen());
+      case AppRoutes.userDetails :
+        return MaterialPageRoute(builder: (_) => const UserDetailScreen());
       case AppRoutes.notFound:
         return MaterialPageRoute(builder: (_) => const NotFoundScreen());
       default:
         return MaterialPageRoute(builder: (_) => const NotFoundScreen());
+      
+       
     }
   }
 }
