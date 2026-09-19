@@ -9,4 +9,5 @@ abstract class AppRoutes {
 
 
   static const String miAccount = '/myAccount';
+  static const String userDetails = '/userDetail';
 }
