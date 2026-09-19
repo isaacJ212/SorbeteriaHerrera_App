@@ -241,7 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_formKey.currentState!.validate()) {
       if (_userNameController.text == 'Admin' &&
           _passwordController.text == 'Admin123') {
-        Navigator.pushNamed(context, AppRoutes.dashboard);
+        Navigator.pushReplacementNamed(context, AppRoutes.dashboard);
         return;
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
