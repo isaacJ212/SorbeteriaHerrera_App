@@ -3,6 +3,7 @@ import '../../Widgets/Dashboard/alert_card.dart';
 import '../../Widgets/Dashboard/ventas_card.dart';
 import '../../Widgets/bottom_navbar.dart';
 import '../../models/dashboard_models/recent_sale.dart';
+import '../../routes/app_routes.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -184,7 +185,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         currentIndex: _tabActual,
         onTap: (index) {
           setState(() => _tabActual = index);
-          if (index != 0) {
+          if (index == 2) {
+            Navigator.pushReplacementNamed(context, AppRoutes.inventario);
+          } else if (index != 0) {
             _mostrarSnack('Esta sección estará disponible próximamente');
           }
         },
