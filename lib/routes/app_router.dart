@@ -8,6 +8,8 @@ import '../Screens/Reporte_de_Venta/reporte_de_venta_screen.dart';
 import '../Screens/Reporte_de_Inventario/reporte_de_inventario_screen.dart';
 import '../Screens/NotFound/not_found_screen.dart';
 
+import '../Screens/MyAccount/my_account.dart';
+
 abstract class AppRouter {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -32,10 +34,14 @@ abstract class AppRouter {
         return MaterialPageRoute(
           builder: (_) => const ReporteDeInventarioScreen(),
         );
+      case AppRoutes.miAccount:
+        return MaterialPageRoute(builder: (_) => const MyAccountScreen());
       case AppRoutes.notFound:
         return MaterialPageRoute(builder: (_) => const NotFoundScreen());
       default:
         return MaterialPageRoute(builder: (_) => const NotFoundScreen());
+      
+       
     }
   }
 }
