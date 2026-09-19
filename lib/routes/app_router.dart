@@ -18,8 +18,13 @@ abstract class AppRouter {
       case AppRoutes.inventario:
         return MaterialPageRoute(builder: (_) => const InventarioScreen());
       case AppRoutes.detalleProducto:
+        final datos = settings.arguments as Map<String, String>?;
         return MaterialPageRoute(
-          builder: (_) => const DetalleDeProductoScreen(),
+          builder: (_) => DetalleDeProductoScreen(
+            nombre: datos?['nombre'] ?? 'Producto',
+            stock: datos?['stock'] ?? '0',
+            precio: datos?['precio'] ?? 'C\$ 0',
+          ),
         );
       case AppRoutes.reporteVenta:
         return MaterialPageRoute(builder: (_) => const ReporteDeVentaScreen());
