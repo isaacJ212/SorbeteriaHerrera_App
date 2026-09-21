@@ -1,29 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-
-void main() {
-  testWidgets('Validar que CardVentas renderice correctamente', (
-    WidgetTester tester,
-  ) async {
-    // Construimos el widget dentro de un MaterialApp para que tenga contexto
-    await tester.pumpWidget(
-      const MaterialApp(
-        home: Scaffold(
-          body: CardVentas(
-            fecha: '2026-03-30',
-            usuario: 'Juan Pérez',
-            total: '\$150.00',
-            cliente: 'Cliente Particular',
-          ),
-        ),
-      ),
-    );
-
-    // Encuentra el contenedor principal de la tarjeta
-    final cardFinder = find.byType(CardVentas);
-    expect(cardFinder, findsOneWidget);
-  });
-}
 
 class CardVentas extends StatelessWidget {
   final String fecha;
