@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Sorbeteria Herrera',
       theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
-      initialRoute: AppRoutes.miAccount,
+      initialRoute: AppRoutes.Accesshistory,
       onGenerateRoute: AppRouter.onGenerateRoute,
       onUnknownRoute: AppRouter.onGenerateRoute,
       debugShowCheckedModeBanner: false,
