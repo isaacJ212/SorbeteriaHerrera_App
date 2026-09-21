@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class _Etiqueta extends StatelessWidget {
+class Etiqueta extends StatelessWidget {
   final String texto;
 
-  const _Etiqueta({required this.texto});
+  const Etiqueta({required this.texto});
 
   @override
   Widget build(BuildContext context) {

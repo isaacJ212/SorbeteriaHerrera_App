@@ -7,7 +7,7 @@ abstract class AppRoutes {
   static const String reporteInventario = '/reporteInventario';
   static const String notFound = '/not-found';
 
-
   static const String miAccount = '/myAccount';
   static const String userDetails = '/userDetail';
+  static const String usuarios = '/usuarios';
 }
