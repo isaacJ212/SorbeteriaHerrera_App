@@ -7,12 +7,12 @@ import '../Screens/Login/login_screen.dart';
 import '../Screens/Dashboard/dashboard_screen.dart';
 import '../Screens/Inventario/inventario_screen.dart';
 import '../Screens/Detalle_de_Producto/detalle_de_producto_screen.dart';
-import '../Screens/Reporte_de_Venta/reporte_de_venta_screen.dart';
+import '../Screens/Detalle_de_Venta/detalle_de_venta_screen.dart';
 import '../Screens/Reporte_de_Inventario/reporte_de_inventario_screen.dart';
 import '../Screens/NotFound/not_found_screen.dart';
 
 import '../Screens/Usuario/usuario_screen.dart';
-
+import '../Screens/Ventas/venta_screen.dart';
 import '../Screens/MyAccount/my_account.dart';
 
 abstract class AppRouter {
@@ -33,8 +33,8 @@ abstract class AppRouter {
             precio: datos?['precio'] ?? 'C\$ 0',
           ),
         );
-      case AppRoutes.reporteVenta:
-        return MaterialPageRoute(builder: (_) => const ReporteDeVentaScreen());
+      case AppRoutes.detalleVenta:
+        return MaterialPageRoute(builder: (_) => const DetalleDeVentaScreen());
       case AppRoutes.reporteInventario:
         return MaterialPageRoute(
           builder: (_) => const ReporteDeInventarioScreen(),
@@ -49,6 +49,8 @@ abstract class AppRouter {
         return MaterialPageRoute(builder: (_) => const UserDetailScreen());
       case AppRoutes.usuarios:
         return MaterialPageRoute(builder: (_) => const UsuarioScreen());
+      case AppRoutes.ventas:
+        return MaterialPageRoute(builder: (_) => const VentaScreen());
       case AppRoutes.notFound:
         return MaterialPageRoute(builder: (_) => const NotFoundScreen());
       default:

@@ -177,7 +177,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            _cardVentas("2026-09-10", "Jafet", "67", "tuma"),
+            _tablaVentas(),
           ],
         ),
       ),
@@ -192,30 +192,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
           }
         },
       ),
-    );
-  }
-
-  Widget _cardVentas(
-    String fecha,
-    String usuario,
-    String total,
-    String cliente,
-  ) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x1A000000),
-            blurRadius: 4,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-
-      ],),
     );
   }
 

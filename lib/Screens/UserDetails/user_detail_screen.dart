@@ -124,7 +124,7 @@ class _UserDetailScreen extends State<UserDetailScreen> {
               ),
               const SizedBox(width: 16),
               Expanded(
-                //  ni que fueran 20 if anidados
+                //hp sdk ni que fueran 20 if anidados
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

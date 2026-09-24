@@ -1,64 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:herrera_app/main.dart';
+
 void main() {
-  testWidgets('Validar que CardVentas renderice correctamente', (
-    WidgetTester tester,
-  ) async {
-    // Construimos el widget dentro de un MaterialApp para que tenga contexto
-    await tester.pumpWidget(
-      const MaterialApp(
-        home: Scaffold(
-          body: CardVentas(
-            fecha: '2026-03-30',
-            usuario: 'Juan Pérez',
-            total: '\$150.00',
-            cliente: 'Cliente Particular',
-          ),
-        ),
-      ),
-    );
+  testWidgets('muestra la pantalla de ruta no encontrada', (tester) async {
+    await tester.pumpWidget(const MyApp());
 
-    // Encuentra el contenedor principal de la tarjeta
-    final cardFinder = find.byType(CardVentas);
-    expect(cardFinder, findsOneWidget);
+    final context = tester.element(find.byType(MaterialApp));
+    Navigator.of(context).pushNamed('/ruta-inexistente');
+    await tester.pumpAndSettle();
+
+    expect(find.text('Página no encontrada'), findsOneWidget);
+    expect(find.text('Pagina No Encontrada'), findsOneWidget);
   });
-}
-
-class CardVentas extends StatelessWidget {
-  final String fecha;
-  final String usuario;
-  final String total;
-  final String cliente;
-
-  const CardVentas({
-    super.key,
-    required this.fecha,
-    required this.usuario,
-    required this.total,
-    required this.cliente,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x1A000000),
-            blurRadius: 4,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          // Tus widgets hijos van aquí
-        ],
-      ),
-    );
-  }
 }
