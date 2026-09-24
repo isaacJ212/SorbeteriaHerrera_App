@@ -11,7 +11,7 @@ import '../Screens/Reporte_de_Inventario/reporte_de_inventario_screen.dart';
 import '../Screens/NotFound/not_found_screen.dart';
 
 import '../Screens/Usuario/usuario_screen.dart';
-
+import '../Screens/Ventas/venta_screen.dart';
 import '../Screens/MyAccount/my_account.dart';
 
 abstract class AppRouter {
@@ -44,6 +44,8 @@ abstract class AppRouter {
         return MaterialPageRoute(builder: (_) => const UserDetailScreen());
       case AppRoutes.usuarios:
         return MaterialPageRoute(builder: (_) => const UsuarioScreen());
+      case AppRoutes.ventas:
+        return MaterialPageRoute(builder: (_) => const VentaScreen());
       case AppRoutes.notFound:
         return MaterialPageRoute(builder: (_) => const NotFoundScreen());
       default:
