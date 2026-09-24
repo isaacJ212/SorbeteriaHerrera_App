@@ -1,4 +1,5 @@
 import 'package:herrera_app/Screens/AccessHistory/AccesHistory.dart';
+import 'package:herrera_app/Screens/Pedido/pedido_screen.dart';
 import 'package:herrera_app/Screens/UserDetails/user_detail_screen.dart';
 
 import 'app_routes.dart';
@@ -40,9 +41,7 @@ abstract class AppRouter {
           builder: (_) => const ReporteDeInventarioScreen(),
         );
       case AppRoutes.Accesshistory:
-        return MaterialPageRoute(
-          builder: (_) => const Accesshistory(),
-          );
+        return MaterialPageRoute(builder: (_) => const Accesshistory());
       case AppRoutes.miAccount:
         return MaterialPageRoute(builder: (_) => const MyAccountScreen());
       case AppRoutes.userDetails:
@@ -51,6 +50,8 @@ abstract class AppRouter {
         return MaterialPageRoute(builder: (_) => const UsuarioScreen());
       case AppRoutes.ventas:
         return MaterialPageRoute(builder: (_) => const VentaScreen());
+      case AppRoutes.pedidos:
+        return MaterialPageRoute(builder: (_) => const PedidoScreen());
       case AppRoutes.notFound:
         return MaterialPageRoute(builder: (_) => const NotFoundScreen());
       default:
