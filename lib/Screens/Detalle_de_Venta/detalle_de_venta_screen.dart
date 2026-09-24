@@ -152,7 +152,7 @@ class DetalleDeVentaScreen extends StatelessWidget {
             children: [
               Icon(
                 Icons.calendar_today_outlined,
-                color: AppColors.textSecondary,
+                color: AppColors.primary,
                 size: 14,
               ),
               SizedBox(width: 5),
@@ -161,7 +161,7 @@ class DetalleDeVentaScreen extends StatelessWidget {
                 style: TextStyle(color: AppColors.textSecondary, fontSize: 10),
               ),
               SizedBox(width: 12),
-              Icon(Icons.access_time, color: AppColors.textSecondary, size: 14),
+              Icon(Icons.access_time, color: AppColors.primary, size: 14),
               SizedBox(width: 5),
               Text(
                 '02:45 PM',
@@ -177,7 +177,7 @@ class DetalleDeVentaScreen extends StatelessWidget {
               Text(
                 'CAJA 01',
                 style: TextStyle(
-                  color: AppColors.primary,
+                  color: AppColors.textSecondary,
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
                 ),
@@ -514,7 +514,7 @@ class DetalleDeVentaScreen extends StatelessWidget {
               style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryText,
+              backgroundColor: Color(0xFF004532),
               foregroundColor: Colors.white,
               elevation: 0,
               shape: RoundedRectangleBorder(
