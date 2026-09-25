@@ -177,7 +177,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            _cardVentas("2026-09-10", "Jafet", "67", "tuma"),
+            ..._ventas.take(3).map(_cardVentas),
           ],
         ),
       ),
@@ -195,13 +195,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _cardVentas(
-    String fecha,
-    String usuario,
-    String total,
-    String cliente,
-  ) {
+  Widget _cardVentas(RecentSale venta) {
     return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -213,84 +210,54 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ],
       ),
-      child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-
-      ],),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Venta realizada', style: _estiloEncabezado),
+                  const SizedBox(height: 4),
+                  Text(venta.fecha, style: _estiloCelda),
+                ],
+              ),
+              Text(venta.total, style: _estiloTotal),
+            ],
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 12),
+            child: Divider(height: 1, color: Color(0xFFE9ECEB)),
+          ),
+          Row(
+            children: [
+              Expanded(child: _datoVenta('Usuario', venta.usuario)),
+              Expanded(child: _datoVenta('Cliente', venta.cliente)),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _tablaVentas() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x1A000000),
-            blurRadius: 4,
-            offset: Offset(0, 2),
+  Widget _datoVenta(String etiqueta, String valor) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          etiqueta,
+          style: const TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF8A9691),
           ),
-        ],
-      ),
-      clipBehavior: Clip.antiAlias, // recorta el header para respetar esquinas
-      child: Column(
-        children: [
-          // Header gris
-          Container(
-            color: const Color(0xFFF3F4F5),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            child: const Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Text('Fecha', style: _estiloEncabezado),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Text('Usuario', style: _estiloEncabezado),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Text('Cliente', style: _estiloEncabezado),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Text('Total', style: _estiloEncabezado),
-                ),
-              ],
-            ),
-          ),
-          // Filas con zebra (alternadas)
-          ...List.generate(_ventas.length, (index) {
-            final venta = _ventas[index];
-            final esPar = index % 2 == 0;
-            return Container(
-              color: esPar ? Colors.white : const Color(0xFFF9FAFB),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Text(venta.fecha, style: _estiloCelda),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Text(venta.usuario, style: _estiloCelda),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Text(venta.cliente, style: _estiloCelda),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Text(venta.total, style: _estiloTotal),
-                  ),
-                ],
-              ),
-            );
-          }),
-        ],
-      ),
+        ),
+        const SizedBox(height: 4),
+        Text(valor, style: _estiloCelda),
+      ],
     );
   }
 }
