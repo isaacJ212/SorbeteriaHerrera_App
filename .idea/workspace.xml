@@ -5,13 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f9b06089-e79c-4b46-a391-437244eebbda" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/Screens/AccessHistory/AccesHistory.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/Screens/Detalle_de_Venta/detalle_de_venta_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/Screens/Detalle_de_Venta/widgets/producto_vendido_item.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/Screens/MyAccount/my_account.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/Screens/UserDetails/user_detail_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/Screens/Usuario/usuario_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/Screens/Ventas/venta_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/Screens/Ventas/widgets/metrica_venta_card.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/Screens/Ventas/widgets/venta_reciente_card.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/theme/app_colors.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analysis_options.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/analysis_options.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/herrera_app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/herrera_app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Screens/Dashboard/dashboard_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Dashboard/dashboard_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/linux/runner/my_application.cc" beforeDir="false" afterPath="$PROJECT_DIR$/linux/runner/my_application.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/Reporte_de_Venta/reporte_de_venta_screen.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Widgets/Dashboard/card_venta.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routes/app_router.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/routes/app_router.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routes/app_routes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/routes/app_routes.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/widget_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/widget_test.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,13 +69,14 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "feature/Reportes",
+    "git-widget-placeholder": "Merging feature/Reportes",
     "io.flutter.project.isFirstOpen": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/home/jafet/Proyectos/Universidad/SorbeteriaHerrera_App",

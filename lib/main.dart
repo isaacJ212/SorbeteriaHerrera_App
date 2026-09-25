@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'Screens/Login/login_screen.dart';
-import '';
 import 'routes/app_router.dart';
 import 'routes/app_routes.dart';
 
@@ -16,10 +15,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Sorbeteria Herrera',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      initialRoute: AppRoutes.login,
+      theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
+      initialRoute: AppRoutes.miAccount,
       onGenerateRoute: AppRouter.onGenerateRoute,
       onUnknownRoute: AppRouter.onGenerateRoute,
       debugShowCheckedModeBanner: false,
