@@ -11,6 +11,9 @@ abstract class AppRoutes {
   static const String miAccount = '/myAccount';
   static const String userDetails = '/userDetail';
   static const String ventas = '/ventas';
+
+  static const String pedidos = '/pedidos';
+
   static const String reportes = '/reportes';
   
   static const String Accesshistory = '/Acceshitory';

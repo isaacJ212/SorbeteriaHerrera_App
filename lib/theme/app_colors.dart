@@ -10,4 +10,7 @@ class AppColors {
   static const Color textSecondary = Color(0xFF64736D);
   static const Color cardBackground = Color(0xFFF0F3FF);
 
+  static const Color attention = Color(0xFFD97706);
+  static const Color attentionBackground = Color(0xFFFEF3C7);
+  static const Color attentionText = Color(0xFF78350F);
 }
