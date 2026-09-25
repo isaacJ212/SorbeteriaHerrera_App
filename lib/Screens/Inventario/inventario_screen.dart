@@ -101,6 +101,10 @@ class _InventarioScreenState extends State<InventarioScreen> {
           setState(() => _tabActual = index);
           if (index == 0) {
             Navigator.pushReplacementNamed(context, AppRoutes.dashboard);
+          } else if (index == 3) {
+            Navigator.pushReplacementNamed(context, AppRoutes.reportes);
+          } else if (index == 4) {
+            Navigator.pushReplacementNamed(context, AppRoutes.miAccount);
           } else if (index != 2) {
             _mostrarSnack('Esta sección estará disponible próximamente');
           }

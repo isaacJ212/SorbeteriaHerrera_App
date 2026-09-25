@@ -14,5 +14,7 @@ abstract class AppRoutes {
 
   static const String pedidos = '/pedidos';
 
+  static const String reportes = '/reportes';
+  
   static const String Accesshistory = '/Acceshitory';
 }
