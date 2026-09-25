@@ -187,6 +187,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
           setState(() => _tabActual = index);
           if (index == 2) {
             Navigator.pushReplacementNamed(context, AppRoutes.inventario);
+          } else if (index == 3) {
+            Navigator.pushReplacementNamed(context, AppRoutes.reportes);
+          } else if (index == 4) {
+            Navigator.pushReplacementNamed(context, AppRoutes.miAccount);
           } else if (index != 0) {
             _mostrarSnack('Esta sección estará disponible próximamente');
           }

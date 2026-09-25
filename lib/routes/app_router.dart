@@ -14,6 +14,7 @@ import '../Screens/NotFound/not_found_screen.dart';
 import '../Screens/Usuario/usuario_screen.dart';
 import '../Screens/Ventas/venta_screen.dart';
 import '../Screens/MyAccount/my_account.dart';
+import '../Screens/Reportes/Reportes.dart';
 
 abstract class AppRouter {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -24,6 +25,8 @@ abstract class AppRouter {
         return MaterialPageRoute(builder: (_) => const DashboardScreen());
       case AppRoutes.inventario:
         return MaterialPageRoute(builder: (_) => const InventarioScreen());
+      case AppRoutes.reportes:
+        return MaterialPageRoute(builder: (_) => const ReportesScreen());
       case AppRoutes.detalleProducto:
         final datos = settings.arguments as Map<String, String>?;
         return MaterialPageRoute(
