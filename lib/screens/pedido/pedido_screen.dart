@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../Screens/Pedido/widgets/resumen_pedido_card.dart';
-import '../../Screens/Pedido/widgets/pedido_card.dart';
+import '../../screens/pedido/widgets/resumen_pedido_card.dart';
+import '../../screens/pedido/widgets/pedido_card.dart';
 import '../../theme/app_colors.dart';
-import '../../Widgets/bottom_navbar.dart';
+import '../../widgets/bottom_navbar.dart';
 
 class PedidoScreen extends StatelessWidget {
   const PedidoScreen({super.key});

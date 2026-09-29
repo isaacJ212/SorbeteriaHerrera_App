@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../Screens/UserDetails/widgets/user_details_widgets.dart';
+import 'widgets/detalle_usuario_widgets.dart';
 import '../../theme/app_colors.dart';
 
-class UserDetailScreen extends StatelessWidget {
-  const UserDetailScreen({super.key});
+class DetalleUsuarioScreen extends StatelessWidget {
+  const DetalleUsuarioScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

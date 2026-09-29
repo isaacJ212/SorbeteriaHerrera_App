@@ -6,15 +6,12 @@ abstract class AppRoutes {
   static const String detalleVenta = '/detalleVenta';
   static const String reporteInventario = '/reporteInventario';
   static const String notFound = '/not-found';
-  static const String usuarios = 'usuarios';
+  static const String usuarios = '/usuarios';
 
-  static const String miAccount = '/myAccount';
-  static const String userDetails = '/userDetail';
+  static const String miCuenta = '/miCuenta';
+  static const String detalleUsuario = '/detalleUsuario';
   static const String ventas = '/ventas';
-
   static const String pedidos = '/pedidos';
-
   static const String reportes = '/reportes';
-  
-  static const String Accesshistory = '/Acceshitory';
+  static const String historialAcceso = '/historialAcceso';
 }

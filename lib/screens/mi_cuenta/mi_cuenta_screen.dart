@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../Widgets/bottom_navbar.dart';
+import '../../widgets/bottom_navbar.dart';
 import 'widgets/menu_item_cuenta.dart';
 
-class MyAccountScreen extends StatelessWidget {
-  const MyAccountScreen({super.key});
+class MiCuentaScreen extends StatelessWidget {
+  const MiCuentaScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

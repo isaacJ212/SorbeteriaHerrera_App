@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:herrera_app/Widgets/app_text_field.dart';
-import 'package:herrera_app/routes/app_router.dart';
+import 'package:herrera_app/widgets/app_text_field.dart';
 import 'package:herrera_app/routes/app_routes.dart';
 
 class LoginScreen extends StatefulWidget {

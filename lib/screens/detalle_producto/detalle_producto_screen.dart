@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../Widgets/bottom_navbar.dart';
-import '../../Widgets/label.dart';
-import '../../Screens/Detalle_de_Producto/widgets/detalles_producto.dart';
+import '../../widgets/bottom_navbar.dart';
+import '../../widgets/label.dart';
+import 'widgets/detalles_producto_widgets.dart';
 import '../../routes/app_routes.dart';
 
 class DetalleDeProductoScreen extends StatelessWidget {

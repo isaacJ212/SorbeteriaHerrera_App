@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../Screens/Reportes/widgets/reportes_cards.dart';
-import '../../Widgets/bottom_navbar.dart';
+import '../../screens/reportes/widgets/reportes_cards.dart';
+import '../../widgets/bottom_navbar.dart';
 import '../../routes/app_routes.dart';
 import '../../theme/app_colors.dart';
 
@@ -167,7 +167,7 @@ class _ReportesScreenState extends State<ReportesScreen> {
           } else if (index == 2) {
             Navigator.pushReplacementNamed(context, AppRoutes.inventario);
           } else if (index == 4) {
-            Navigator.pushReplacementNamed(context, AppRoutes.miAccount);
+            Navigator.pushReplacementNamed(context, AppRoutes.miCuenta);
           }
         },
       ),
