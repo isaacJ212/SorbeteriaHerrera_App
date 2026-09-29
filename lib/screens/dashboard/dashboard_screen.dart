@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../Widgets/Dashboard/alert_card.dart';
-import '../../Widgets/Dashboard/ventas_card.dart';
-import '../../Screens/Dashboard/widgets/venta_reciente_card.dart';
-import '../../Widgets/bottom_navbar.dart';
+import '../../widgets/dashboard/alert_card.dart';
+import '../../widgets/dashboard/ventas_card.dart';
+import '../../screens/dashboard/widgets/venta_reciente_card.dart';
+import '../../widgets/bottom_navbar.dart';
 import '../../models/dashboard_models/recent_sale.dart';
 import '../../routes/app_routes.dart';
 
@@ -193,7 +193,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           } else if (index == 3) {
             Navigator.pushReplacementNamed(context, AppRoutes.reportes);
           } else if (index == 4) {
-            Navigator.pushReplacementNamed(context, AppRoutes.miAccount);
+            Navigator.pushReplacementNamed(context, AppRoutes.miCuenta);
           } else if (index != 0) {
             _mostrarSnack('Esta sección estará disponible próximamente');
           }

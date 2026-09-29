@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../Screens/Usuario/widgets/usuarios_widgets.dart';
-import '../../Widgets/bottom_navbar.dart';
+import '../../screens/usuario/widgets/usuarios_widgets.dart';
+import '../../widgets/bottom_navbar.dart';
 import '../../theme/app_colors.dart';
 
 class UsuarioScreen extends StatelessWidget {

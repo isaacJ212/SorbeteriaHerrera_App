@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../Screens/Reporte_de_Inventario/widgets/productos_en_riesgos_cards.dart';
-import '../../Widgets/bottom_navbar.dart';
+import '../../screens/reporte_inventario/widgets/productos_en_riesgos_cards.dart';
+import '../../widgets/bottom_navbar.dart';
 import '../../theme/app_colors.dart';
 
 class ReporteDeInventarioScreen extends StatelessWidget {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:herrera_app/theme/app_colors.dart';
-import '../../Widgets/bottom_navbar.dart';
+import '../../widgets/bottom_navbar.dart';
 import 'widgets/resumen_auditoria.dart';
 import 'widgets/tarjeta_registro_acceso.dart';
 
-class Accesshistory extends StatelessWidget {
-  const Accesshistory({super.key});
+class HistorialAccesoScreen extends StatelessWidget {
+  const HistorialAccesoScreen({super.key});
 
   static const List<Map<String, dynamic>> _accessLogs = [
     {

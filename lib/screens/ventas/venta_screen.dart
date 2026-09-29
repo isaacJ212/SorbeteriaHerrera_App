@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../Ventas/widgets/metrica_venta_card.dart';
-import '../Ventas/widgets/venta_reciente_card.dart';
-import '../../Widgets/bottom_navbar.dart';
+import '../ventas/widgets/metrica_venta_card.dart';
+import '../ventas/widgets/venta_reciente_card.dart';
+import '../../widgets/bottom_navbar.dart';
 import '../../theme/app_colors.dart';
 
 class VentaScreen extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../Widgets/bottom_navbar.dart';
-import '../../Screens/Inventario/widgets/fila_producto_inventario.dart';
+import '../../widgets/bottom_navbar.dart';
+import '../../screens/inventario/widgets/fila_producto_inventario.dart';
 import '../../routes/app_routes.dart';
 
 class InventarioScreen extends StatefulWidget {
@@ -105,7 +105,7 @@ class _InventarioScreenState extends State<InventarioScreen> {
           } else if (index == 3) {
             Navigator.pushReplacementNamed(context, AppRoutes.reportes);
           } else if (index == 4) {
-            Navigator.pushReplacementNamed(context, AppRoutes.miAccount);
+            Navigator.pushReplacementNamed(context, AppRoutes.miCuenta);
           } else if (index != 2) {
             _mostrarSnack('Esta sección estará disponible próximamente');
           }
