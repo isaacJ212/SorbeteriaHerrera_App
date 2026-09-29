@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../Widgets/bottom_navbar.dart';
+import '../../Screens/Inventario/widgets/fila_producto_inventario.dart';
 import '../../routes/app_routes.dart';
 
 class InventarioScreen extends StatefulWidget {
@@ -153,7 +154,23 @@ class _InventarioScreenState extends State<InventarioScreen> {
             ),
           ),
           for (int index = 0; index < productos.length; index++) ...[
-            _filaProducto(productos[index]),
+            FilaProductoInventario(
+              nombre: productos[index].nombre,
+              stock: productos[index].stock,
+              precio: productos[index].precio,
+              stockBajo: productos[index].stockBajo,
+              onVerDetalle: () {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.detalleProducto,
+                  arguments: {
+                    'nombre': productos[index].nombre,
+                    'stock': productos[index].stock,
+                    'precio': productos[index].precio,
+                  },
+                );
+              },
+            ),
             if (index != productos.length - 1)
               const Divider(height: 1, color: Color(0xFFF0F0F0)),
           ],
@@ -177,7 +194,9 @@ class _InventarioScreenState extends State<InventarioScreen> {
               filtro,
               style: TextStyle(
                 fontSize: 11,
-                color: activo ? const Color(0xFF10251F) : const Color(0xFF64736D),
+                color: activo
+                    ? const Color(0xFF10251F)
+                    : const Color(0xFF64736D),
                 fontWeight: activo ? FontWeight.w700 : FontWeight.w400,
               ),
             ),
@@ -196,7 +215,11 @@ class _InventarioScreenState extends State<InventarioScreen> {
         border: Border.all(color: const Color(0xFFE1E1E1)),
         borderRadius: BorderRadius.circular(10),
         boxShadow: const [
-          BoxShadow(color: Color(0x14000000), blurRadius: 4, offset: Offset(0, 2)),
+          BoxShadow(
+            color: Color(0x14000000),
+            blurRadius: 4,
+            offset: Offset(0, 2),
+          ),
         ],
       ),
       child: const Column(
@@ -244,7 +267,10 @@ class _InventarioScreenState extends State<InventarioScreen> {
                 style: FilledButton.styleFrom(
                   backgroundColor: const Color(0xFFD8F5EA),
                   foregroundColor: const Color(0xFF10251F),
-                  textStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+                  textStyle: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                 ),
               ),
@@ -263,7 +289,11 @@ class _InventarioScreenState extends State<InventarioScreen> {
         decoration: InputDecoration(
           hintText: texto,
           hintStyle: const TextStyle(fontSize: 11, color: Color(0xFF8A9691)),
-          prefixIcon: const Icon(Icons.search, size: 18, color: Color(0xFF64736D)),
+          prefixIcon: const Icon(
+            Icons.search,
+            size: 18,
+            color: Color(0xFF64736D),
+          ),
           filled: true,
           fillColor: const Color(0xFFEAF7F1),
           contentPadding: EdgeInsets.zero,
@@ -276,52 +306,6 @@ class _InventarioScreenState extends State<InventarioScreen> {
             borderSide: const BorderSide(color: Color(0xFFD1E9DF)),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _filaProducto(_ProductoInventario producto) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      child: Row(
-        children: [
-          Expanded(flex: 23, child: Text(producto.nombre, style: _estiloCelda)),
-          Expanded(
-            flex: 10,
-            child: Text(
-              producto.stock,
-              style: _estiloCelda.copyWith(
-                color: producto.stockBajo
-                    ? const Color(0xFFB66A00)
-                    : const Color(0xFF10251F),
-                fontWeight: producto.stockBajo
-                    ? FontWeight.w700
-                    : FontWeight.w400,
-              ),
-            ),
-          ),
-          Expanded(flex: 13, child: Text(producto.precio, style: _estiloCelda)),
-          SizedBox(
-            width: 34,
-            height: 26,
-            child: IconButton(
-              padding: EdgeInsets.zero,
-              tooltip: 'Ver detalle',
-              icon: const Icon(Icons.visibility_outlined, size: 18),
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  AppRoutes.detalleProducto,
-                  arguments: {
-                    'nombre': producto.nombre,
-                    'stock': producto.stock,
-                    'precio': producto.precio,
-                  },
-                );
-              },
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -344,10 +328,5 @@ class _ProductoInventario {
 const TextStyle _estiloEncabezado = TextStyle(
   fontSize: 12,
   fontWeight: FontWeight.w700,
-  color: Color(0xFF10251F),
-);
-
-const TextStyle _estiloCelda = TextStyle(
-  fontSize: 11,
   color: Color(0xFF10251F),
 );

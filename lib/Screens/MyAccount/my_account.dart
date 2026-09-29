@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import '../../Widgets/bottom_navbar.dart';
+import 'widgets/menu_item_cuenta.dart';
 
-
-class MyAccountScreen extends StatelessWidget{
+class MyAccountScreen extends StatelessWidget {
   const MyAccountScreen({super.key});
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9FF),
       appBar: _buildAppBar(),
-      body : SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -22,24 +22,19 @@ class MyAccountScreen extends StatelessWidget{
         ),
       ),
 
-      bottomNavigationBar: BottomNavbar(
-        currentIndex:4,
-        onTap:(index){
-        }
-      ),
+      bottomNavigationBar: BottomNavbar(currentIndex: 4, onTap: (index) {}),
     );
   }
 
-
   // appBar
 
-  PreferredSizeWidget _buildAppBar(){
+  PreferredSizeWidget _buildAppBar() {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
       leading: IconButton(
         icon: const Icon(Icons.menu, color: Color(0xFF10251F)),
-        onPressed: (){},
+        onPressed: () {},
       ),
       title: const Text(
         'Mi cuenta',
@@ -47,27 +42,26 @@ class MyAccountScreen extends StatelessWidget{
           color: Color(0xFF10251F),
           fontSize: 20,
           fontWeight: FontWeight.w500,
-          ),
         ),
+      ),
       actions: [
         IconButton(
           icon: const Icon(Icons.search, color: Color(0xFF10251F)),
-          onPressed: (){},
+          onPressed: () {},
         ),
         IconButton(
-          icon : const Icon(Icons.filter_list, color: Color(0xFF10251F)),
+          icon: const Icon(Icons.filter_list, color: Color(0xFF10251F)),
           onPressed: () {},
         ),
       ],
     );
   }
-  
 
-  // configuracion general 
+  // configuracion general
 
-  Widget _buildGeneralConfigSection(){
+  Widget _buildGeneralConfigSection() {
     return Column(
-      crossAxisAlignment:  CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(
           padding: EdgeInsets.fromLTRB(20, 24, 20, 8),
@@ -81,7 +75,6 @@ class MyAccountScreen extends StatelessWidget{
             ),
           ),
         ),
-
 
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -108,11 +101,7 @@ class MyAccountScreen extends StatelessWidget{
                 ),
                 child: const Row(
                   children: [
-                    Icon(
-                      Icons.circle,
-                      size: 8,
-                      color: Color(0xFF007057),
-                    ),
+                    Icon(Icons.circle, size: 8, color: Color(0xFF007057)),
                     SizedBox(width: 6),
                     Text(
                       'Turno Activo',
@@ -125,9 +114,7 @@ class MyAccountScreen extends StatelessWidget{
                   ],
                 ),
               ),
-
             ],
-
           ),
         ),
 
@@ -137,21 +124,20 @@ class MyAccountScreen extends StatelessWidget{
     );
   }
 
-
-  Widget _buildProfileCard(){
+  Widget _buildProfileCard() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow:[
+        boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
-        ]
+        ],
       ),
       child: Column(
         children: [
@@ -166,8 +152,10 @@ class MyAccountScreen extends StatelessWidget{
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(12),
                       image: const DecorationImage(
-                        image: NetworkImage('https://i.pinimg.com/564x/9d/6b/9d/9d6b9db2dcb0526a09b89fb35d075c72.jpg'),
-                        fit : BoxFit.cover,
+                        image: NetworkImage(
+                          'https://i.pinimg.com/564x/9d/6b/9d/9d6b9db2dcb0526a09b89fb35d075c72.jpg',
+                        ),
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
@@ -184,19 +172,18 @@ class MyAccountScreen extends StatelessWidget{
                       child: const Icon(
                         Icons.settings,
                         size: 16,
-                        color: Colors.white
+                        color: Colors.white,
                       ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(width:16),
+              const SizedBox(width: 16),
 
               //ifnormacion del usuario
-
               Expanded(
                 child: Column(
-                  crossAxisAlignment:  CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
@@ -210,11 +197,11 @@ class MyAccountScreen extends StatelessWidget{
                         ),
 
                         const SizedBox(width: 8),
-                        
+
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 8,
-                            vertical: 2, 
+                            vertical: 2,
                           ),
                           decoration: BoxDecoration(
                             color: const Color(0xFF95F1D0),
@@ -232,7 +219,7 @@ class MyAccountScreen extends StatelessWidget{
                       ],
                     ),
 
-                    const SizedBox(height: 4,),
+                    const SizedBox(height: 4),
                     const Text(
                       'Administrador General',
                       style: TextStyle(
@@ -241,7 +228,7 @@ class MyAccountScreen extends StatelessWidget{
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const SizedBox(height: 2,),
+                    const SizedBox(height: 2),
                     const Text(
                       'admin@sorbeteriaHerra.com',
                       style: TextStyle(
@@ -255,30 +242,25 @@ class MyAccountScreen extends StatelessWidget{
             ],
           ),
 
-          const SizedBox(height: 20,),
+          const SizedBox(height: 20),
 
           //  boton de editar perfil
           SizedBox(
             width: double.infinity,
             height: 48,
             child: ElevatedButton.icon(
-              onPressed: (){
-
-              },
-              icon:  const Icon(Icons.edit_note),
+              onPressed: () {},
+              icon: const Icon(Icons.edit_note),
               label: const Text(
                 'Edfitar perfil',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600
-                )
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF006C53),
                 foregroundColor: Colors.white,
                 //borderRadius: BorderRadius.circular(12),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 elevation: 0,
               ),
@@ -289,10 +271,9 @@ class MyAccountScreen extends StatelessWidget{
     );
   }
 
-
   //secci0n de la gestion del sistema
 
-  Widget _buildSystemManagementSection(){
+  Widget _buildSystemManagementSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -309,7 +290,6 @@ class MyAccountScreen extends StatelessWidget{
                   color: Color(0xFF64736D),
                   letterSpacing: 0.5,
                 ),
-
               ),
               const Text(
                 '3 Modulos',
@@ -338,7 +318,7 @@ class MyAccountScreen extends StatelessWidget{
           ),
           child: Column(
             children: [
-              _buildMenuItem(
+              MenuItemCuenta(
                 icon: Icons.people_outline,
                 title: 'Usuarios y Roles',
                 subtitle: 'Cajeros, maestros sorbeteros y personal',
@@ -347,14 +327,14 @@ class MyAccountScreen extends StatelessWidget{
                 badgeTextColor: const Color(0xFF4A6FA9),
               ),
               _buildDivider(),
-              _buildMenuItem(
+              MenuItemCuenta(
                 icon: Icons.shield_outlined,
                 title: 'Historial de Acceso y Auditoría',
                 subtitle: 'Registros de cajas, mermas y modificaciones',
                 showArrow: true,
               ),
               _buildDivider(),
-              _buildMenuItem(
+              MenuItemCuenta(
                 icon: Icons.local_shipping_outlined,
                 title: 'Gestión de Pedidos y Envíos',
                 subtitle: 'Despachos de tinas mayoreo y caja',
@@ -370,7 +350,7 @@ class MyAccountScreen extends StatelessWidget{
   }
 
   //prefenciaas y soporte
-  Widget _buildPreferencesSection(){
+  Widget _buildPreferencesSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -385,7 +365,7 @@ class MyAccountScreen extends StatelessWidget{
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   color: Color(0xFF64736D),
-                  letterSpacing: 0.5
+                  letterSpacing: 0.5,
                 ),
               ),
               const Text(
@@ -416,25 +396,25 @@ class MyAccountScreen extends StatelessWidget{
 
           child: Column(
             children: [
-              _buildMenuItem(
+              MenuItemCuenta(
                 icon: Icons.notifications_outlined,
                 title: 'Notificaciones y Alertas de Stock',
                 subtitle: 'Avisos de frutas de temporada y más',
                 showArrow: true,
               ),
               _buildDivider(),
-              _buildMenuItem(
+              MenuItemCuenta(
                 icon: Icons.support_agent_outlined,
                 title: 'Centro de Ayuda - Soporte',
                 subtitle: 'Manual operativo y contacto directo 24/7',
                 showArrow: true,
               ),
               _buildDivider(),
-              _buildMenuItem(
+              MenuItemCuenta(
                 icon: Icons.info_outline,
                 title: 'Acerca de Sorbetería Herrera',
                 subtitle: 'Tradición artesanal desde 1938',
-                badge: 'v2.4.0',
+                badge: 'v1.1.0',
                 badgeColor: const Color(0xFFE7EEFF),
                 badgeTextColor: const Color(0xFF4A6FA9),
               ),
@@ -445,91 +425,12 @@ class MyAccountScreen extends StatelessWidget{
     );
   }
 
-//estos madre es una mause herramienta
-
-  Widget _buildMenuItem({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    String? badge,
-    Color? badgeColor,
-    Color? badgeTextColor,
-    bool showArrow = false,
-  }){
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 12,
-      ),
-      leading: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: const Color(0xFFF0F3FF),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Icon(
-          icon,
-          color: const Color(0xFF09A982),
-          size: 24,
-        ),
-      ),
-      title: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 16,
-          color: Color(0xFF64736D),
-        ),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (badge != null) ...[
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 4,
-              ),
-              decoration: BoxDecoration(
-                color: badgeColor ?? const Color(0xFFE7EEFF),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                badge,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: badgeTextColor ?? const Color(0xFF007057),
-                ),
-              ),
-            ),
-            const SizedBox(width: 12),
-          ],
-          if (showArrow)
-            const Icon(
-              Icons.chevron_right,
-              color: Color(0xFF8A9691),
-            ),
-        ],
-      ),
-      onTap: () {
-
-      },
-    );
+  Widget _buildDivider() {
+    return Divider(height: 1, thickness: 1, color: Colors.grey);
   }
 
-  Widget _buildDivider(){
-    return Divider(
-      height: 1,
-      thickness: 1,
-      color: Colors.grey,
-    );
-  }
-
-
-// bopton de cerra sesion
-  Widget _buildLogoutButton(){
+  // bopton de cerra sesion
+  Widget _buildLogoutButton() {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Container(
@@ -555,11 +456,7 @@ class MyAccountScreen extends StatelessWidget{
               color: Color(0xFFFFDAD6),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
-              Icons.logout,
-              color: Color(0xFFBA1A1A),
-              size: 24,
-            ),
+            child: const Icon(Icons.logout, color: Color(0xFFBA1A1A), size: 24),
           ),
           title: const Text(
             'Cerrar Sesión',
@@ -569,12 +466,9 @@ class MyAccountScreen extends StatelessWidget{
               color: Color(0xFFBA1A1A),
             ),
           ),
-          onTap: () {
-
-          },
+          onTap: () {},
         ),
       ),
     );
   }
-
 }
