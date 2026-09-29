@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../Widgets/bottom_navbar.dart';
 import '../../Widgets/label.dart';
+import '../../Screens/Detalle_de_Producto/widgets/detalles_producto.dart';
 import '../../routes/app_routes.dart';
 
 class DetalleDeProductoScreen extends StatelessWidget {
@@ -108,7 +109,7 @@ class DetalleDeProductoScreen extends StatelessWidget {
   }
 
   Widget _informacionProducto() {
-    return _card(
+    return DetalleProductoCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -117,17 +118,26 @@ class DetalleDeProductoScreen extends StatelessWidget {
             style: TextStyle(fontSize: 11, color: Color(0xFF64736D)),
           ),
           const SizedBox(height: 12),
-          _filaInformacion('Precio de venta', precio),
-          _filaInformacion('Categoría', 'Helados'),
-          _filaInformacion('Línea de producto', 'Sorbetes'),
-          _filaInformacion('Unidad de medida', 'Onzas'),
+          FilaInformacionProducto(etiqueta: 'Precio de venta', valor: precio),
+          const FilaInformacionProducto(
+            etiqueta: 'Categoría',
+            valor: 'Helados',
+          ),
+          const FilaInformacionProducto(
+            etiqueta: 'Línea de producto',
+            valor: 'Sorbetes',
+          ),
+          const FilaInformacionProducto(
+            etiqueta: 'Unidad de medida',
+            valor: 'Onzas',
+          ),
         ],
       ),
     );
   }
 
   Widget _resumenStock() {
-    return _card(
+    return DetalleProductoCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -138,9 +148,19 @@ class DetalleDeProductoScreen extends StatelessWidget {
           const SizedBox(height: 12),
           Row(
             children: [
-              Expanded(child: _datoStock('Stock actual', '$stock unidades')),
+              Expanded(
+                child: DatoStockProducto(
+                  etiqueta: 'Stock actual',
+                  valor: '$stock unidades',
+                ),
+              ),
               const SizedBox(width: 10),
-              Expanded(child: _datoStock('Stock mínimo', '20 unidades')),
+              const Expanded(
+                child: DatoStockProducto(
+                  etiqueta: 'Stock mínimo',
+                  valor: '20 unidades',
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 14),
@@ -160,7 +180,7 @@ class DetalleDeProductoScreen extends StatelessWidget {
   }
 
   Widget _tablaLotes() {
-    return _card(
+    return DetalleProductoCard(
       padding: EdgeInsets.zero,
       child: Column(
         children: [
@@ -188,96 +208,21 @@ class DetalleDeProductoScreen extends StatelessWidget {
               ],
             ),
           ),
-          _filaLote('LV-102', '12-08-2026', '90', '30-09-2026'),
+          const FilaLoteProducto(
+            lote: 'LV-102',
+            ingreso: '12-08-2026',
+            cantidad: '90',
+            vencimiento: '30-09-2026',
+          ),
           const Divider(height: 1, color: Color(0xFFF0F0F0)),
-          _filaLote('LV-103', '14-08-2026', '60', '15-10-2026'),
-        ],
-      ),
-    );
-  }
-
-  Widget _filaLote(
-    String lote,
-    String ingreso,
-    String cantidad,
-    String vencimiento,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
-      child: Row(
-        children: [
-          Expanded(flex: 13, child: Text(lote, style: _estiloFila)),
-          Expanded(flex: 18, child: Text(ingreso, style: _estiloFila)),
-          Expanded(flex: 12, child: Text(cantidad, style: _estiloFila)),
-          Expanded(flex: 18, child: Text(vencimiento, style: _estiloFila)),
-        ],
-      ),
-    );
-  }
-
-  Widget _filaInformacion(String etiqueta, String valor) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 9),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            etiqueta,
-            style: const TextStyle(fontSize: 12, color: Color(0xFF64736D)),
-          ),
-          Text(
-            valor,
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+          const FilaLoteProducto(
+            lote: 'LV-103',
+            ingreso: '14-08-2026',
+            cantidad: '60',
+            vencimiento: '15-10-2026',
           ),
         ],
       ),
-    );
-  }
-
-  Widget _datoStock(String etiqueta, String valor) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF3F4F5),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            etiqueta,
-            style: const TextStyle(fontSize: 11, color: Color(0xFF64736D)),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            valor,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _card({
-    required Widget child,
-    EdgeInsetsGeometry padding = const EdgeInsets.all(14),
-  }) {
-    return Container(
-      width: double.infinity,
-      padding: padding,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: const Color(0xFFE1E1E1)),
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x40000000),
-            blurRadius: 2,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: child,
     );
   }
 }
@@ -287,5 +232,3 @@ const TextStyle _estiloTabla = TextStyle(
   fontWeight: FontWeight.w600,
   color: Color(0xFF10251F),
 );
-
-const TextStyle _estiloFila = TextStyle(fontSize: 9, color: Color(0xFF10251F));
