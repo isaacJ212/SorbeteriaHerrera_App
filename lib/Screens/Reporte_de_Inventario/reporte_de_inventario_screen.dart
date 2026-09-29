@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:herrera_app/theme/app_colors.dart';
-import '../../Widgets/bottom_navbar.dart';
-
 
 class ReporteDeInventarioScreen extends StatelessWidget {
   const ReporteDeInventarioScreen({super.key});
@@ -58,16 +55,6 @@ class ReporteDeInventarioScreen extends StatelessWidget {
           fontWeight: FontWeight.w600,
         ),
       ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.search, color: AppColors.primaryText),
-          onPressed: () {},
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.filter_list, color: AppColors.primaryText),
-        ),
-      ],
     );
   }
 
@@ -338,5 +325,3 @@ class ReporteDeInventarioScreen extends StatelessWidget {
 
 
 }
-
-
