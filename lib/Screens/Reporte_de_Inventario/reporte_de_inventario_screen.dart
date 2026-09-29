@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../Screens/Reporte_de_Inventario/widgets/productos_en_riesgos_cards.dart';
+import '../../Widgets/bottom_navbar.dart';
+import '../../theme/app_colors.dart';
+
 class ReporteDeInventarioScreen extends StatelessWidget {
   const ReporteDeInventarioScreen({super.key});
 
@@ -10,34 +14,28 @@ class ReporteDeInventarioScreen extends StatelessWidget {
       appBar: _buildAppBar(),
       body: SingleChildScrollView(
         child: Column(
-          
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Padding(
               padding: EdgeInsetsGeometry.fromLTRB(16, 16, 16, 0),
               child: Text(
-                  'Inventario',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryText,
-                  ),
+                'Inventario',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.primaryText,
                 ),
+              ),
             ),
-            
             _buildSummaryCard(),
             _buildRiskProductSection(),
-            const SizedBox(height: 20,)
+            const SizedBox(height: 20),
           ],
         ),
       ),
-      
       bottomNavigationBar: BottomNavbar(currentIndex: 3, onTap: (index) {}),
     );
   }
-
-
-
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
@@ -58,7 +56,6 @@ class ReporteDeInventarioScreen extends StatelessWidget {
     );
   }
 
-  
   Widget _buildSummaryCard() {
     return Container(
       margin: const EdgeInsets.all(16),
@@ -75,12 +72,11 @@ class ReporteDeInventarioScreen extends StatelessWidget {
           ),
         ],
       ),
-      
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Flexible(
-            flex: 2, 
+            flex: 2,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -94,26 +90,19 @@ class ReporteDeInventarioScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 const Text(
-                  'C\$30,000',  /// en est pareet tuve que investigar para que el pantalla se me mostra el sigono de dolar
-                  //ya que si lo ponia sig este signo \ pues no me interpretara que despues iba una variable
-                  //era algo sencillo pero bueno
+                  'C\$30,000',
                   style: TextStyle(
                     fontSize: 23,
                     fontWeight: FontWeight.bold,
                     color: AppColors.primaryText,
                   ),
-  
-                  
                 ),
               ],
             ),
           ),
-          
-          const SizedBox(width: 16), 
-
-
+          const SizedBox(width: 16),
           Flexible(
-            flex: 3, 
+            flex: 3,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -129,7 +118,10 @@ class ReporteDeInventarioScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFFFFF0F0),
                     borderRadius: BorderRadius.circular(8),
@@ -139,7 +131,7 @@ class ReporteDeInventarioScreen extends StatelessWidget {
                     ),
                   ),
                   child: const Row(
-                    mainAxisSize: MainAxisSize.min, 
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         '3 Agotado',
@@ -150,7 +142,11 @@ class ReporteDeInventarioScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: 4),
-                      Icon(Icons.error_outline, size: 16, color: Color(0xFFBA1A1A)),
+                      Icon(
+                        Icons.error_outline,
+                        size: 16,
+                        color: Color(0xFFBA1A1A),
+                      ),
                     ],
                   ),
                 ),
@@ -162,7 +158,7 @@ class ReporteDeInventarioScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRiskProductSection (){
+  Widget _buildRiskProductSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -176,152 +172,29 @@ class ReporteDeInventarioScreen extends StatelessWidget {
               color: AppColors.primaryText,
             ),
           ),
-          
         ),
-        _buildProductCard(
-            productName: 'Helado de Hielo',
-            size: '10 oz',
-            currentStock: 4,
-            maxStock: 30,
-            badgeText: 'Stock Bajo'
-          ),
-          _buildProductCard(
+        ProductoEnRiesgoCard(
+          productName: 'Helado de coco',
+          size: '10 oz',
+          currentStock: 4,
+          maxStock: 30,
+          badgeText: 'Stock Bajo',
+        ),
+        ProductoEnRiesgoCard(
           productName: 'Helado de mani',
           size: '4 oz',
           currentStock: 6,
           maxStock: 25,
           badgeText: 'Stock Bajo',
         ),
+        ProductoEnRiesgoCard(
+          productName: 'Helado de fresa',
+          size: '2 oz',
+          currentStock: 1,
+          maxStock: 25,
+          badgeText: 'Stock bajo',
+        ),
       ],
     );
   }
-
-
-
-  Widget _buildProductCard({
-    required String productName,
-    required String size,
-    required int currentStock,
-    required int maxStock,
-    required String badgeText,
-  }){
-    final stockPercentage = currentStock / maxStock;
-    return Container(
-      margin: const EdgeInsets.symmetric( horizontal: 16, vertical: 6),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.grey,
-          width: 1
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black,
-            blurRadius: 4,
-            offset: const Offset(0, 2)
-          ),
-        ]
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: Color(0xFFFFF9E6), 
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(
-                  Icons.inventory,
-                  color: Color(0xFFE7D76A),
-                  size: 24,
-                ),
-              ),
-              SizedBox(width: 12,),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      productName,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primary
-                      ),
-                    ),
-                    const SizedBox(height: 2,),
-                    Text(
-                      size,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: AppColors.textSecondary,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFFF9E6),
-                  borderRadius: BorderRadius.circular(8)
-                ),
-                child: Text(
-                  badgeText,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFFB66A00)
-                  ),
-                ),
-              )
-            ],
-          ),
-          const SizedBox(height: 16,),
-          Row(
-            children: [
-              const Text(
-                'Stock Actual',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: AppColors.textSecondary,
-                ),
-              ),
-              const Spacer(),
-              Text(
-                '$currentStock Unidades',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primaryText,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8,),
-          ClipRRect(
-            borderRadius: BorderRadiusGeometry.circular(4),
-            child: LinearProgressIndicator(
-              value: stockPercentage,
-              backgroundColor: Colors.grey,
-              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFE7D76A)),
-              minHeight: 6,
-            ),
-          )
-        ],
-      ),
-      );
-  }
-
-
-
 }
