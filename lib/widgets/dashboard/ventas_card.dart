@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
 
 class VentasCard extends StatelessWidget {
-  const VentasCard({super.key});
+  final VoidCallback? onTap;
+  
+  const VentasCard({super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      // El SVG muestra 108px de alto → usamos padding generoso en vez de height fijo
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10), // rx="10" del SVG
-        border: Border.all(color: const Color(0xFFE1E1E1)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        width: double.infinity,
+        // El SVG muestra 108px de alto → usamos padding generoso en vez de height fijo
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10), // rx="10" del SVG
+          border: Border.all(color: const Color(0xFFE1E1E1)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -84,6 +89,7 @@ class VentasCard extends StatelessWidget {
             ],
           ),
         ],
+      ),
       ),
     );
   }

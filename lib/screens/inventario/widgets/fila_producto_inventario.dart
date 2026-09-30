@@ -18,9 +18,11 @@ class FilaProductoInventario extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      child: Row(
+    return InkWell(
+      onTap: onVerDetalle,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Row(
         children: [
           Expanded(flex: 23, child: Text(nombre, style: _estiloCelda)),
           Expanded(
@@ -47,6 +49,7 @@ class FilaProductoInventario extends StatelessWidget {
             ),
           ),
         ],
+      ),
       ),
     );
   }

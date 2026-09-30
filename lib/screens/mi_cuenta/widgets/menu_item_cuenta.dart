@@ -8,6 +8,7 @@ class MenuItemCuenta extends StatelessWidget {
   final Color? badgeColor;
   final Color? badgeTextColor;
   final bool showArrow;
+  final VoidCallback? onTap;
 
   const MenuItemCuenta({
     super.key,
@@ -18,6 +19,7 @@ class MenuItemCuenta extends StatelessWidget {
     this.badgeColor,
     this.badgeTextColor,
     this.showArrow = false,
+    this.onTap,
   });
 
   @override
@@ -65,7 +67,7 @@ class MenuItemCuenta extends StatelessWidget {
             const Icon(Icons.chevron_right, color: Color(0xFF8A9691)),
         ],
       ),
-      onTap: () {},
+      onTap: onTap,
     );
   }
 }

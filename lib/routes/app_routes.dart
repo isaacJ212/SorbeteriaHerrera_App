@@ -12,6 +12,8 @@ abstract class AppRoutes {
   static const String detalleUsuario = '/detalleUsuario';
   static const String ventas = '/ventas';
   static const String pedidos = '/pedidos';
+  static const String detallePedido = '/detallePedido';
   static const String reportes = '/reportes';
+  static const String mas = '/mas';
   static const String historialAcceso = '/historialAcceso';
 }

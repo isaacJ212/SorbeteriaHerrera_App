@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../theme/app_colors.dart';
+import '../../../widgets/boton_mirar_detalles.dart';
 
 class VentaRecienteCard extends StatelessWidget {
   final String numero;
@@ -12,6 +13,7 @@ class VentaRecienteCard extends StatelessWidget {
   final String vendedor;
   final String metodoPago;
   final IconData iconoPago;
+  final VoidCallback? onTap;
 
   const VentaRecienteCard({
     super.key,
@@ -24,6 +26,7 @@ class VentaRecienteCard extends StatelessWidget {
     required this.vendedor,
     required this.metodoPago,
     required this.iconoPago,
+    this.onTap,
   });
 
   @override
@@ -217,6 +220,10 @@ class VentaRecienteCard extends StatelessWidget {
               ],
             ),
           ),
+          if (onTap != null) ...[
+            const SizedBox(height: 10),
+            BotonMirarDetalles(onPressed: onTap!),
+          ],
         ],
       ),
     );

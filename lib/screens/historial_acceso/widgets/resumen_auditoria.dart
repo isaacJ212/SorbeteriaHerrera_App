@@ -139,7 +139,7 @@ class ResumenAuditoria extends StatelessWidget {
               Text(
                 value,
                 style: TextStyle(
-                  fontSize: isTime ? 16 : 22,
+                  fontSize: isTime ? 14 : 17,
                   fontWeight: FontWeight.bold,
                   color: AppColors.primaryText,
                 ),

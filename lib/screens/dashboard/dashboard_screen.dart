@@ -97,7 +97,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case 3:
         Navigator.pushReplacementNamed(context, AppRoutes.reportes);
       case 4:
-        Navigator.pushReplacementNamed(context, AppRoutes.miCuenta);
+        Navigator.pushReplacementNamed(context, AppRoutes.mas);
     }
   }
 
@@ -147,17 +147,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
               style: TextStyle(fontSize: 13, color: Color(0xFF8A9691)),
             ),
             const SizedBox(height: 16),
-            const VentasCard(),
+            VentasCard(onTap: () => Navigator.pushNamed(context, AppRoutes.ventas)),
             const SizedBox(height: 12),
-            const Row(
+            Row(
               children: [
                 Expanded(
                   child: AlertCard(
                     titulo: 'Alertas de stock',
                     cantidad: '3 PRODUCTOS',
-                    colorFondo: Color(0xFFFFF8C9),
-                    colorBorde: Color(0xFFE7D76A),
+                    colorFondo: const Color(0xFFFFF8C9),
+                    colorBorde: const Color(0xFFE7D76A),
                     icono: Icons.warning_amber_outlined,
+                    onTap: () => Navigator.pushNamed(context, AppRoutes.inventario),
                   ),
                 ),
                 SizedBox(width: 12),
@@ -166,7 +167,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     titulo: 'Pedidos pendientes',
                     cantidad: '10 PENDIENTES',
                     colorFondo: Colors.white,
-                    colorBorde: Color(0xFFE1E1E1),
+                    colorBorde: const Color(0xFFE1E1E1),
+                    onTap: () => Navigator.pushNamed(context, AppRoutes.pedidos),
                   ),
                 ),
               ],
@@ -183,7 +185,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             const SizedBox(height: 12),
             ..._ventas
                 .take(3)
-                .map((venta) => VentaRecienteDashboardCard(venta: venta)),
+                .map((venta) => VentaRecienteDashboardCard(
+                      venta: venta,
+                      onTap: () => Navigator.pushNamed(context, AppRoutes.detalleVenta),
+                    )),
           ],
         ),
       ),
