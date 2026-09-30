@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../screens/pedido/widgets/resumen_pedido_card.dart';
 import '../../screens/pedido/widgets/pedido_card.dart';
 import '../../theme/app_colors.dart';
-import '../../widgets/bottom_navbar.dart';
+import '../../widgets/app_bar.dart';
 
 class PedidoScreen extends StatelessWidget {
   const PedidoScreen({super.key});
@@ -11,23 +11,20 @@ class PedidoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: const Icon(Icons.arrow_back, color: AppColors.primaryText),
-        title: const Text(
-          'Pedidos',
-          style: TextStyle(
-            color: AppColors.primaryText,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+      appBar: AppAppBar(
+        title: 'Pedidos',
+        showBackButton: true,
+        actions: [
+          IconButton(
+            tooltip: 'Buscar pedido',
+            onPressed: () {},
+            icon: const Icon(Icons.search, color: AppColors.primaryText, size: 22),
           ),
-        ),
-        actions: const [
-          Icon(Icons.search, color: AppColors.primaryText, size: 21),
-          SizedBox(width: 16),
-          Icon(Icons.filter_list, color: AppColors.primaryText, size: 21),
-          SizedBox(width: 16),
+          IconButton(
+            tooltip: 'Filtrar pedidos',
+            onPressed: () {},
+            icon: const Icon(Icons.filter_list, color: AppColors.primaryText, size: 22),
+          ),
         ],
       ),
       body: Padding(
@@ -273,7 +270,6 @@ class PedidoScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavbar(currentIndex: 2, onTap: (index) {}),
     );
   }
 }

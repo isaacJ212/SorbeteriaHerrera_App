@@ -1,15 +1,39 @@
 import 'package:flutter/material.dart';
 import '../../widgets/bottom_navbar.dart';
+import '../../widgets/app_bar.dart';
+import '../../routes/app_routes.dart';
 import 'widgets/menu_item_cuenta.dart';
 
-class MiCuentaScreen extends StatelessWidget {
+class MiCuentaScreen extends StatefulWidget {
   const MiCuentaScreen({super.key});
+
+  @override
+  State<MiCuentaScreen> createState() => _MiCuentaScreenState();
+}
+
+class _MiCuentaScreenState extends State<MiCuentaScreen> {
+  int _tabActual = 4;
+
+  void _navegarTab(int index) {
+    if (index == _tabActual) return;
+    setState(() => _tabActual = index);
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, AppRoutes.dashboard);
+      case 1:
+        Navigator.pushReplacementNamed(context, AppRoutes.ventas);
+      case 2:
+        Navigator.pushReplacementNamed(context, AppRoutes.inventario);
+      case 3:
+        Navigator.pushReplacementNamed(context, AppRoutes.reportes);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9FF),
-      appBar: _buildAppBar(),
+      appBar: const AppAppBar(title: 'Mi cuenta'),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,40 +46,13 @@ class MiCuentaScreen extends StatelessWidget {
         ),
       ),
 
-      bottomNavigationBar: BottomNavbar(currentIndex: 4, onTap: (index) {}),
+      bottomNavigationBar: BottomNavbar(
+        currentIndex: _tabActual,
+        onTap: _navegarTab,
+      ),
     );
   }
 
-  // appBar
-
-  PreferredSizeWidget _buildAppBar() {
-    return AppBar(
-      backgroundColor: Colors.white,
-      elevation: 0,
-      leading: IconButton(
-        icon: const Icon(Icons.menu, color: Color(0xFF10251F)),
-        onPressed: () {},
-      ),
-      title: const Text(
-        'Mi cuenta',
-        style: TextStyle(
-          color: Color(0xFF10251F),
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.search, color: Color(0xFF10251F)),
-          onPressed: () {},
-        ),
-        IconButton(
-          icon: const Icon(Icons.filter_list, color: Color(0xFF10251F)),
-          onPressed: () {},
-        ),
-      ],
-    );
-  }
 
   // configuracion general
 

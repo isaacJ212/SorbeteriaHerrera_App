@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../screens/usuario/widgets/usuarios_widgets.dart';
-import '../../widgets/bottom_navbar.dart';
+import '../../widgets/app_bar.dart';
 import '../../theme/app_colors.dart';
 
 class UsuarioScreen extends StatelessWidget {
@@ -11,38 +11,19 @@ class UsuarioScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        titleSpacing: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(
-            Icons.arrow_back,
-            color: AppColors.primaryText,
-            size: 21,
+      appBar: AppAppBar(
+        title: 'Usuarios',
+        showBackButton: true,
+        actions: [
+          IconButton(
+            tooltip: 'Buscar usuario',
+            onPressed: () {},
+            icon: const Icon(Icons.search, color: AppColors.primaryText, size: 22),
           ),
-        ),
-        title: const Text(
-          'Usuarios',
-          style: TextStyle(
-            color: AppColors.primaryText,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 12),
-            child: Row(
-              children: [
-                Icon(Icons.search, color: AppColors.primaryText, size: 21),
-                SizedBox(width: 18),
-                Icon(Icons.filter_list, color: AppColors.primaryText, size: 21),
-              ],
-            ),
+          IconButton(
+            tooltip: 'Filtrar usuarios',
+            onPressed: () {},
+            icon: const Icon(Icons.filter_list, color: AppColors.primaryText, size: 22),
           ),
         ],
       ),
@@ -116,7 +97,6 @@ class UsuarioScreen extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavbar(currentIndex: 4, onTap: (index) {}),
     );
   }
 }

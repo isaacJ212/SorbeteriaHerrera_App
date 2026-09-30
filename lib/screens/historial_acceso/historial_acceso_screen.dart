@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:herrera_app/theme/app_colors.dart';
-import '../../widgets/bottom_navbar.dart';
+import '../../widgets/app_bar.dart';
 import 'widgets/resumen_auditoria.dart';
 import 'widgets/tarjeta_registro_acceso.dart';
 
@@ -69,7 +69,22 @@ class HistorialAccesoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: _buildAppBar(),
+      appBar: AppAppBar(
+        title: 'Historial de Acceso',
+        showBackButton: true,
+        actions: [
+          IconButton(
+            tooltip: 'Buscar registro',
+            icon: const Icon(Icons.search, color: AppColors.primaryText, size: 22),
+            onPressed: () {},
+          ),
+          IconButton(
+            tooltip: 'Filtrar registros',
+            onPressed: () {},
+            icon: const Icon(Icons.filter_list, color: AppColors.primaryText, size: 22),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,36 +101,6 @@ class HistorialAccesoScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavbar(currentIndex: 4, onTap: (index) {}),
-    );
-  }
-
-  PreferredSizeWidget _buildAppBar() {
-    return AppBar(
-      backgroundColor: Colors.white,
-      elevation: 0,
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: AppColors.primaryText),
-        onPressed: () {},
-      ),
-      title: const Text(
-        'Historial de Acceso',
-        style: TextStyle(
-          fontSize: 20,
-          color: AppColors.primaryText,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.search, color: AppColors.primaryText),
-          onPressed: () {},
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.filter_list, color: AppColors.primaryText),
-        ),
-      ],
     );
   }
 

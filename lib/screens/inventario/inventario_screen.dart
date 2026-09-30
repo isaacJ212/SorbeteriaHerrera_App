@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../widgets/bottom_navbar.dart';
+import '../../widgets/app_bar.dart';
 import '../../screens/inventario/widgets/fila_producto_inventario.dart';
 import '../../routes/app_routes.dart';
+import '../../theme/app_colors.dart';
 
 class InventarioScreen extends StatefulWidget {
   const InventarioScreen({super.key});
@@ -31,42 +33,43 @@ class _InventarioScreenState extends State<InventarioScreen> {
     );
   }
 
+  void _navegarTab(int index) {
+    if (index == _tabActual) return;
+    setState(() => _tabActual = index);
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, AppRoutes.dashboard);
+      case 1:
+        Navigator.pushReplacementNamed(context, AppRoutes.ventas);
+      case 3:
+        Navigator.pushReplacementNamed(context, AppRoutes.reportes);
+      case 4:
+        Navigator.pushReplacementNamed(context, AppRoutes.miCuenta);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF3F4F5),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        centerTitle: true,
-        title: const Text(
-          'Inventario',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-            color: Color(0xFF10251F),
-          ),
-        ),
-        leading: IconButton(
-          onPressed: () => _mostrarSnack('Menu lateral no disponible'),
-          icon: const Icon(Icons.menu, size: 24, color: Color(0xFF10251F)),
-        ),
+      appBar: AppAppBar(
+        title: 'Inventario',
         actions: [
           IconButton(
+            tooltip: 'Notificaciones',
             icon: const Icon(
               Icons.notifications_none,
-              size: 24,
-              color: Color(0xFF10251F),
+              size: 22,
+              color: AppColors.primaryText,
             ),
             onPressed: () => _mostrarSnack('Sin notificaciones nuevas'),
           ),
           IconButton(
+            tooltip: 'Perfil',
             icon: const Icon(
               Icons.account_circle_outlined,
-              size: 24,
-              color: Color(0xFF10251F),
+              size: 22,
+              color: AppColors.primaryText,
             ),
             onPressed: () => _mostrarSnack('Perfil próximamente'),
           ),
@@ -98,18 +101,7 @@ class _InventarioScreenState extends State<InventarioScreen> {
       ),
       bottomNavigationBar: BottomNavbar(
         currentIndex: _tabActual,
-        onTap: (index) {
-          setState(() => _tabActual = index);
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, AppRoutes.dashboard);
-          } else if (index == 3) {
-            Navigator.pushReplacementNamed(context, AppRoutes.reportes);
-          } else if (index == 4) {
-            Navigator.pushReplacementNamed(context, AppRoutes.miCuenta);
-          } else if (index != 2) {
-            _mostrarSnack('Esta sección estará disponible próximamente');
-          }
-        },
+        onTap: _navegarTab,
       ),
     );
   }
