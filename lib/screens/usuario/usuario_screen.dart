@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../screens/usuario/widgets/usuarios_widgets.dart';
 import '../../widgets/app_bar.dart';
 import '../../theme/app_colors.dart';
+import '../../routes/app_routes.dart';
 
 class UsuarioScreen extends StatelessWidget {
   const UsuarioScreen({super.key});
@@ -29,8 +30,8 @@ class UsuarioScreen extends StatelessWidget {
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 14, 16, 24),
-        children: const [
-          Text(
+        children: [
+          const Text(
             'EQUIPO & ACCESOS',
             style: TextStyle(
               color: AppColors.primary,
@@ -39,8 +40,8 @@ class UsuarioScreen extends StatelessWidget {
               letterSpacing: 0.5,
             ),
           ),
-          SizedBox(height: 2),
-          Text(
+          const SizedBox(height: 2),
+          const Text(
             'Usuarios',
             style: TextStyle(
               color: AppColors.primaryText,
@@ -48,13 +49,13 @@ class UsuarioScreen extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
-          SizedBox(height: 16),
-          _BuscadorVisual(),
-          SizedBox(height: 12),
-          _FiltrosVisuales(),
-          SizedBox(height: 16),
-          _ResumenServicio(),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
+          const _BuscadorVisual(),
+          const SizedBox(height: 12),
+          const _FiltrosVisuales(),
+          const SizedBox(height: 16),
+          const _ResumenServicio(),
+          const SizedBox(height: 16),
           TarjetaUsuario(
             iniciales: 'ML',
             nombre: 'María López',
@@ -64,6 +65,7 @@ class UsuarioScreen extends StatelessWidget {
             ultimoAcceso: 'Ayer 06:40 PM',
             activo: true,
             colorAvatar: AppColors.cardBackground,
+            onTap: () => Navigator.pushNamed(context, AppRoutes.detalleUsuario),
           ),
           TarjetaUsuario(
             iniciales: 'RF',
@@ -74,6 +76,7 @@ class UsuarioScreen extends StatelessWidget {
             ultimoAcceso: '18/08/2026',
             activo: false,
             colorAvatar: AppColors.cardBackground,
+            onTap: () => Navigator.pushNamed(context, AppRoutes.detalleUsuario),
           ),
           TarjetaUsuario(
             iniciales: 'PG',
@@ -84,6 +87,7 @@ class UsuarioScreen extends StatelessWidget {
             ultimoAcceso: '17/08/2026',
             activo: true,
             colorAvatar: AppColors.cardBackground,
+            onTap: () => Navigator.pushNamed(context, AppRoutes.detalleUsuario),
           ),
           TarjetaUsuario(
             iniciales: 'LH',
@@ -94,6 +98,7 @@ class UsuarioScreen extends StatelessWidget {
             ultimoAcceso: 'Hoy 07:30 AM',
             activo: true,
             colorAvatar: AppColors.cardBackground,
+            onTap: () => Navigator.pushNamed(context, AppRoutes.detalleUsuario),
           ),
         ],
       ),

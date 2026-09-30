@@ -28,7 +28,7 @@ class _VentaScreenState extends State<VentaScreen> {
       case 3:
         Navigator.pushReplacementNamed(context, AppRoutes.reportes);
       case 4:
-        Navigator.pushReplacementNamed(context, AppRoutes.miCuenta);
+        Navigator.pushReplacementNamed(context, AppRoutes.mas);
     }
   }
 
@@ -40,6 +40,15 @@ class _VentaScreenState extends State<VentaScreen> {
       appBar: AppAppBar(
         title: 'Ventas',
         actions: [
+          /*IconButton(
+            tooltip: 'Pedidos',
+            onPressed: () => Navigator.pushNamed(context, AppRoutes.pedidos),
+            icon: const Icon(
+              Icons.shopping_bag_outlined,
+              color: AppColors.primaryText,
+              size: 22,
+            ),
+          ),*/
           IconButton(
             tooltip: 'Buscar venta',
             onPressed: () {},
@@ -129,6 +138,33 @@ class _VentaScreenState extends State<VentaScreen> {
             ),
 
             const SizedBox(height: 14),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () =>
+                    Navigator.pushNamed(context, AppRoutes.pedidos),
+                icon: const Icon(
+                  Icons.local_shipping_outlined,
+                  size: 18,
+                  color: AppColors.primary,
+                ),
+                label: const Text(
+                  'Ver pedidos',
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: AppColors.primary),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+              ),
+            ),
+            const SizedBox(height: 18),
             _buildBuscador(),
 
             const SizedBox(height: 18),
@@ -181,7 +217,7 @@ class _VentaScreenState extends State<VentaScreen> {
 
             const SizedBox(height: 12),
 
-            const VentaRecienteCard(
+            VentaRecienteCard(
               numero: '#48',
               factura: 'Factura #V-1048',
               hora: '2:45 PM',
@@ -191,11 +227,12 @@ class _VentaScreenState extends State<VentaScreen> {
               vendedor: 'Carlos Ruiz',
               metodoPago: 'Efectivo',
               iconoPago: Icons.payments_outlined,
+              onTap: () => Navigator.pushNamed(context, AppRoutes.detalleVenta),
             ),
 
             const SizedBox(height: 10),
 
-            const VentaRecienteCard(
+            VentaRecienteCard(
               numero: '#47',
               factura: 'Factura #V-1047',
               hora: '2:15 PM',
@@ -205,11 +242,12 @@ class _VentaScreenState extends State<VentaScreen> {
               vendedor: 'Rosa Flores',
               metodoPago: 'Tarjeta',
               iconoPago: Icons.credit_card,
+              onTap: () => Navigator.pushNamed(context, AppRoutes.detalleVenta),
             ),
 
             const SizedBox(height: 10),
 
-            const VentaRecienteCard(
+            VentaRecienteCard(
               numero: '#46',
               factura: 'Factura #V-1046',
               hora: '1:30 PM',
@@ -219,11 +257,12 @@ class _VentaScreenState extends State<VentaScreen> {
               vendedor: 'Carlos Ruiz',
               metodoPago: 'Transferencia',
               iconoPago: Icons.account_balance_outlined,
+              onTap: () => Navigator.pushNamed(context, AppRoutes.detalleVenta),
             ),
 
             const SizedBox(height: 10),
 
-            const VentaRecienteCard(
+            VentaRecienteCard(
               numero: '#45',
               factura: 'Factura #V-1045',
               hora: '12:40 PM',
@@ -233,6 +272,7 @@ class _VentaScreenState extends State<VentaScreen> {
               vendedor: 'Juan Sánchez',
               metodoPago: 'Efectivo',
               iconoPago: Icons.payments_outlined,
+              onTap: () => Navigator.pushNamed(context, AppRoutes.detalleVenta),
             ),
           ],
         ),

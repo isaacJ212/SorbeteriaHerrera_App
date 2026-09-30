@@ -1,183 +1,71 @@
 import 'package:flutter/material.dart';
-import '../../widgets/bottom_navbar.dart';
+import '../../theme/app_colors.dart';
 import '../../widgets/app_bar.dart';
-import '../../routes/app_routes.dart';
-import 'widgets/menu_item_cuenta.dart';
+import '../detalle_usuario/widgets/detalle_usuario_widgets.dart';
 
-class MiCuentaScreen extends StatefulWidget {
+class MiCuentaScreen extends StatelessWidget {
   const MiCuentaScreen({super.key});
-
-  @override
-  State<MiCuentaScreen> createState() => _MiCuentaScreenState();
-}
-
-class _MiCuentaScreenState extends State<MiCuentaScreen> {
-  int _tabActual = 4;
-
-  void _navegarTab(int index) {
-    if (index == _tabActual) return;
-    setState(() => _tabActual = index);
-    switch (index) {
-      case 0:
-        Navigator.pushReplacementNamed(context, AppRoutes.dashboard);
-      case 1:
-        Navigator.pushReplacementNamed(context, AppRoutes.ventas);
-      case 2:
-        Navigator.pushReplacementNamed(context, AppRoutes.inventario);
-      case 3:
-        Navigator.pushReplacementNamed(context, AppRoutes.reportes);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9FF),
-      appBar: const AppAppBar(title: 'Mi cuenta'),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildGeneralConfigSection(),
-            _buildSystemManagementSection(),
-            _buildPreferencesSection(),
-            _buildLogoutButton(),
-          ],
-        ),
+      backgroundColor: AppColors.background,
+      appBar: const AppAppBar(title: 'Mi cuenta', showBackButton: true),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(16, 24, 16, 28),
+        children: [
+          _buildProfileCard(),
+          const SizedBox(height: 24),
+          const DetalleTituloSeccion(titulo: 'INFORMACIÓN PERSONAL'),
+          const SizedBox(height: 10),
+          _informacion(),
+          const SizedBox(height: 24),
+          const DetalleTituloSeccion(titulo: 'PERMISOS OPERATIVOS'),
+          const SizedBox(height: 10),
+          _permisos(),
+          const SizedBox(height: 24),
+          const DetalleTituloSeccion(titulo: 'ACTIVIDAD RECIENTE'),
+          const SizedBox(height: 10),
+          _actividad(),
+        ],
       ),
-
-      bottomNavigationBar: BottomNavbar(
-        currentIndex: _tabActual,
-        onTap: _navegarTab,
-      ),
-    );
-  }
-
-
-  // configuracion general
-
-  Widget _buildGeneralConfigSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsets.fromLTRB(20, 24, 20, 8),
-          child: Text(
-            'Configuracion General',
-            style: TextStyle(
-              color: Color(0xFF09A982),
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.5,
-            ),
-          ),
-        ),
-
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Mi cuenta',
-                style: TextStyle(
-                  color: Color(0xFF10251F),
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF95F1D0),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Row(
-                  children: [
-                    Icon(Icons.circle, size: 8, color: Color(0xFF007057)),
-                    SizedBox(width: 6),
-                    Text(
-                      'Turno Activo',
-                      style: TextStyle(
-                        color: Color(0xFF007057),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        const SizedBox(height: 20),
-        _buildProfileCard(),
-      ],
     );
   }
 
   Widget _buildProfileCard() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+    return DetallePanel(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Stack(
-                children: [
-                  Container(
-                    width: 70,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(12),
-                      image: const DecorationImage(
-                        image: NetworkImage(
-                          'https://i.pinimg.com/564x/9d/6b/9d/9d6b9db2dcb0526a09b89fb35d075c72.jpg',
+              ClipRRect(
+                borderRadius: BorderRadius.circular(14),
+                child: Image.network(
+                  'https://i.pinimg.com/564x/9d/6b/9d/9d6b9db2dcb0526a09b89fb35d075c72.jpg',
+                  width: 60,
+                  height: 60,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      width: 60,
+                      height: 60,
+                      alignment: Alignment.center,
+                      color: AppColors.cardBackground,
+                      child: const Text(
+                        'IJ',
+                        style: TextStyle(
+                          color: AppColors.primaryText,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
                         ),
-                        fit: BoxFit.cover,
                       ),
-                    ),
-                  ),
-
-                  Positioned(
-                    right: 0,
-                    bottom: 0,
-                    child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF006C53),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.settings,
-                        size: 16,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
+                    );
+                  },
+                ),
               ),
-              const SizedBox(width: 16),
-
-              //ifnormacion del usuario
+              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,14 +75,12 @@ class _MiCuentaScreenState extends State<MiCuentaScreen> {
                         const Text(
                           'Isaac Jimenez',
                           style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF10251F),
+                            color: AppColors.primaryText,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
-
                         const SizedBox(width: 8),
-
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 8,
@@ -207,7 +93,7 @@ class _MiCuentaScreenState extends State<MiCuentaScreen> {
                           child: const Text(
                             'Admin',
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 10,
                               fontWeight: FontWeight.w600,
                               color: Color(0xFF007057),
                             ),
@@ -215,22 +101,13 @@ class _MiCuentaScreenState extends State<MiCuentaScreen> {
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 4),
                     const Text(
                       'Administrador General',
                       style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF09A982),
+                        color: AppColors.primary,
+                        fontSize: 13,
                         fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    const Text(
-                      'admin@sorbeteriaHerra.com',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Color.fromARGB(255, 100, 54, 13),
                       ),
                     ),
                   ],
@@ -238,233 +115,124 @@ class _MiCuentaScreenState extends State<MiCuentaScreen> {
               ),
             ],
           ),
-
-          const SizedBox(height: 20),
-
-          //  boton de editar perfil
-          SizedBox(
-            width: double.infinity,
-            height: 48,
-            child: ElevatedButton.icon(
-              onPressed: () {},
-              icon: const Icon(Icons.edit_note),
-              label: const Text(
-                'Edfitar perfil',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          const SizedBox(height: 16),
+          const Divider(height: 1, color: AppColors.cardBackground),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              const Icon(
+                Icons.email_outlined,
+                size: 18,
+                color: AppColors.textSecondary,
               ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF006C53),
-                foregroundColor: Colors.white,
-                //borderRadius: BorderRadius.circular(12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+              const SizedBox(width: 8),
+              const Expanded(
+                child: Text(
+                  'admin@sorbeteriaHerrera.com',
+                  style: TextStyle(color: AppColors.primaryText, fontSize: 13),
                 ),
-                elevation: 0,
               ),
-            ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF95F1D0).withValues(alpha: 0.3),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.circle, size: 8, color: Color(0xFF007057)),
+                    SizedBox(width: 6),
+                    Text(
+                      'Turno Activo',
+                      style: TextStyle(
+                        color: Color(0xFF007057),
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  //secci0n de la gestion del sistema
-
-  Widget _buildSystemManagementSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 32, 20, 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Gestion del sistema',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF64736D),
-                  letterSpacing: 0.5,
-                ),
-              ),
-              const Text(
-                '3 Modulos',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF09A982),
-                ),
-              ),
-            ],
+  Widget _informacion() {
+    return const DetallePanel(
+      child: Column(
+        children: [
+          DetalleDato(
+            icono: Icons.phone_outlined,
+            etiqueta: 'Teléfono directo',
+            valor: '8159-4717',
           ),
-        ),
-
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
+          Divider(height: 24, color: AppColors.cardBackground),
+          DetalleDato(
+            icono: Icons.calendar_today_outlined,
+            etiqueta: 'Fecha de inicio',
+            valor: '15/09/2026',
           ),
-          child: Column(
-            children: [
-              MenuItemCuenta(
-                icon: Icons.people_outline,
-                title: 'Usuarios y Roles',
-                subtitle: 'Cajeros, maestros sorbeteros y personal',
-                badge: '8 pers.',
-                badgeColor: const Color(0xFFE7EEFF),
-                badgeTextColor: const Color(0xFF4A6FA9),
-              ),
-              _buildDivider(),
-              MenuItemCuenta(
-                icon: Icons.shield_outlined,
-                title: 'Historial de Acceso y Auditoría',
-                subtitle: 'Registros de cajas, mermas y modificaciones',
-                showArrow: true,
-              ),
-              _buildDivider(),
-              MenuItemCuenta(
-                icon: Icons.local_shipping_outlined,
-                title: 'Gestión de Pedidos y Envíos',
-                subtitle: 'Despachos de tinas mayoreo y caja',
-                badge: '3 activos',
-                badgeColor: const Color(0xFF95F1D0),
-                badgeTextColor: const Color(0xFF007057),
-              ),
-            ],
+          Divider(height: 24, color: AppColors.cardBackground),
+          DetalleDato(
+            icono: Icons.store_outlined,
+            etiqueta: 'Sucursal',
+            valor: 'Central Carazo',
           ),
-        ),
-      ],
+          Divider(height: 24, color: AppColors.cardBackground),
+          DetalleDato(
+            icono: Icons.schedule_outlined,
+            etiqueta: 'Turno',
+            valor: 'Vespertino',
+          ),
+        ],
+      ),
     );
   }
 
-  //prefenciaas y soporte
-  Widget _buildPreferencesSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsetsGeometry.fromLTRB(20, 32, 20, 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Prefencias y soporte',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF64736D),
-                  letterSpacing: 0.5,
-                ),
-              ),
-              const Text(
-                'Equipos y ayuda',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFF8A9691),
-                ),
-              ),
-            ],
+  Widget _permisos() {
+    return const DetallePanel(
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: [
+          DetallePermiso(
+            icono: Icons.point_of_sale,
+            texto: 'Ventas en mostrador',
           ),
-        ),
-
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 10,
-                offset: const Offset(0, 0.4),
-              ),
-            ],
+          DetallePermiso(
+            icono: Icons.inventory_2_outlined,
+            texto: 'Consulta de inventario',
           ),
-
-          child: Column(
-            children: [
-              MenuItemCuenta(
-                icon: Icons.notifications_outlined,
-                title: 'Notificaciones y Alertas de Stock',
-                subtitle: 'Avisos de frutas de temporada y más',
-                showArrow: true,
-              ),
-              _buildDivider(),
-              MenuItemCuenta(
-                icon: Icons.support_agent_outlined,
-                title: 'Centro de Ayuda - Soporte',
-                subtitle: 'Manual operativo y contacto directo 24/7',
-                showArrow: true,
-              ),
-              _buildDivider(),
-              MenuItemCuenta(
-                icon: Icons.info_outline,
-                title: 'Acerca de Sorbetería Herrera',
-                subtitle: 'Tradición artesanal desde 1938',
-                badge: 'v1.1.0',
-                badgeColor: const Color(0xFFE7EEFF),
-                badgeTextColor: const Color(0xFF4A6FA9),
-              ),
-            ],
+          DetallePermiso(
+            icono: Icons.edit_document,
+            texto: 'Gestión de sistema',
           ),
-        ),
-      ],
+          DetallePermiso(icono: Icons.lock_outline, texto: 'Cierre de caja'),
+        ],
+      ),
     );
   }
 
-  Widget _buildDivider() {
-    return Divider(height: 1, thickness: 1, color: Colors.grey);
-  }
-
-  // bopton de cerra sesion
-  Widget _buildLogoutButton() {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: ListTile(
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 16,
+  Widget _actividad() {
+    return const DetallePanel(
+      child: Column(
+        children: [
+          DetalleRegistroActividad(
+            icono: Icons.login,
+            titulo: 'Apertura de sesión',
+            fecha: 'Hoy, 8:00 AM',
           ),
-          leading: Container(
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: Color(0xFFFFDAD6),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.logout, color: Color(0xFFBA1A1A), size: 24),
+          Divider(height: 24, color: AppColors.cardBackground),
+          DetalleRegistroActividad(
+            icono: Icons.point_of_sale_outlined,
+            titulo: 'Cierre de caja',
+            fecha: 'Ayer, 8:00 PM',
           ),
-          title: const Text(
-            'Cerrar Sesión',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFFBA1A1A),
-            ),
-          ),
-          onTap: () {},
-        ),
+        ],
       ),
     );
   }

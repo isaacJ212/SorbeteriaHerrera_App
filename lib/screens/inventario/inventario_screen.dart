@@ -44,7 +44,7 @@ class _InventarioScreenState extends State<InventarioScreen> {
       case 3:
         Navigator.pushReplacementNamed(context, AppRoutes.reportes);
       case 4:
-        Navigator.pushReplacementNamed(context, AppRoutes.miCuenta);
+        Navigator.pushReplacementNamed(context, AppRoutes.mas);
     }
   }
 

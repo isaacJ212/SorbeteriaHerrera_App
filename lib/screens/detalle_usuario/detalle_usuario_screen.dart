@@ -23,6 +23,7 @@ class DetalleUsuarioScreen extends StatelessWidget {
           const DetalleTituloSeccion(titulo: 'INFORMACIÓN DEL USUARIO'),
           const SizedBox(height: 10),
           _informacion(),
+
           const SizedBox(height: 24),
           const DetalleTituloSeccion(titulo: 'PERMISOS OPERATIVOS'),
           const SizedBox(height: 10),

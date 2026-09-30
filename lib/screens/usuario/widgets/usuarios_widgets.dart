@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../theme/app_colors.dart';
+import '../../../widgets/boton_mirar_detalles.dart';
 
 class EtiquetaFiltro extends StatelessWidget {
   final String texto;
@@ -45,6 +46,7 @@ class TarjetaUsuario extends StatelessWidget {
   final String ultimoAcceso;
   final bool activo;
   final Color colorAvatar;
+  final VoidCallback? onTap;
 
   const TarjetaUsuario({
     super.key,
@@ -56,6 +58,7 @@ class TarjetaUsuario extends StatelessWidget {
     required this.ultimoAcceso,
     required this.activo,
     required this.colorAvatar,
+    this.onTap,
   });
 
   @override
@@ -255,17 +258,15 @@ class TarjetaUsuario extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 4),
-                    const Icon(
-                      Icons.chevron_right,
-                      size: 17,
-                      color: AppColors.textSecondary,
-                    ),
                   ],
                 ),
               ),
             ],
           ),
+          if (onTap != null) ...[
+            const SizedBox(height: 12),
+            BotonMirarDetalles(onPressed: onTap!),
+          ],
         ],
       ),
     );

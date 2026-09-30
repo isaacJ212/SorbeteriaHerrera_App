@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../theme/app_colors.dart';
+import '../../../widgets/boton_mirar_detalles.dart';
 
 class PedidoCard extends StatelessWidget {
   final IconData icono;
@@ -15,6 +16,7 @@ class PedidoCard extends StatelessWidget {
   final String entrega;
   final IconData iconoEntrega;
   final Color colorEntrega;
+  final VoidCallback? onTap;
 
   const PedidoCard({
     super.key,
@@ -30,6 +32,7 @@ class PedidoCard extends StatelessWidget {
     required this.entrega,
     required this.iconoEntrega,
     required this.colorEntrega,
+    this.onTap,
   });
 
   @override
@@ -188,33 +191,7 @@ class PedidoCard extends StatelessWidget {
 
           const SizedBox(height: 10),
 
-          Container(
-            width: double.infinity,
-            height: 30,
-            decoration: BoxDecoration(
-              color: AppColors.cardBackground,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.visibility_outlined,
-                  color: AppColors.primary,
-                  size: 14,
-                ),
-                SizedBox(width: 5),
-                Text(
-                  'Ver Detalle',
-                  style: TextStyle(
-                    color: AppColors.primaryText,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          if (onTap != null) BotonMirarDetalles(onPressed: onTap!),
         ],
       ),
     );

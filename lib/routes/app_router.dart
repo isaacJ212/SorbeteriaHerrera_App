@@ -7,9 +7,11 @@ import '../screens/detalle_venta/detalle_venta_screen.dart';
 import '../screens/historial_acceso/historial_acceso_screen.dart';
 import '../screens/inventario/inventario_screen.dart';
 import '../screens/login/login_screen.dart';
+import '../screens/mas/mas_screen.dart';
 import '../screens/mi_cuenta/mi_cuenta_screen.dart';
 import '../screens/not_found/not_found_screen.dart';
 import '../screens/pedido/pedido_screen.dart';
+import '../screens/detalle_pedido/detalle_pedido_screen.dart';
 import '../screens/reporte_inventario/reporte_inventario_screen.dart';
 import '../screens/reportes/reporte_screen.dart';
 import '../screens/usuario/usuario_screen.dart';
@@ -52,6 +54,9 @@ abstract class AppRouter {
       case AppRoutes.historialAcceso:
         return MaterialPageRoute(builder: (_) => const HistorialAccesoScreen());
 
+      case AppRoutes.mas:
+        return MaterialPageRoute(builder: (_) => const MasScreen());
+
       case AppRoutes.miCuenta:
         return MaterialPageRoute(builder: (_) => const MiCuentaScreen());
 
@@ -66,6 +71,9 @@ abstract class AppRouter {
 
       case AppRoutes.pedidos:
         return MaterialPageRoute(builder: (_) => const PedidoScreen());
+
+      case AppRoutes.detallePedido:
+        return MaterialPageRoute(builder: (_) => const DetallePedidoScreen());
 
       default:
         return MaterialPageRoute(builder: (_) => const NotFoundScreen());

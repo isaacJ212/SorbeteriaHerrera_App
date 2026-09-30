@@ -7,6 +7,7 @@ class AlertCard extends StatelessWidget {
   final Color colorBorde;
   final IconData? icono;
   final Color? colorIcono;
+  final VoidCallback? onTap;
 
   const AlertCard({
     super.key,
@@ -16,26 +17,30 @@ class AlertCard extends StatelessWidget {
     required this.colorBorde,
     this.icono,
     this.colorIcono,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // El SVG muestra 167×119 → en Flutter usamos aspect ratio o altura fija
-      height: 119,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: colorFondo,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: colorBorde, width: 1),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        // El SVG muestra 167×119 → en Flutter usamos aspect ratio o altura fija
+        height: 119,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: colorFondo,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: colorBorde, width: 1),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -75,6 +80,7 @@ class AlertCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
       ),
     );
   }

@@ -3,6 +3,7 @@ import '../../screens/pedido/widgets/resumen_pedido_card.dart';
 import '../../screens/pedido/widgets/pedido_card.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/app_bar.dart';
+import '../../routes/app_routes.dart';
 
 class PedidoScreen extends StatelessWidget {
   const PedidoScreen({super.key});
@@ -201,7 +202,7 @@ class PedidoScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
 
-            const PedidoCard(
+            PedidoCard(
               icono: Icons.local_shipping_outlined,
               numeroPedido: '#P-302',
               tipoCliente: 'MAYORISTA',
@@ -214,6 +215,7 @@ class PedidoScreen extends StatelessWidget {
               entrega: 'Entrega estimada: Hoy 04:00 PM',
               iconoEntrega: Icons.schedule,
               colorEntrega: AppColors.attentionText,
+              onTap: () => Navigator.pushNamed(context, AppRoutes.detallePedido),
             ),
             const SizedBox(height: 10),
 
@@ -230,11 +232,12 @@ class PedidoScreen extends StatelessWidget {
               entrega: 'Entrega estimada: Hoy 05:30 PM',
               iconoEntrega: Icons.schedule,
               colorEntrega: AppColors.primary,
+              onTap: () => Navigator.pushNamed(context, AppRoutes.detallePedido),
             ),
 
             const SizedBox(height: 10),
 
-            const PedidoCard(
+            PedidoCard(
               icono: Icons.celebration_outlined,
               numeroPedido: '#P-300',
               tipoCliente: 'EVENTO',
@@ -247,6 +250,7 @@ class PedidoScreen extends StatelessWidget {
               entrega: 'Entrega programada: Mañana 10:00 AM',
               iconoEntrega: Icons.calendar_today_outlined,
               colorEntrega: AppColors.attentionText,
+              onTap: () => Navigator.pushNamed(context, AppRoutes.detallePedido),
             ),
 
             const SizedBox(height: 10),
@@ -264,6 +268,7 @@ class PedidoScreen extends StatelessWidget {
               entrega: 'En bahía de refrigeración #2 listo para retiro',
               iconoEntrega: Icons.check_circle_outline,
               colorEntrega: AppColors.primary,
+              onTap: () => Navigator.pushNamed(context, AppRoutes.detallePedido),
             ),
 
             const SizedBox(height: 10),

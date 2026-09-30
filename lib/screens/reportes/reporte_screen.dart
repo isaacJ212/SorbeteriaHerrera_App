@@ -37,7 +37,7 @@ class _ReportesScreenState extends State<ReportesScreen> {
       case 2:
         Navigator.pushReplacementNamed(context, AppRoutes.inventario);
       case 4:
-        Navigator.pushReplacementNamed(context, AppRoutes.miCuenta);
+        Navigator.pushReplacementNamed(context, AppRoutes.mas);
     }
   }
 

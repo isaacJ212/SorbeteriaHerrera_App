@@ -16,9 +16,9 @@ class BottomNavbar extends StatelessWidget {
       activeIcon: Icons.home,
     ),
     NavElemento(
-      label: 'Actividad',
-      icon: Icons.bar_chart_outlined,
-      activeIcon: Icons.bar_chart,
+      label: 'Ventas',
+      icon: Icons.point_of_sale_outlined,
+      activeIcon: Icons.point_of_sale,
     ),
     NavElemento(
       label: 'Inventario',
@@ -30,7 +30,11 @@ class BottomNavbar extends StatelessWidget {
       icon: Icons.description_outlined,
       activeIcon: Icons.description,
     ),
-    NavElemento(label: 'Más', icon: Icons.menu, activeIcon: Icons.menu_open),
+    NavElemento(
+      label: 'Más',
+      icon: Icons.more_horiz_outlined,
+      activeIcon: Icons.more_horiz,
+    ),
   ];
 
   final int currentIndex;

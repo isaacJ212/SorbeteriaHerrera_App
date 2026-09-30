@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import '../../../models/dashboard_models/recent_sale.dart';
+import '../../../widgets/boton_mirar_detalles.dart';
 
 class VentaRecienteDashboardCard extends StatelessWidget {
   final RecentSale venta;
+  final VoidCallback? onTap;
 
-  const VentaRecienteDashboardCard({super.key, required this.venta});
+  const VentaRecienteDashboardCard({
+    super.key,
+    required this.venta,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +56,10 @@ class VentaRecienteDashboardCard extends StatelessWidget {
               Expanded(child: _datoVenta('Cliente', venta.cliente)),
             ],
           ),
+          if (onTap != null) ...[
+            const SizedBox(height: 12),
+            BotonMirarDetalles(onPressed: onTap!),
+          ],
         ],
       ),
     );
