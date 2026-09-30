@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../widgets/bottom_navbar.dart';
+import '../../widgets/app_bar.dart';
 import '../../widgets/label.dart';
 import 'widgets/detalles_producto_widgets.dart';
-import '../../routes/app_routes.dart';
 
 class DetalleDeProductoScreen extends StatelessWidget {
   final String nombre;
@@ -20,37 +19,9 @@ class DetalleDeProductoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF3F4F5),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        title: const Text(
-          'Detalle de Inventario',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-            color: Color(0xFF10251F),
-          ),
-        ),
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(
-            Icons.arrow_back,
-            size: 24,
-            color: Color(0xFF10251F),
-          ),
-        ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            child: Icon(Icons.search, size: 22, color: Color(0xFF10251F)),
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: Icon(Icons.filter_list, size: 22, color: Color(0xFF10251F)),
-          ),
-        ],
+      appBar: const AppAppBar(
+        title: 'Detalle de Inventario',
+        showBackButton: true,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
@@ -90,20 +61,6 @@ class DetalleDeProductoScreen extends StatelessWidget {
             _tablaLotes(),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavbar(
-        currentIndex: 2,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              AppRoutes.dashboard,
-              (route) => false,
-            );
-          } else if (index == 2) {
-            Navigator.pop(context);
-          }
-        },
       ),
     );
   }

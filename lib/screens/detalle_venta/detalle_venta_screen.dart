@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../detalle_venta/widgets/producto_vendido_item.dart';
-import '../../widgets/bottom_navbar.dart';
+import '../../widgets/app_bar.dart';
 import '../../theme/app_colors.dart';
 
 class DetalleDeVentaScreen extends StatelessWidget {
@@ -12,48 +12,9 @@ class DetalleDeVentaScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
 
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        titleSpacing: 0,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: AppColors.primaryText,
-            size: 20,
-          ),
-        ),
-        title: const Text(
-          'Detalles de Venta',
-          style: TextStyle(
-            color: AppColors.primaryText,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.search,
-              color: AppColors.primaryText,
-              size: 20,
-            ),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.filter_list,
-              color: AppColors.primaryText,
-              size: 20,
-            ),
-          ),
-        ],
+      appBar: const AppAppBar(
+        title: 'Detalles de Venta',
+        showBackButton: true,
       ),
 
       body: SingleChildScrollView(
@@ -81,7 +42,6 @@ class DetalleDeVentaScreen extends StatelessWidget {
         ),
       ),
 
-      bottomNavigationBar: BottomNavbar(currentIndex: 3, onTap: (index) {}),
     );
   }
 

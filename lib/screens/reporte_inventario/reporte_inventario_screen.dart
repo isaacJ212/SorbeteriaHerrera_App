@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../screens/reporte_inventario/widgets/productos_en_riesgos_cards.dart';
-import '../../widgets/bottom_navbar.dart';
+import '../../widgets/app_bar.dart';
 import '../../theme/app_colors.dart';
 
 class ReporteDeInventarioScreen extends StatelessWidget {
@@ -11,7 +11,10 @@ class ReporteDeInventarioScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: _buildAppBar(),
+      appBar: const AppAppBar(
+        title: 'Reporte de Inventario',
+        showBackButton: true,
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,26 +34,6 @@ class ReporteDeInventarioScreen extends StatelessWidget {
             _buildRiskProductSection(),
             const SizedBox(height: 20),
           ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavbar(currentIndex: 3, onTap: (index) {}),
-    );
-  }
-
-  PreferredSizeWidget _buildAppBar() {
-    return AppBar(
-      backgroundColor: Colors.white,
-      elevation: 0,
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: AppColors.primaryText),
-        onPressed: () {},
-      ),
-      title: const Text(
-        'Reporte de Inventario',
-        style: TextStyle(
-          fontSize: 20,
-          color: AppColors.primaryText,
-          fontWeight: FontWeight.w600,
         ),
       ),
     );

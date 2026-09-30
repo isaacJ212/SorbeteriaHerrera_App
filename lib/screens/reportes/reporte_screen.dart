@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../screens/reportes/widgets/reportes_cards.dart';
 import '../../widgets/bottom_navbar.dart';
+import '../../widgets/app_bar.dart';
 import '../../routes/app_routes.dart';
 import '../../theme/app_colors.dart';
 
@@ -25,29 +26,30 @@ class _ReportesScreenState extends State<ReportesScreen> {
     );
   }
 
+  void _navegarTab(int index) {
+    if (index == _tabActual) return;
+    setState(() => _tabActual = index);
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, AppRoutes.dashboard);
+      case 1:
+        Navigator.pushReplacementNamed(context, AppRoutes.ventas);
+      case 2:
+        Navigator.pushReplacementNamed(context, AppRoutes.inventario);
+      case 4:
+        Navigator.pushReplacementNamed(context, AppRoutes.miCuenta);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        leading: IconButton(
-          onPressed: () => _mostrarSnack('Menú lateral no disponible'),
-          icon: const Icon(Icons.menu, size: 24, color: AppColors.primaryText),
-        ),
-        title: const Text(
-          'Reportes',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-            color: AppColors.primaryText,
-          ),
-        ),
+      appBar: AppAppBar(
+        title: 'Reportes',
         actions: [
           IconButton(
+            tooltip: 'Buscar reporte',
             onPressed: () => _mostrarSnack('Buscar reporte'),
             icon: const Icon(
               Icons.search,
@@ -56,6 +58,7 @@ class _ReportesScreenState extends State<ReportesScreen> {
             ),
           ),
           IconButton(
+            tooltip: 'Filtrar reportes',
             onPressed: () => _mostrarSnack('Filtrar reportes'),
             icon: const Icon(
               Icons.tune,
@@ -157,19 +160,7 @@ class _ReportesScreenState extends State<ReportesScreen> {
       ),
       bottomNavigationBar: BottomNavbar(
         currentIndex: _tabActual,
-        onTap: (index) {
-          if (index == _tabActual) return;
-          setState(() => _tabActual = index);
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, AppRoutes.dashboard);
-          } else if (index == 1) {
-            Navigator.pushReplacementNamed(context, AppRoutes.ventas);
-          } else if (index == 2) {
-            Navigator.pushReplacementNamed(context, AppRoutes.inventario);
-          } else if (index == 4) {
-            Navigator.pushReplacementNamed(context, AppRoutes.miCuenta);
-          }
-        },
+        onTap: _navegarTab,
       ),
     );
   }

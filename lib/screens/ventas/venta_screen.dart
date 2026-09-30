@@ -3,55 +3,59 @@ import 'package:flutter/material.dart';
 import '../ventas/widgets/metrica_venta_card.dart';
 import '../ventas/widgets/venta_reciente_card.dart';
 import '../../widgets/bottom_navbar.dart';
+import '../../widgets/app_bar.dart';
+import '../../routes/app_routes.dart';
 import '../../theme/app_colors.dart';
 
-class VentaScreen extends StatelessWidget {
+class VentaScreen extends StatefulWidget {
   const VentaScreen({super.key});
+
+  @override
+  State<VentaScreen> createState() => _VentaScreenState();
+}
+
+class _VentaScreenState extends State<VentaScreen> {
+  int _tabActual = 1;
+
+  void _navegarTab(int index) {
+    if (index == _tabActual) return;
+    setState(() => _tabActual = index);
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, AppRoutes.dashboard);
+      case 2:
+        Navigator.pushReplacementNamed(context, AppRoutes.inventario);
+      case 3:
+        Navigator.pushReplacementNamed(context, AppRoutes.reportes);
+      case 4:
+        Navigator.pushReplacementNamed(context, AppRoutes.miCuenta);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
 
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        titleSpacing: 0,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: AppColors.primaryText,
-            size: 20,
-          ),
-        ),
-        title: const Text(
-          'Ventas',
-          style: TextStyle(
-            color: AppColors.primaryText,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+      appBar: AppAppBar(
+        title: 'Ventas',
         actions: [
           IconButton(
+            tooltip: 'Buscar venta',
             onPressed: () {},
             icon: const Icon(
               Icons.search,
               color: AppColors.primaryText,
-              size: 20,
+              size: 22,
             ),
           ),
           IconButton(
+            tooltip: 'Filtrar ventas',
             onPressed: () {},
             icon: const Icon(
               Icons.filter_list,
               color: AppColors.primaryText,
-              size: 20,
+              size: 22,
             ),
           ),
         ],
@@ -234,7 +238,10 @@ class VentaScreen extends StatelessWidget {
         ),
       ),
 
-      bottomNavigationBar: BottomNavbar(currentIndex: 3, onTap: (index) {}),
+      bottomNavigationBar: BottomNavbar(
+        currentIndex: _tabActual,
+        onTap: _navegarTab,
+      ),
     );
   }
 
