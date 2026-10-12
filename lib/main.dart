@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'screens/login/login_screen.dart';
-import 'routes/app_router.dart';
-import 'routes/app_routes.dart';
+import 'presentation/screens/login/login_screen.dart';
+import 'presentation/routes/app_router.dart';
+import 'presentation/routes/app_routes.dart';
+import 'core/dependency_injection/service_locator.dart';
 
 void main() {
+  setupLocator();
   runApp(const MyApp());
 }
 
@@ -15,7 +17,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Sorbeteria Herrera',
-      theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      ),
       initialRoute: AppRoutes.login,
       onGenerateRoute: AppRouter.onGenerateRoute,
       onUnknownRoute: AppRouter.onGenerateRoute,
