@@ -161,7 +161,7 @@ class ReporteDeInventarioScreen extends StatelessWidget {
           size: '10 oz',
           currentStock: 4,
           maxStock: 30,
-          badgeText: 'Stock Bajo',
+          badgeText: 'Stock Normal',
         ),
         ProductoEnRiesgoCard(
           productName: 'Helado de mani',
