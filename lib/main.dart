@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'presentation/screens/login/login_screen.dart';
 import 'presentation/routes/app_router.dart';
 import 'presentation/routes/app_routes.dart';
 import 'core/dependency_injection/service_locator.dart';
 
-void main() {
+Future<void> main() async {
   setupLocator();
+
+  await dotenv.load(fileName: '.env');
   runApp(const MyApp());
 }
 
