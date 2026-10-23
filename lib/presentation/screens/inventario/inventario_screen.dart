@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import '../../widgets/bottom_navbar.dart';
-import '../../widgets/app_bar.dart';
-import 'widgets/fila_producto_inventario.dart';
+
+import '../../../data/models/producto_inventario/producto_inventario.dart';
 import '../../routes/app_routes.dart';
 import '../../theme/app_colors.dart';
+import '../../theme/app_text_styles.dart';
+import '../../widgets/app_bar.dart';
+import '../../widgets/bottom_navbar.dart';
+import 'widgets/fila_producto_inventario.dart';
 
 class InventarioScreen extends StatefulWidget {
   const InventarioScreen({super.key});
-
   @override
   State<InventarioScreen> createState() => _InventarioScreenState();
 }
@@ -16,11 +18,11 @@ class _InventarioScreenState extends State<InventarioScreen> {
   int _tabActual = 2;
   String _filtroActual = 'Todos';
 
-  final List<_ProductoInventario> _productos = const [
-    _ProductoInventario('Helado de chocolate', '3', 'C\$ 120', true),
-    _ProductoInventario('Jarabe de fresa', '2', 'C\$ 85', true),
-    _ProductoInventario('Helado de vainilla', '18', 'C\$ 110', false),
-    _ProductoInventario('Conos', '42', 'C\$ 5', false),
+  final List<ProductoInventario> _productos = const [
+    ProductoInventario('Helado de chocolate', '3', 'C\$ 120', true),
+    ProductoInventario('Jarabe de fresa', '2', 'C\$ 85', true),
+    ProductoInventario('Helado de vainilla', '18', 'C\$ 110', false),
+    ProductoInventario('Conos', '42', 'C\$ 5', false),
   ];
 
   void _mostrarSnack(String mensaje) {
@@ -131,20 +133,24 @@ class _InventarioScreenState extends State<InventarioScreen> {
               children: [
                 Expanded(
                   flex: 23,
-                  child: Text('Producto', style: _estiloEncabezado),
+                  child: Text(
+                    'Producto',
+                    style: AppTextStyles.estiloEncabezado,
+                  ),
                 ),
                 Expanded(
                   flex: 10,
-                  child: Text('Stock', style: _estiloEncabezado),
+                  child: Text('Stock', style: AppTextStyles.estiloEncabezado),
                 ),
                 Expanded(
                   flex: 13,
-                  child: Text('Precio', style: _estiloEncabezado),
+                  child: Text('Precio', style: AppTextStyles.estiloEncabezado),
                 ),
                 SizedBox(width: 34),
               ],
             ),
           ),
+
           for (int index = 0; index < productos.length; index++) ...[
             FilaProductoInventario(
               nombre: productos[index].nombre,
@@ -163,6 +169,8 @@ class _InventarioScreenState extends State<InventarioScreen> {
                 );
               },
             ),
+
+            //refactorizar el color para que valla de manera global
             if (index != productos.length - 1)
               const Divider(height: 1, color: Color(0xFFF0F0F0)),
           ],
@@ -302,23 +310,3 @@ class _InventarioScreenState extends State<InventarioScreen> {
     );
   }
 }
-
-class _ProductoInventario {
-  final String nombre;
-  final String stock;
-  final String precio;
-  final bool stockBajo;
-
-  const _ProductoInventario(
-    this.nombre,
-    this.stock,
-    this.precio,
-    this.stockBajo,
-  );
-}
-
-const TextStyle _estiloEncabezado = TextStyle(
-  fontSize: 12,
-  fontWeight: FontWeight.w700,
-  color: Color(0xFF10251F),
-);
