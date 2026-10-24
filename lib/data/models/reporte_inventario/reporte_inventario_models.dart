@@ -1,4 +1,4 @@
-class ReporteInventarioModels {
+class ReporteInventarioModel {
   //endpoitn de /api/Inventory/stats
   //parte general
   final int totalProducts;
@@ -6,9 +6,9 @@ class ReporteInventarioModels {
   final double inventaryValue;
 
   //productos en riesgos
-  final List<ProductosRiesgo> productosRiesgo;
+  final List<ProductoRiesgo> productosRiesgo;
 
-  const ReporteInventarioModels({
+  const ReporteInventarioModel({
     required this.totalProducts,
     required this.lowStockProducts,
     required this.inventaryValue,
@@ -20,7 +20,7 @@ class ReporteInventarioModels {
 
 }
 
-class ProductosRiesgo{
+class ProductoRiesgo{
   final String productName;
   final String presentationName;
   final String flavorName;
@@ -30,7 +30,7 @@ class ProductosRiesgo{
   final bool? isOutOfStock;
   final String?  status;
 
-  const ProductosRiesgo({
+  const ProductoRiesgo({
     required this.productName,
     required this.presentationName,
     required this.flavorName,

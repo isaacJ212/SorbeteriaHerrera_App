@@ -14,4 +14,25 @@ class InventarioResponseGeneralModels {
 
   });
 
+
+  static InventarioResponseGeneralModels fromJson(Map<String, dynamic> json){
+    return InventarioResponseGeneralModels(
+      id: json['id'] as int, 
+      productName: json['productName'] as String, 
+      imageUrl: json['imageUrl'] as String, 
+      totalStock: json['totalStock'] as int,
+      retailStock: json['retailStock'] as int,
+    );
+  }
+
+
+  Map<String, dynamic> toJson(){
+    return {
+      'id': id, 
+      'productName': productName, 
+      'imageUrl': imageUrl, 
+      'totalStock': totalStock,
+      'retailStock': retailStock,
+    };
+  }
 }

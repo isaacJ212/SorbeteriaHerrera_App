@@ -14,10 +14,26 @@ class UsuarioResponseModel {
     required this.userName,
     required this.email,
     required this.isActive,
-    required this.roles, 
+    required this.roles,
   });
 
-}
+  static UsuarioResponseModel fromJson(Map<String, dynamic> json) {
+    return UsuarioResponseModel(
+      id: json['id'] as int,
+      userName: json['userName'] as String,
+      email: json['email'] as String,
+      isActive: json['isActive'] as bool,
+      roles: (json['roles'] as List).map((role) => role as String).toList(),
+    );
+  }
 
-// para este solo queremos ver el nombre , el correo, rol, 
-// ver log?acceso en el sistem,a
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'userName': userName,
+      'email': email,
+      'isActive': isActive,
+      'roles': roles,
+    };
+  }
+}

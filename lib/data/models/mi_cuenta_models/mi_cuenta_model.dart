@@ -20,6 +20,30 @@ class MiCuentaResponseModel {
     required this.roles
 
   });
+
+  static MiCuentaResponseModel fromJson(Map<String, dynamic> json){
+    return MiCuentaResponseModel(
+      UserName: json['Username'] as String, 
+      email: json['email'] as String, 
+      dni:json['dni'] as String , 
+      fistName: json['fistName'] as String, 
+      lastName: json['lastName'] as String, 
+      isActive: json['isActive'] as bool, 
+      roles:(json['roles'] as List).map((role) => role as String).toList(),
+    );
+  }
+
+  Map<String, dynamic> toJson(){
+    return {
+      'UserName': UserName, 
+      'email': email, 
+      'dni': dni, 
+      'fistName': fistName, 
+      'lastName': lastName, 
+      'isActive': isActive, 
+      'roles': roles
+    };
+  }
 }
 
 

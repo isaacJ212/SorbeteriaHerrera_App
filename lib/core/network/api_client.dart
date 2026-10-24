@@ -1,18 +1,18 @@
 import "dart:convert";
 
+import "package:herrera_app/core/constants/api_constants.dart";
 import "package:herrera_app/core/errors/api_exception.dart";
 import "package:herrera_app/data/models/common/http_response.dart";
 import "package:http/http.dart" as http;
 
-import "../constants/constants.dart";
 
 class ApiClient {
   //para que lo pueda leer el service locator
   ApiClient();
 
   String get baseUrl {
-    const envBaseUrl =
-        Constants.apiBaseUrl; // se cambiara para consumrir a la api desplegada
+    final String envBaseUrl =
+        ApiConst.baseUrl; // se cambiara para consumrir a la api desplegada
     return envBaseUrl.endsWith("/")
         ? envBaseUrl.substring(0, envBaseUrl.length - 1)
         : envBaseUrl;
@@ -24,9 +24,28 @@ class ApiClient {
   Uri _buildUri(String path, [Map<String, dynamic>? queryParameters]) {
     final uri = Uri.parse(baseUrl + path);
     if (queryParameters != null) {
+
+      final Map<String, String> stringQueryParameter = queryParameters.map(
+        (key, value) => MapEntry(key, value.toString()) // se convierte lo values a string para evitar error de Uri.replacement
+
+      );
       return uri.replace(queryParameters: queryParameters);
     }
     return uri;
+  }
+
+
+  Future<HttpResponse> get(
+    String path, {
+    bool authorized = true, 
+    Map<String, String>? queryParameters,
+  }) async {
+    return await _send(
+      'GET',
+      path,
+      authorized: authorized,
+      queryParameters: queryParameters,
+    );
   }
 
   //implementacion de consumo de la api
