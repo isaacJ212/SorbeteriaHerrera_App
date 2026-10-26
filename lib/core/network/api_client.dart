@@ -1,43 +1,64 @@
 import "dart:convert";
+import "dart:async";
 
-import "package:herrera_app/core/errors/api_exception.dart";
+
+import 'package:herrera_app/core/errors/api_exception.dart';
+import "package:herrera_app/core/constants/api_constants.dart";
 import "package:herrera_app/data/models/common/http_response.dart";
+import "package:herrera_app/data/models/token_model.dart";
+import "package:herrera_app/presentation/providers/provider.dart";
 import "package:http/http.dart" as http;
 
-import "../constants/constants.dart";
 
+typedef AuthTokenProvider = Future<TokenModel?> Function();
 class ApiClient {
   //para que lo pueda leer el service locator
-  ApiClient();
+
+  final AuthTokenProvider? authTokenProvider;
+  ApiClient({this.authTokenProvider});
+
+  final http.Client _client = http.Client();
+  
+
 
   String get baseUrl {
-    const envBaseUrl =
-        Constants.apiBaseUrl; // se cambiara para consumrir a la api desplegada
+    final String envBaseUrl = ApiConst.baseUrl; 
     return envBaseUrl.endsWith("/")
         ? envBaseUrl.substring(0, envBaseUrl.length - 1)
         : envBaseUrl;
   }
 
-  final http.Client _client = http.Client();
 
-  // metodo para mapear de manera correcta los parametros de la query
-  Uri _buildUri(String path, [Map<String, dynamic>? queryParameters]) {
-    final uri = Uri.parse(baseUrl + path);
-    if (queryParameters != null) {
-      return uri.replace(queryParameters: queryParameters);
-    }
-    return uri;
-  }
 
-  //implementacion de consumo de la api
+  Future<HttpResponse> get(
+    String path, {
+    bool authorized = true,
+    Map<String, dynamic>? query,
+    }) async => _send('GET', path, authorized: authorized, queryParameters: query);
+
+  Future<HttpResponse> post(
+    String path, {
+    Object? body,
+    bool authorized = true,
+    Map<String, dynamic>? query,
+  }) async => _send('POST', path, authorized: authorized, body: body);
+
+
 
   Future<HttpResponse> _send(
     String method,
     String path, {
     Object? body,
     bool authorized = false,
-    Map<String, String>? queryParameters,
+    Map<String, dynamic>? queryParameters,
   }) async {
+    Uri uri = Uri.parse(baseUrl + path);
+    if (queryParameters != null) {
+      final Map<String, String> stringQuery = queryParameters.map(
+        (key, value) => MapEntry(key, value.toString()),
+      );
+      uri = uri.replace(queryParameters: stringQuery);
+    }
     //Headers de la request
     final headers = <String, String>{
       'Accept': 'application/json',
@@ -45,41 +66,47 @@ class ApiClient {
     };
 
     //aqui faltaria la implementacion del storage de la sesion de la api
-    final token = "token";
+    final TokenModel? token = await authTokenProvider?.call();
 
-    if (authorized && token != null && token.isNotEmpty) {
-      headers["Authorization"] = "Bearer $token";
+    if (authorized && token != null && token.isAccessTokenExpired) {
+      headers["Authorization"] = "Bearer ${token.accessToken}";
     }
 
-    final uri = _buildUri(path, queryParameters);
+    final request = http.Request(method, uri)..headers.addAll(headers);
+    if (body != null) {
+      request.body = jsonEncode(body);
+    }
 
-    final payload = body == null ? null : jsonEncode(body);
+    
+    //return HttpResponse.fromHttpResponse(response);
 
-    late final http.Response response;
+    http.Response response;
+    try {
+      response = await _client
+          .send(request)
+          .timeout(const Duration(seconds: 10))
+          .then(http.Response.fromStream);
+    } on TimeoutException {
+      throw NetException (statusCode: 408, message: 'La conexion tardo demasiado.');
+    } on http.ClientException {
+      throw NetException();
+    }
 
-    switch (method) {
-      case 'GET':
-        response = await _client.get(uri, headers: headers);
-        break;
-      case 'POST':
-        response = await _client.post(uri, headers: headers, body: payload);
-        break;
-      case 'PUT':
-        response = await _client.put(uri, headers: headers, body: payload);
-        break;
-      case 'PATCH':
-        response = await _client.patch(uri, headers: headers, body: payload);
-        break;
-      case 'DELETE':
-        response = await _client.delete(uri, headers: headers, body: payload);
-        break;
-      default:
-        throw ApiException(
-          statusCode: 0,
-          message: 'Método HTTP no soportado: $method',
-        );
+
+    //manejo de statuscode error
+
+    if (response.statusCode == 401) {
+      throw const UnauthorizedException();
+    }else if (response.statusCode == 404){
+      throw const NotFountException();
+    }else if (response.statusCode == 500){
+      throw  ServerException('error interno de servidor',statusCode: response.statusCode);
+    }else if(response.statusCode < 200 || response.statusCode > 300){
+      throw ServerException('error en le peticion', statusCode: response.statusCode);
     }
 
     return HttpResponse.fromHttpResponse(response);
   }
+
+  void dispose() => _client.close();
 }

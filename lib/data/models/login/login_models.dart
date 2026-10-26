@@ -27,5 +27,26 @@ class LoginResponseModel{
     required this.roles
   });
 
-}
+  static LoginResponseModel fromJson(Map<String, dynamic> json){
+    return LoginResponseModel(
+      token: json['token'] as String, 
+      userName: json['userName'] as String, 
+      fistName: json['fistName'] as String, 
+      lastName: json['lastName'] as String, 
+      email: json['email'] as String, 
+      roles: (json['roles'] as List).map((role) => role as String).toList(),
+    );
+  }
+
+  Map<String, dynamic> toJson(){
+    return {
+      'token': token, 
+      'userName': userName, 
+      'fistName': fistName, 
+      'lastName': lastName, 
+      'email': email, 
+      'roles': roles
+    };
+  }
+ }
 
