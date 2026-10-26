@@ -14,6 +14,7 @@ class ApiConst {
   static String get reportInventary => '$baseUrl/Inventory/stats';
   static String get users => '$baseUrl/Users';
   static String get infoMe => '$baseUrl/Users/me';
+  static String get audit => '$baseUrl/Audit';
 
   //endpoint dinamicos 
 
@@ -22,6 +23,7 @@ class ApiConst {
   static String inventoryDetails(int id) => '$baseUrl/Inventory/products/$id/detail';
   static String usersDetails(int userId) => '$baseUrl/Users/$userId';
 
-
+  // para el time otu
+  static const Duration timeOutDuration  = Duration(seconds: 10);
 
 }
