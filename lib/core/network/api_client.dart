@@ -5,13 +5,21 @@ import "dart:async";
 import 'package:herrera_app/core/errors/api_exception.dart';
 import "package:herrera_app/core/constants/api_constants.dart";
 import "package:herrera_app/data/models/common/http_response.dart";
+import "package:herrera_app/data/models/token_model.dart";
+import "package:herrera_app/presentation/providers/provider.dart";
 import "package:http/http.dart" as http;
 
+
+typedef AuthTokenProvider = Future<TokenModel?> Function();
 class ApiClient {
   //para que lo pueda leer el service locator
-  ApiClient();
+
+  final AuthTokenProvider? authTokenProvider;
+  ApiClient({this.authTokenProvider});
 
   final http.Client _client = http.Client();
+  
+
 
   String get baseUrl {
     final String envBaseUrl = ApiConst.baseUrl; 
@@ -58,9 +66,10 @@ class ApiClient {
     };
 
     //aqui faltaria la implementacion del storage de la sesion de la api
-    final token = "token";
-    if (authorized && token != null && token.isNotEmpty) {
-      headers["Authorization"] = "Bearer $token";
+    final TokenModel? token = await authTokenProvider?.call();
+
+    if (authorized && token != null && token.isAccessTokenExpired) {
+      headers["Authorization"] = "Bearer ${token.accessToken}";
     }
 
     final request = http.Request(method, uri)..headers.addAll(headers);

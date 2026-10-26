@@ -18,11 +18,11 @@ class _InventarioScreenState extends State<InventarioScreen> {
   int _tabActual = 2;
   String _filtroActual = 'Todos';
 
-  final List<ProductoInventario> _productos = const [
-    ProductoInventario('Helado de chocolate', '3', 'C\$ 120', true),
-    ProductoInventario('Jarabe de fresa', '2', 'C\$ 85', true),
-    ProductoInventario('Helado de vainilla', '18', 'C\$ 110', false),
-    ProductoInventario('Conos', '42', 'C\$ 5', false),
+  final List<ProductoInventarioModel> _productos = const [
+    ProductoInventarioModel('Helado de chocolate', '3', 'C\$ 120', true),
+    ProductoInventarioModel('Jarabe de fresa', '2', 'C\$ 85', true),
+    ProductoInventarioModel('Helado de vainilla', '18', 'C\$ 110', false),
+    ProductoInventarioModel('Conos', '42', 'C\$ 5', false),
   ];
 
   void _mostrarSnack(String mensaje) {
