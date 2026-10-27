@@ -87,9 +87,9 @@ class ApiClient {
           .timeout(const Duration(seconds: 10))
           .then(http.Response.fromStream);
     } on TimeoutException {
-      throw NetException (statusCode: 408, message: 'La conexion tardo demasiado.');
+      throw NetworkException (statusCode: 408, message: 'La conexion tardo demasiado.');
     } on http.ClientException {
-      throw NetException();
+      throw NetworkException();
     }
 
 
@@ -98,7 +98,7 @@ class ApiClient {
     if (response.statusCode == 401) {
       throw const UnauthorizedException();
     }else if (response.statusCode == 404){
-      throw const NotFountException();
+      throw const NotFoundtException();
     }else if (response.statusCode == 500){
       throw  ServerException('error interno de servidor',statusCode: response.statusCode);
     }else if(response.statusCode < 200 || response.statusCode > 300){
