@@ -15,15 +15,15 @@ class TokenModel {
 
   static TokenModel fromJson(Map<String, dynamic> json) {
     return TokenModel(
-      accessToken: json['accessToken'] as String,
-      accessTokenExpiresAt: DateTime.parse(json['accessTokenExpiresAt'] as String),
+      accessToken: json['token'] as String,
+      accessTokenExpiresAt: DateTime.parse(json['expiresAt'] as String),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'accessToken': accessToken,
-      'accessTokenExpiresAt': accessTokenExpiresAt.toIso8601String(),
+      'token': accessToken,
+      'expiresAt': accessTokenExpiresAt.toIso8601String(),
     };
   }
 
