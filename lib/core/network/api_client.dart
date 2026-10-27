@@ -68,7 +68,7 @@ class ApiClient {
     //aqui faltaria la implementacion del storage de la sesion de la api
     final TokenModel? token = await authTokenProvider?.call();
 
-    if (authorized && token != null && token.isAccessTokenExpired) {
+    if (authorized && token != null && !token.isAccessTokenExpired) {
       headers["Authorization"] = "Bearer ${token.accessToken}";
     }
 
