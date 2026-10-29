@@ -3,9 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class ApiConst {
   ApiConst._();
 
-
-  static String get baseUrl => dotenv.env['BASE_URL_API']?? '';
-
+  static String get baseUrl => dotenv.env['BASE_URL_API'] ?? '';
 
   static String get login => '$baseUrl/Auth/login';
   static String get sales => '$baseUrl/Sales';
@@ -16,14 +14,17 @@ class ApiConst {
   static String get infoMe => '$baseUrl/Users/me';
   static String get audit => '$baseUrl/Audit';
 
-  //endpoint dinamicos 
+  //static string to feed dashboard cards
+  static String get dashboard => '$baseUrl/Dashboard';
+
+  //endpoint dinamicos
 
   static String salesDetails(int id) => '$baseUrl/Sales/$id';
   static String ordersDetails(int id) => '$baseUrl/Sales/$id';
-  static String inventoryDetails(int id) => '$baseUrl/Inventory/products/$id/detail';
+  static String inventoryDetails(int id) =>
+      '$baseUrl/Inventory/products/$id/detail';
   static String usersDetails(int userId) => '$baseUrl/Users/$userId';
 
   // para el time otu
-  static const Duration timeOutDuration  = Duration(seconds: 10);
-
+  static const Duration timeOutDuration = Duration(seconds: 10);
 }
