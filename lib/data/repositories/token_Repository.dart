@@ -39,8 +39,17 @@ class TokenRepository {
     
   }
 
+  //remuve 
   Future<void> removeToken() async{
     await _prefs.remove(_tokenKey);
+  }
+
+  Future<TokenModel> ensureToken() async {
+    final TokenModel? token = await getToken();
+    if (token == null) {
+      throw Exception('No valid token found');
+    }
+    return token;
   }
 
   Future<bool> hasValidToken() async => await getToken() != null;
