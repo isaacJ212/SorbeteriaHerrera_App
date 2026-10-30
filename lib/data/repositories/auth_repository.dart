@@ -1,8 +1,10 @@
+import 'package:get_it/get_it.dart';
 import 'package:herrera_app/core/constants/api_constants.dart';
 import 'package:herrera_app/core/errors/api_exception.dart';
 import 'package:herrera_app/core/network/api_client.dart';
 import 'package:herrera_app/data/models/token_model.dart';
 import 'package:herrera_app/data/models/usuario_models/usuario_model.dart';
+import 'package:herrera_app/data/repositories/token_Repository.dart';
 import 'package:http/http.dart';
 
 class AuthRepository {
@@ -42,9 +44,12 @@ class AuthRepository {
     final data = json['data'] as Map<String, dynamic>?;
     if (data == null) throw const ParsingException();
     return UsuarioResponseModel.fromJson(data);
+  }
 
-    
-    
+  //usamos esto por no tenemos endpoint dew logout
+  Future<void> logout() async{
+    final tokenRepo = GetIt.instance<TokenRepository>();
+    await tokenRepo.removeToken();
   }
 
 
