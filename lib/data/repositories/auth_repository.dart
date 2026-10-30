@@ -47,7 +47,7 @@ class AuthRepository {
   }
 
   //usamos esto por no tenemos endpoint dew logout
-  Future<void> logout() async{
+  Future<void> logout([TokenModel? token]) async{
     final tokenRepo = GetIt.instance<TokenRepository>();
     await tokenRepo.removeToken();
   }
