@@ -6,7 +6,6 @@ import 'package:herrera_app/core/errors/api_exception.dart';
 import "package:herrera_app/core/constants/api_constants.dart";
 import "package:herrera_app/data/models/common/http_response.dart";
 import "package:herrera_app/data/models/token_model.dart";
-import "package:herrera_app/presentation/providers/provider.dart";
 import "package:http/http.dart" as http;
 
 

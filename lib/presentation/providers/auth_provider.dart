@@ -9,6 +9,7 @@ class AuthProvider extends ChangeNotifier {
 
   final AuthService _authService;
   AuthProvider(this._authService);
+  //AuthProvider(AuthService authService);
 
   UsuarioResponseModel? _currentUser;
   UsuarioResponseModel? get currentUser => _currentUser;
@@ -21,6 +22,7 @@ class AuthProvider extends ChangeNotifier {
   bool _isSubmitting = false;
   bool get isSubmitting => _isSubmitting;
 
+  
 
   Future<void> login({required String userName, required String password}) async{
     if (_isSubmitting) {

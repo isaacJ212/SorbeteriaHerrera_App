@@ -2,7 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:herrera_app/core/network/api_client.dart';
 import 'package:herrera_app/data/repositories/auth_repository.dart';
 import 'package:herrera_app/data/repositories/token_Repository.dart';
-import 'package:herrera_app/presentation/providers/provider.dart';
+import 'package:herrera_app/presentation/providers/auth_provider.dart';
 import 'package:herrera_app/services/auth_service.dart';
 
 final getIt = GetIt.instance;
