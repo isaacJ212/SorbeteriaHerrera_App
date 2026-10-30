@@ -8,7 +8,10 @@ sealed class AppException implements Exception {
 }
 
 class NetException extends AppException {
-  const NetException({this.statusCode,String message = 'Revisa tu conexión a Internet',}) : super(message);
+  const NetException({
+    this.statusCode,
+    String message = 'Revisa tu conexión a Internet',
+  }) : super(message);
 
   final int? statusCode;
 }
@@ -31,4 +34,8 @@ class UnauthorizedException extends AppException {
 
 class NotFountException extends AppException {
   const NotFountException([super.message = 'Recurso no Encontrado']);
+}
+
+class BadRequestException extends AppException {
+  const BadRequestException([super.message = 'Solicitud incorrecta']);
 }

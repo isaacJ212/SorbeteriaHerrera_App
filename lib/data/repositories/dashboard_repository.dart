@@ -28,22 +28,27 @@ class DashboardRepository {
     }
   }
 
-  Future<VentasResponseModel> fetchVentas(int page, int pageSize) async {
+  Future<List<VentasResponseModel>> fetchVentas(int page, int pageSize) async {
     // for this card i will just show three cards so i dont see necessary to build a complex filte
     final Map<String, dynamic> queryParams = {
       "page": page,
       "pageSize": pageSize,
     };
 
+    //aclaration: the endpoint already sorts the sales by id on a descending order,
+    // that meaning the most recent sales will be the first ones in thhe list.
+
     try {
       final response = await _apiClient.get(ApiConst.sales, query: queryParams);
       if (response.jsonBody is! Map<String, dynamic>) {
         throw ParsingException("Invalid response format for ventas");
       }
-      if (response.statusCode >= 400)
+      if (response.statusCode >= 400) {
         throw ServerException("Error fetching sales: ${response.statusCode}");
-
-      return VentasResponseModel.fromJson(response.jsonBody!);
+      }
+      return (response.jsonBody! as List)
+          .map((e) => VentasResponseModel.fromJson(e))
+          .toList();
     } catch (e) {
       throw ServerException("Error fetching sales: ${e.toString()}");
     }
