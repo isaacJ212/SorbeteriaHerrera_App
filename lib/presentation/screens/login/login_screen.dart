@@ -1,7 +1,9 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:herrera_app/presentation/widgets/app_text_field.dart';
+import 'package:provider/provider.dart';
+
+import 'package:herrera_app/presentation/providers/auth_provider.dart';
 import 'package:herrera_app/presentation/routes/app_routes.dart';
+import 'package:herrera_app/presentation/widgets/app_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -33,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
           _buildCircles(),
           Center(
             child: Padding(
-              padding: const EdgeInsetsGeometry.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 400),
                 child: _buildLoginCard(),
@@ -46,103 +48,111 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildLoginCard() {
-    return Container(
-      constraints: const BoxConstraints(maxWidth: 400),
-      padding: const EdgeInsets.all(32.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Text(
-              'Bienvenido',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF10251F),
+    return Consumer<AuthProvider>(
+      builder: (context, authProvider, _) {
+        return Container(
+          constraints: const BoxConstraints(maxWidth: 400),
+          padding: const EdgeInsets.all(32.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
               ),
-            ),
-            const SizedBox(height: 8),
-
-            // Subtítulo
-            const Text(
-              'por favor ingresa tus credenciales',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14, color: Colors.grey),
-            ),
-            const SizedBox(height: 32),
-
-            AppTextField(
-              icon: Icons.person_outline,
-              label: 'Usuario',
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por Favor Ingresa tu usuario';
-                }
-                return null;
-              },
-              controller: _userNameController,
-            ),
-            const SizedBox(height: 16),
-
-            _buildPasswordField(),
-            const SizedBox(height: 16),
-            Row(
+            ],
+          ),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Checkbox(
-                  value: _remember,
-                  onChanged: (value) {
-                    setState(() {
-                      _remember = value ?? false;
-                    });
-                  },
-                  activeColor: const Color(0xFF09A982),
-                ),
                 const Text(
-                  'Recordar mi Sesion',
-                  style: TextStyle(color: Color(0xFF64736D), fontSize: 14),
+                  'Bienvenido',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF10251F),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'por favor ingresa tus credenciales',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+                const SizedBox(height: 32),
+                AppTextField(
+                  icon: Icons.person_outline,
+                  label: 'Usuario',
+                  controller: _userNameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por Favor Ingresa tu usuario';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                _buildPasswordField(),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _remember,
+                      activeColor: const Color(0xFF09A982),
+                      onChanged: (value) {
+                        setState(() {
+                          _remember = value ?? false;
+                        });
+                      },
+                    ),
+                    const Text(
+                      'Recordar mi Sesion',
+                      style: TextStyle(color: Color(0xFF64736D), fontSize: 14),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: authProvider.isSubmitting ? null : _handleLogin,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFDAE3EB),
+                    foregroundColor: const Color(0xFF10251F),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    elevation: 0,
+                  ),
+                  child: authProvider.isSubmitting
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Color(0xFF09A982),
+                          ),
+                        )
+                      : const Text(
+                          'Confirmar',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
               ],
             ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: _handleLogin,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFDAE3EB),
-                foregroundColor: const Color(0xFF10251F),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                elevation: 0,
-              ),
-              child: const Text(
-                'Confirmar',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
-
-  //Investigue y dice que stack es un widget que te permite tener varios
-  // Widgets encima de otros como una montaña de capas, este trabaja en el eje  osea como
-  // para salirse de la pantalla, positioned me sirvio para alinear los circulos en el eje x o y
 
   Widget _buildCircles() {
     return Positioned.fill(
@@ -154,8 +164,8 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Container(
               width: 150,
               height: 150,
-              decoration: BoxDecoration(
-                color: const Color(0xFF087A5D),
+              decoration: const BoxDecoration(
+                color: Color(0xFF087A5D),
                 shape: BoxShape.circle,
               ),
             ),
@@ -166,8 +176,8 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Container(
               width: 120,
               height: 120,
-              decoration: BoxDecoration(
-                color: const Color(0xFF087A5D),
+              decoration: const BoxDecoration(
+                color: Color(0xFF087A5D),
                 shape: BoxShape.circle,
               ),
             ),
@@ -178,8 +188,8 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Container(
               width: 100,
               height: 100,
-              decoration: BoxDecoration(
-                color: const Color(0xFF087A5D),
+              decoration: const BoxDecoration(
+                color: Color(0xFF087A5D),
                 shape: BoxShape.circle,
               ),
             ),
@@ -236,24 +246,37 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _handleLogin() {
-    if (_formKey.currentState!.validate()) {
-      if (_userNameController.text == 'Admin' &&
-          _passwordController.text == 'Admin123') {
-        Navigator.pushReplacementNamed(context, AppRoutes.dashboard);
-        return;
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Nombre de Usuario o Contraseña Invalidas',
-              style: TextStyle(color: Colors.white),
-            ),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
+  Future<void> _handleLogin() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    final authProvider = context.read<AuthProvider>();
+    final userName = _userNameController.text.trim();
+    final password = _passwordController.text;
+
+    await authProvider.login(userName: userName, password: password);
+
+    if (!mounted) return;
+
+    if (authProvider.isAuthenticated) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Inicio de Sesion Exitoso'),
+          backgroundColor: Colors.green,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      Navigator.pushReplacementNamed(context, AppRoutes.dashboard);
+      return;
     }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          authProvider.errorMessage ?? 'Nombre de usuario o password invalido',
+        ),
+        backgroundColor: Colors.red,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
 }
