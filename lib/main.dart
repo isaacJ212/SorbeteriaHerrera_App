@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'presentation/screens/login/login_screen.dart';
+import 'package:provider/provider.dart';
 import 'presentation/routes/app_router.dart';
 import 'presentation/routes/app_routes.dart';
 import 'core/dependency_injection/service_locator.dart';
+import 'presentation/providers/dashboard_provider.dart';
 
 Future<void> main() async {
   setupLocator();
 
   await dotenv.load(fileName: '.env');
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => sl<DashboardProvider>(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

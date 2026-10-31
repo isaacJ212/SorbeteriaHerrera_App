@@ -1,7 +1,8 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
-import 'package:herrera_app/data/models/ventas_models/ventas_models.dart';
+import 'package:provider/provider.dart';
+import '../../providers/dashboard_provider.dart';
 
 import '../../routes/app_routes.dart';
 import '../../theme/app_colors.dart';
@@ -21,7 +22,13 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int _tabActual = 0;
 
-  final List<VentasResponseModel> _ventas = [];
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) context.read<DashboardProvider>().fetchDashboard();
+    });
+  }
 
   void _mostrarSnack(String mensaje) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -51,6 +58,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final dashboard = context.watch<DashboardProvider>();
+    final cards = dashboard.dashboardCards;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF3F4F5), // fondo gris del diseño
       appBar: AppAppBar(
@@ -96,6 +106,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             const SizedBox(height: 16),
             VentasCard(
+              total: cards?.totalVentasSemana ?? 0,
+              crecimiento: cards?.crecimientoVentasSemana ?? 0,
               onTap: () => Navigator.pushNamed(context, AppRoutes.ventas),
             ),
             const SizedBox(height: 12),
@@ -104,7 +116,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Expanded(
                   child: AlertCard(
                     titulo: 'Alertas de stock',
-                    cantidad: '3 PRODUCTOS',
+                    cantidad: '${cards?.alertasStock ?? 0} PRODUCTOS',
                     colorFondo: const Color(0xFFFFF8C9),
                     colorBorde: const Color(0xFFE7D76A),
                     icono: Icons.warning_amber_outlined,
@@ -116,7 +128,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Expanded(
                   child: AlertCard(
                     titulo: 'Pedidos pendientes',
-                    cantidad: '10 PENDIENTES',
+                    cantidad: '${cards?.pedidosPendientes ?? 0} PENDIENTES',
                     colorFondo: Colors.white,
                     colorBorde: const Color(0xFFE1E1E1),
                     onTap: () =>
@@ -135,15 +147,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            ..._ventas
-                .take(3)
-                .map(
-                  (venta) => VentaRecienteDashboardCard(
-                    venta: venta,
-                    onTap: () =>
-                        Navigator.pushNamed(context, AppRoutes.detalleVenta),
+            if (dashboard.viewStatus == ViewStatus.loading)
+              const Center(child: CircularProgressIndicator())
+            else if (dashboard.viewStatus == ViewStatus.error)
+              Text(dashboard.errorMessage)
+            else
+              ...dashboard.ventas
+                  .take(3)
+                  .map(
+                    (venta) => VentaRecienteDashboardCard(
+                      venta: venta,
+                      onTap: () =>
+                          Navigator.pushNamed(context, AppRoutes.detalleVenta),
+                    ),
                   ),
-                ),
           ],
         ),
       ),

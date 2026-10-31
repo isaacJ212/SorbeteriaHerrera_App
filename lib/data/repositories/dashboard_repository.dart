@@ -13,7 +13,10 @@ class DashboardRepository {
     // waiting for the implementation of the session token to be ready,
     // for now and test dashboard endpoint is not auth required.
     try {
-      final response = await _apiClient.get(ApiConst.dashboard);
+      final response = await _apiClient.get(
+        ApiConst.dashboard,
+        authorized: false,
+      );
       if (response.jsonBody is! Map<String, dynamic>) {
         throw ParsingException("Invalid response format for dashboard cards");
       }
@@ -39,15 +42,21 @@ class DashboardRepository {
     // that meaning the most recent sales will be the first ones in thhe list.
 
     try {
-      final response = await _apiClient.get(ApiConst.sales, query: queryParams);
+      final response = await _apiClient.get(
+        ApiConst.sales,
+        authorized: false,
+        query: queryParams,
+      );
       if (response.jsonBody is! Map<String, dynamic>) {
         throw ParsingException("Invalid response format for ventas");
       }
       if (response.statusCode >= 400) {
         throw ServerException("Error fetching sales: ${response.statusCode}");
       }
-      return (response.jsonBody! as List)
-          .map((e) => VentasResponseModel.fromJson(e))
+      final page = response.jsonBody!['data'] as Map<String, dynamic>;
+      final ventas = page['data'] as List<dynamic>;
+      return ventas
+          .map((e) => VentasResponseModel.fromJson(e as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw ServerException("Error fetching sales: ${e.toString()}");

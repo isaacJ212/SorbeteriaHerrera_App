@@ -21,28 +21,18 @@ class DashboardProvider extends ChangeNotifier {
   String _errorMessage = '';
   String get errorMessage => _errorMessage;
 
-  Future<void> fetchVentas() async {
+  Future<void> fetchDashboard() async {
     _viewStatus = ViewStatus.loading;
+    notifyListeners();
     try {
-      final ventasData = await _dashboardServices.getVentas();
-      _ventas.clear();
-      for (var venta in ventasData) {
-        _ventas.add(venta);
-      }
-      _viewStatus = ViewStatus.succes;
-    } catch (e) {
-      _viewStatus = ViewStatus.error;
-      _errorMessage = e.toString();
-    } finally {
-      notifyListeners();
-    }
-  }
-
-  Future<void> fetchDashboardCards() async {
-    _viewStatus = ViewStatus.loading;
-    try {
-      final dashboardCardsData = await _dashboardServices.getDashboardCards();
-      _dashboardCards = dashboardCardsData;
+      final results = await Future.wait([
+        _dashboardServices.getDashboardCards(),
+        _dashboardServices.getVentas(),
+      ]);
+      _dashboardCards = results[0] as DashboardCards;
+      _ventas
+        ..clear()
+        ..addAll(results[1] as List<VentasResponseModel>);
       _viewStatus = ViewStatus.succes;
     } catch (e) {
       _viewStatus = ViewStatus.error;

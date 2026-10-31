@@ -15,8 +15,9 @@ class DashboardCards {
     return DashboardCards(
       pedidosPendientes: json['pedidosPendientes'] as int,
       alertasStock: json['alertasStock'] as int,
-      totalVentasSemana: json['totalVentasSemana'] as double,
-      crecimientoVentasSemana: json['crecimientoVentasSemana'] as double,
+      totalVentasSemana: (json['totalVentasSemana'] as num).toDouble(),
+      crecimientoVentasSemana: (json['crecimientoVentasSemana'] as num)
+          .toDouble(),
     );
   }
 }

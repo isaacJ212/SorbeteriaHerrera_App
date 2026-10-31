@@ -7,7 +7,7 @@ class VentasResponseModel {
   final String saleTypeName;
   final int paymentTypeId;
   final String paymentTypeName;
-  final int total;
+  final double total;
 
   const VentasResponseModel({
     required this.id,
@@ -31,7 +31,7 @@ class VentasResponseModel {
       saleTypeName: json['saleTypeName'] as String,
       paymentTypeId: json['paymentTypeId'] as int,
       paymentTypeName: json['paymentTypeName'] as String,
-      total: json['total'] as int,
+      total: (json['total'] as num).toDouble(),
     );
   }
 
