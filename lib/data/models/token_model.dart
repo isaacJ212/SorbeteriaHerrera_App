@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class TokenModel {
   final String accessToken;
   final DateTime accessTokenExpiresAt;
@@ -11,19 +13,19 @@ class TokenModel {
   bool get isAccessTokenExpired => DateTime.now().isAfter(accessTokenExpiresAt);
 
 
-  static TokenModel fromJson(Map<String, dynamic> json){
+  static TokenModel fromJson(Map<String, dynamic> json) {
     return TokenModel(
-      accessToken: json['accessToken'] as String, 
-      accessTokenExpiresAt: json['accessTokenExpiresAt'] as DateTime
+      accessToken: json['token'] as String,
+      accessTokenExpiresAt: DateTime.parse(json['expiresAt'] as String),
     );
   }
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
-      'accessToken': accessToken, 
-      'accessTokenExpiresAt': accessTokenExpiresAt.toIso8601String()
+      'token': accessToken,
+      'expiresAt': accessTokenExpiresAt.toIso8601String(),
     };
   }
 
-
+  
 }

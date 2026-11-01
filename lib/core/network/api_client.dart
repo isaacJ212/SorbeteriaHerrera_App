@@ -6,7 +6,6 @@ import 'package:herrera_app/core/errors/api_exception.dart';
 import "package:herrera_app/core/constants/api_constants.dart";
 import "package:herrera_app/data/models/common/http_response.dart";
 import "package:herrera_app/data/models/token_model.dart";
-import "package:herrera_app/presentation/providers/provider.dart";
 import "package:http/http.dart" as http;
 
 
@@ -52,7 +51,11 @@ class ApiClient {
     bool authorized = false,
     Map<String, dynamic>? queryParameters,
   }) async {
-    Uri uri = Uri.parse(baseUrl + path);
+    final String normalizedPath = path.startsWith('http://') || path.startsWith('https://')
+        ? path
+        : '$baseUrl$path';
+
+    Uri uri = Uri.parse(normalizedPath);
     if (queryParameters != null) {
       final Map<String, String> stringQuery = queryParameters.map(
         (key, value) => MapEntry(key, value.toString()),
@@ -68,7 +71,7 @@ class ApiClient {
     //aqui faltaria la implementacion del storage de la sesion de la api
     final TokenModel? token = await authTokenProvider?.call();
 
-    if (authorized && token != null && token.isAccessTokenExpired) {
+    if (authorized && token != null && !token.isAccessTokenExpired) {
       headers["Authorization"] = "Bearer ${token.accessToken}";
     }
 
@@ -84,12 +87,12 @@ class ApiClient {
     try {
       response = await _client
           .send(request)
-          .timeout(const Duration(seconds: 10))
+          .timeout(const Duration(seconds: 30))
           .then(http.Response.fromStream);
     } on TimeoutException {
-      throw NetException (statusCode: 408, message: 'La conexion tardo demasiado.');
-    } on http.ClientException {
-      throw NetException();
+      throw NetworkException (statusCode: 408, message: 'La conexion tardo demasiado.');
+    } on http.ClientException catch (e) {
+      throw NetworkException();
     }
 
 
@@ -98,7 +101,7 @@ class ApiClient {
     if (response.statusCode == 401) {
       throw const UnauthorizedException();
     }else if (response.statusCode == 404){
-      throw const NotFountException();
+      throw const NotFoundtException();
     }else if (response.statusCode == 500){
       throw  ServerException('error interno de servidor',statusCode: response.statusCode);
     }else if(response.statusCode < 200 || response.statusCode > 300){

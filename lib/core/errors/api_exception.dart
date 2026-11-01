@@ -7,8 +7,8 @@ sealed class AppException implements Exception {
   String toString() => '$runtimeType : $message';
 }
 
-class NetException extends AppException {
-  const NetException({this.statusCode,String message = 'Revisa tu conexión a Internet',}) : super(message);
+class NetworkException extends AppException {
+  const NetworkException({this.statusCode,String message = 'Revisa tu conexión a Internet',}) : super(message);
 
   final int? statusCode;
 }
@@ -29,6 +29,6 @@ class UnauthorizedException extends AppException {
   ]);
 }
 
-class NotFountException extends AppException {
-  const NotFountException([super.message = 'Recurso no Encontrado']);
+class NotFoundtException extends AppException {
+  const NotFoundtException([super.message = 'Recurso no Encontrado']);
 }
