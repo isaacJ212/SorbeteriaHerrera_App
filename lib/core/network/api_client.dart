@@ -51,7 +51,11 @@ class ApiClient {
     bool authorized = false,
     Map<String, dynamic>? queryParameters,
   }) async {
-    Uri uri = Uri.parse(baseUrl + path);
+    final String normalizedPath = path.startsWith('http://') || path.startsWith('https://')
+        ? path
+        : '$baseUrl$path';
+
+    Uri uri = Uri.parse(normalizedPath);
     if (queryParameters != null) {
       final Map<String, String> stringQuery = queryParameters.map(
         (key, value) => MapEntry(key, value.toString()),
@@ -83,11 +87,11 @@ class ApiClient {
     try {
       response = await _client
           .send(request)
-          .timeout(const Duration(seconds: 10))
+          .timeout(const Duration(seconds: 30))
           .then(http.Response.fromStream);
     } on TimeoutException {
       throw NetworkException (statusCode: 408, message: 'La conexion tardo demasiado.');
-    } on http.ClientException {
+    } on http.ClientException catch (e) {
       throw NetworkException();
     }
 
