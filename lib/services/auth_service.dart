@@ -12,13 +12,12 @@ class AuthService {
   AuthService(this._authRepository, this._tokenRepository);
 
   Future<UsuarioResponseModel>login (String userName, String password ) async{
-    print('🔑 [DEBUG-SERVICE] Intentando login con usuario: $userName');
+
 
     final trimmedUserName = userName.trim();
     final trimmedPassword = password.trim();
 
     if (trimmedUserName.isEmpty || trimmedPassword.isEmpty) {
-      print('⚠️ [DEBUG-SERVICE] Usuario o contraseña vacío');
       throw const FormatException('El correo y la contraseña no pueden ir vacios');
     }
 
