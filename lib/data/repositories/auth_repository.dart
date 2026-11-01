@@ -14,7 +14,11 @@ class AuthRepository {
   AuthRepository({required this._apiClient});
 
   Future<TokenModel> login(String userName, String password) async{
-    final response = await _apiClient.post(ApiConst.login, body: {'userName': userName, 'Password':password }, authorized: false);
+    final response = await _apiClient.post(
+      ApiConst.login,
+      body: {'userName': userName, 'Password': password},
+      authorized: false,
+    );
 
     final json = response.jsonBody;
 
