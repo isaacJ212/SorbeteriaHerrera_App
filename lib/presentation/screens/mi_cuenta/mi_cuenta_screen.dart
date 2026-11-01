@@ -1,38 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:herrera_app/data/models/usuario_models/usuario_model.dart';
+import 'package:herrera_app/presentation/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/app_bar.dart';
 import '../detalle_usuario/widgets/detalle_usuario_widgets.dart';
 
-class MiCuentaScreen extends StatelessWidget {
+class MiCuentaScreen extends StatefulWidget {
   const MiCuentaScreen({super.key});
 
   @override
+  State<MiCuentaScreen> createState() => _MiCuentaScreenState();
+}
+
+class _MiCuentaScreenState extends State<MiCuentaScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final auth = context.read<AuthProvider>();
+      if (auth.currentUser == null && auth.isAuthenticated) {
+        auth.checkSession();
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: const AppAppBar(title: 'Mi cuenta', showBackButton: true),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 24, 16, 28),
-        children: [
-          _buildProfileCard(),
-          const SizedBox(height: 24),
-          const DetalleTituloSeccion(titulo: 'INFORMACIÓN PERSONAL'),
-          const SizedBox(height: 10),
-          _informacion(),
-          const SizedBox(height: 24),
-          const DetalleTituloSeccion(titulo: 'PERMISOS OPERATIVOS'),
-          const SizedBox(height: 10),
-          _permisos(),
-          const SizedBox(height: 24),
-          const DetalleTituloSeccion(titulo: 'ACTIVIDAD RECIENTE'),
-          const SizedBox(height: 10),
-          _actividad(),
-        ],
-      ),
+    return Consumer<AuthProvider>(
+      builder: (context, auth, _) {
+        final user = auth.currentUser;
+
+        if (user == null) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        return Scaffold(
+          backgroundColor: AppColors.background,
+          appBar: const AppAppBar(title: 'Mi cuenta', showBackButton: true),
+          body: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 24, 16, 28),
+            children: [
+              _buildProfileCard(user),
+              const SizedBox(height: 24),
+              const DetalleTituloSeccion(titulo: 'INFORMACIÓN PERSONAL'),
+              const SizedBox(height: 10),
+              _informacion(user),
+              const SizedBox(height: 24),
+              const DetalleTituloSeccion(titulo: 'PERMISOS OPERATIVOS'),
+              const SizedBox(height: 10),
+              _permisos(user.roles),
+              const SizedBox(height: 24),
+              const DetalleTituloSeccion(titulo: 'ACTIVIDAD RECIENTE'),
+              const SizedBox(height: 10),
+              _actividad(),
+            ],
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildProfileCard() {
+  Widget _buildProfileCard(UsuarioResponseModel user) {
+    final iniciales = user.userName.trim().isNotEmpty
+        ? user.userName.trim().split(RegExp(r'\s+')).take(2).map((part) => part[0].toUpperCase()).join()
+        : 'U';
+    final rolPrincipal = user.roles.isNotEmpty ? user.roles.first : 'Sin Rol';
+
     return DetallePanel(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,27 +78,19 @@ class MiCuentaScreen extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(14),
-                child: Image.network(
-                  'https://i.pinimg.com/564x/9d/6b/9d/9d6b9db2dcb0526a09b89fb35d075c72.jpg',
+                child: Container(
                   width: 60,
                   height: 60,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      width: 60,
-                      height: 60,
-                      alignment: Alignment.center,
-                      color: AppColors.cardBackground,
-                      child: const Text(
-                        'IJ',
-                        style: TextStyle(
-                          color: AppColors.primaryText,
-                          fontSize: 22,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    );
-                  },
+                  alignment: Alignment.center,
+                  color: AppColors.cardBackground,
+                  child: Text(
+                    iniciales,
+                    style: const TextStyle(
+                      color: AppColors.primaryText,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(width: 14),
@@ -72,9 +100,9 @@ class MiCuentaScreen extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        const Text(
-                          'Isaac Jimenez',
-                          style: TextStyle(
+                        Text(
+                          user.userName,
+                          style: const TextStyle(
                             color: AppColors.primaryText,
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
@@ -90,9 +118,9 @@ class MiCuentaScreen extends StatelessWidget {
                             color: const Color(0xFF95F1D0),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Text(
-                            'Admin',
-                            style: TextStyle(
+                          child: Text(
+                            rolPrincipal,
+                            style: const TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w600,
                               color: Color(0xFF007057),
@@ -102,9 +130,9 @@ class MiCuentaScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 4),
-                    const Text(
-                      'Administrador General',
-                      style: TextStyle(
+                    Text(
+                      user.isActive ? 'Usuario activo' : 'Usuario inactivo',
+                      style: const TextStyle(
                         color: AppColors.primary,
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
@@ -126,10 +154,13 @@ class MiCuentaScreen extends StatelessWidget {
                 color: AppColors.textSecondary,
               ),
               const SizedBox(width: 8),
-              const Expanded(
+              Expanded(
                 child: Text(
-                  'admin@sorbeteriaHerrera.com',
-                  style: TextStyle(color: AppColors.primaryText, fontSize: 13),
+                  user.email,
+                  style: const TextStyle(
+                    color: AppColors.primaryText,
+                    fontSize: 13,
+                  ),
                 ),
               ),
               Container(
@@ -141,14 +172,14 @@ class MiCuentaScreen extends StatelessWidget {
                   color: const Color(0xFF95F1D0).withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.circle, size: 8, color: Color(0xFF007057)),
-                    SizedBox(width: 6),
+                    const Icon(Icons.circle, size: 8, color: Color(0xFF007057)),
+                    const SizedBox(width: 6),
                     Text(
-                      'Turno Activo',
-                      style: TextStyle(
+                      user.isActive ? 'Activo' : 'Inactivo',
+                      style: const TextStyle(
                         color: Color(0xFF007057),
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
@@ -164,58 +195,53 @@ class MiCuentaScreen extends StatelessWidget {
     );
   }
 
-  Widget _informacion() {
-    return const DetallePanel(
+  Widget _informacion(UsuarioResponseModel user) {
+    return DetallePanel(
       child: Column(
         children: [
           DetalleDato(
-            icono: Icons.phone_outlined,
-            etiqueta: 'Teléfono directo',
-            valor: '8159-4717',
+            icono: Icons.person_outline,
+            etiqueta: 'Usuario',
+            valor: user.userName,
           ),
-          Divider(height: 24, color: AppColors.cardBackground),
+          const Divider(height: 24, color: AppColors.cardBackground),
           DetalleDato(
-            icono: Icons.calendar_today_outlined,
-            etiqueta: 'Fecha de inicio',
-            valor: '15/09/2026',
+            icono: Icons.email_outlined,
+            etiqueta: 'Correo',
+            valor: user.email,
           ),
-          Divider(height: 24, color: AppColors.cardBackground),
+          const Divider(height: 24, color: AppColors.cardBackground),
           DetalleDato(
-            icono: Icons.store_outlined,
-            etiqueta: 'Sucursal',
-            valor: 'Central Carazo',
+            icono: Icons.verified_user_outlined,
+            etiqueta: 'Estado',
+            valor: user.isActive ? 'Activo' : 'Inactivo',
           ),
-          Divider(height: 24, color: AppColors.cardBackground),
+          const Divider(height: 24, color: AppColors.cardBackground),
           DetalleDato(
-            icono: Icons.schedule_outlined,
-            etiqueta: 'Turno',
-            valor: 'Vespertino',
+            icono: Icons.shield_outlined,
+            etiqueta: 'Roles',
+            valor: user.roles.isEmpty ? 'Sin roles' : user.roles.join(', '),
           ),
         ],
       ),
     );
   }
 
-  Widget _permisos() {
-    return const DetallePanel(
+  Widget _permisos(List<String> roles) {
+    final permisos = roles.isEmpty ? ['Sin Rol'] : roles;
+
+    return DetallePanel(
       child: Wrap(
         spacing: 8,
         runSpacing: 8,
-        children: [
-          DetallePermiso(
-            icono: Icons.point_of_sale,
-            texto: 'Ventas en mostrador',
-          ),
-          DetallePermiso(
-            icono: Icons.inventory_2_outlined,
-            texto: 'Consulta de inventario',
-          ),
-          DetallePermiso(
-            icono: Icons.edit_document,
-            texto: 'Gestión de sistema',
-          ),
-          DetallePermiso(icono: Icons.lock_outline, texto: 'Cierre de caja'),
-        ],
+        children: permisos
+            .map(
+              (rol) => DetallePermiso(
+                icono: Icons.security_outlined,
+                texto: rol,
+              ),
+            )
+            .toList(),
       ),
     );
   }
