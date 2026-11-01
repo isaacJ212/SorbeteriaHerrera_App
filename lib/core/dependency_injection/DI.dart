@@ -26,5 +26,5 @@ void setupDependencies() {
 
   getIt.registerFactory<DashboardProvider>(
     () => DashboardProvider(getIt<DashboardServices>()));
-  )
+
 }

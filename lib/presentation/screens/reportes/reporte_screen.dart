@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'widgets/reportes_cards.dart';
-import '../../widgets/bottom_navbar.dart';
-import '../../widgets/app_bar.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/inventario_provider.dart';
 import '../../routes/app_routes.dart';
 import '../../theme/app_colors.dart';
+import '../../widgets/app_bar.dart';
+import '../../widgets/bottom_navbar.dart';
+import 'widgets/reportes_cards.dart';
 
 class ReportesScreen extends StatefulWidget {
   const ReportesScreen({super.key});
@@ -14,6 +17,16 @@ class ReportesScreen extends StatefulWidget {
 
 class _ReportesScreenState extends State<ReportesScreen> {
   int _tabActual = 3;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<InventarioProvider>().cargarEstadisticas();
+      }
+    });
+  }
 
   void _mostrarSnack(String mensaje) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -43,6 +56,9 @@ class _ReportesScreenState extends State<ReportesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final inventario = context.watch<InventarioProvider>();
+    final estadisticas = inventario.estadisticas;
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppAppBar(
@@ -96,7 +112,7 @@ class _ReportesScreenState extends State<ReportesScreen> {
             // Card 1: Reporte de Ventas
             CardReportePrincipal(
               titulo: 'Reporte de Ventas',
-              badgeTexto: '+2550 CS este mes',
+
               ultimaActualizacion: 'Hace 15 dias.',
               onTapVerReporte: () {
                 Navigator.pushNamed(context, AppRoutes.ventas);
@@ -125,14 +141,22 @@ class _ReportesScreenState extends State<ReportesScreen> {
             const SizedBox(height: 14),
 
             // Tarjetas secundarias (2 columnas)
+            if (inventario.viewStatus == InventarioViewStatus.error) ...[
+              Text(
+                inventario.errorMessage,
+                style: const TextStyle(color: Colors.red),
+              ),
+              const SizedBox(height: 8),
+            ],
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: CardReporteSecundario(
-                    titulo: 'Ocupacion\nde Inventario',
-                    descripcion: 'Visualiza\nEstado de La\nBodega',
-                    actualizacion: 'Actualizado hace 7 dias',
+                    titulo: 'Productos con\nstock bajo',
+                    descripcion: estadisticas == null
+                        ? 'Cargando...'
+                        : '${estadisticas.lowStockProducts} productos\nrequieren reposición',
                     colorFondoIcono: const Color(0xFFFFF8D6),
                     colorIcono: const Color(0xFFD9A000),
                     onTap: () {
@@ -143,13 +167,14 @@ class _ReportesScreenState extends State<ReportesScreen> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: CardReporteSecundario(
-                    titulo: 'Ventas por\nProducto',
-                    descripcion: 'Comparación\ndel rendimiento',
-                    actualizacion: 'Actualizado hoy',
+                    titulo: 'Sabor más\nvendido',
+                    descripcion: estadisticas?.bestSellingFlavor == null
+                        ? 'Sin ventas\nregistradas'
+                        : '${estadisticas!.bestSellingFlavor!.flavorName}\n${estadisticas.bestSellingFlavor!.quantitySold} unidades',
                     colorFondoIcono: const Color(0xFFE8F0FE),
                     colorIcono: const Color(0xFF3B82F6),
                     onTap: () {
-                      Navigator.pushNamed(context, AppRoutes.ventas);
+                      Navigator.pushNamed(context, AppRoutes.reporteInventario);
                     },
                   ),
                 ),

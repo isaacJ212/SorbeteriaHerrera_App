@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
-import 'presentation/routes/app_router.dart';
-import 'presentation/routes/app_routes.dart';
+
 import 'core/dependency_injection/service_locator.dart';
 import 'presentation/providers/dashboard_provider.dart';
+import 'presentation/providers/inventario_provider.dart';
+import 'presentation/routes/app_router.dart';
+import 'presentation/routes/app_routes.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
 
-  await dotenv.load(fileName: '.env');
+  //await dotenv.load(fileName: '.env');
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => sl<DashboardProvider>(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => sl<DashboardProvider>()),
+        ChangeNotifierProvider(create: (_) => sl<InventarioProvider>()),
+      ],
       child: const MyApp(),
     ),
   );

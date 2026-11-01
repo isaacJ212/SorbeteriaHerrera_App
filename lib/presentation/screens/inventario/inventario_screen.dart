@@ -1,11 +1,16 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-import '../../../data/models/producto_inventario/producto_inventario.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../data/models/inventario_models/inventario_models.dart';
+import '../../providers/inventario_provider.dart';
 import '../../routes/app_routes.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/bottom_navbar.dart';
+import '../../widgets/empty_list_message.dart';
 import 'widgets/fila_producto_inventario.dart';
 
 class InventarioScreen extends StatefulWidget {
@@ -17,13 +22,31 @@ class InventarioScreen extends StatefulWidget {
 class _InventarioScreenState extends State<InventarioScreen> {
   int _tabActual = 2;
   String _filtroActual = 'Todos';
+  String _sabor = '';
+  Timer? _debounceBusqueda;
 
-  final List<ProductoInventarioModel> _productos = const [
-    ProductoInventarioModel('Helado de chocolate', '3', 'C\$ 120', true),
-    ProductoInventarioModel('Jarabe de fresa', '2', 'C\$ 85', true),
-    ProductoInventarioModel('Helado de vainilla', '18', 'C\$ 110', false),
-    ProductoInventarioModel('Conos', '42', 'C\$ 5', false),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) context.read<InventarioProvider>().cargarDatos();
+    });
+  }
+
+  @override
+  void dispose() {
+    _debounceBusqueda?.cancel();
+    super.dispose();
+  }
+
+  void _buscarPorNombre(String value) {
+    _debounceBusqueda?.cancel();
+    _debounceBusqueda = Timer(const Duration(milliseconds: 400), () {
+      if (mounted) {
+        context.read<InventarioProvider>().cargarProductos(search: value);
+      }
+    });
+  }
 
   void _mostrarSnack(String mensaje) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -52,6 +75,8 @@ class _InventarioScreenState extends State<InventarioScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final inventario = context.watch<InventarioProvider>();
+
     return Scaffold(
       backgroundColor: const Color(0xFFF3F4F5),
       appBar: AppAppBar(
@@ -84,7 +109,7 @@ class _InventarioScreenState extends State<InventarioScreen> {
           children: [
             _filtros(),
             const SizedBox(height: 16),
-            _ventasHoy(),
+            _ventasHoy(inventario.ventasDiarias),
             const SizedBox(height: 12),
             _buscadores(),
             const SizedBox(height: 16),
@@ -97,7 +122,12 @@ class _InventarioScreenState extends State<InventarioScreen> {
               ),
             ),
             const SizedBox(height: 8),
-            _tablaInventario(),
+            if (inventario.viewStatus == InventarioViewStatus.loading)
+              const Center(child: CircularProgressIndicator())
+            else if (inventario.viewStatus == InventarioViewStatus.error)
+              Center(child: Text(inventario.errorMessage))
+            else
+              _tablaInventario(inventario.productos),
           ],
         ),
       ),
@@ -108,11 +138,16 @@ class _InventarioScreenState extends State<InventarioScreen> {
     );
   }
 
-  Widget _tablaInventario() {
-    final productos = _productos.where((producto) {
-      if (_filtroActual == 'Stock bajo') return producto.stockBajo;
-      if (_filtroActual == 'Disponibles') return !producto.stockBajo;
-      if (_filtroActual == 'Agotados') return producto.stock == '0';
+  Widget _tablaInventario(List<InventarioResponseGeneralModels> inventario) {
+    final productos = inventario.where((producto) {
+      final sabor = producto.flavorName.toLowerCase();
+      if (!sabor.contains(_sabor)) return false;
+      if (_filtroActual == 'Stock bajo') {
+        // ponytail: umbral temporal; usar minimumStock cuando el listado lo exponga.
+        return producto.totalStock > 0 && producto.totalStock <= 5;
+      }
+      if (_filtroActual == 'Disponibles') return producto.totalStock > 0;
+      if (_filtroActual == 'Agotados') return producto.totalStock == 0;
       return true;
     }).toList();
 
@@ -151,21 +186,24 @@ class _InventarioScreenState extends State<InventarioScreen> {
             ),
           ),
 
+          if (productos.isEmpty)
+            const EmptyListMessage(
+              message: 'No hay productos en el inventario',
+            ),
+
           for (int index = 0; index < productos.length; index++) ...[
             FilaProductoInventario(
-              nombre: productos[index].nombre,
-              stock: productos[index].stock,
-              precio: productos[index].precio,
-              stockBajo: productos[index].stockBajo,
+              nombre: productos[index].productName,
+              stock: '${productos[index].totalStock}',
+              precio: productos[index].retailPrice == null
+                  ? 'Sin precio'
+                  : 'C\$ ${productos[index].retailPrice!.toStringAsFixed(2)}',
+              stockBajo: productos[index].totalStock <= 5,
               onVerDetalle: () {
                 Navigator.pushNamed(
                   context,
                   AppRoutes.detalleProducto,
-                  arguments: {
-                    'nombre': productos[index].nombre,
-                    'stock': productos[index].stock,
-                    'precio': productos[index].precio,
-                  },
+                  arguments: productos[index].productId,
                 );
               },
             ),
@@ -206,7 +244,7 @@ class _InventarioScreenState extends State<InventarioScreen> {
     );
   }
 
-  Widget _ventasHoy() {
+  Widget _ventasHoy(double total) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
@@ -222,10 +260,10 @@ class _InventarioScreenState extends State<InventarioScreen> {
           ),
         ],
       ),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          const Row(
             children: [
               Icon(Icons.show_chart, size: 14, color: Color(0xFF64736D)),
               SizedBox(width: 6),
@@ -235,10 +273,10 @@ class _InventarioScreenState extends State<InventarioScreen> {
               ),
             ],
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
-            'C\$ 2,605',
-            style: TextStyle(
+            'C\$ ${total.toStringAsFixed(2)}',
+            style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w800,
               color: Color(0xFF10251F),
@@ -252,11 +290,16 @@ class _InventarioScreenState extends State<InventarioScreen> {
   Widget _buscadores() {
     return Column(
       children: [
-        _campoBusqueda('Buscar productos'),
+        _campoBusqueda('Buscar productos', _buscarPorNombre),
         const SizedBox(height: 8),
         Row(
           children: [
-            Expanded(child: _campoBusqueda('Buscar por sabor')),
+            Expanded(
+              child: _campoBusqueda(
+                'Buscar por sabor',
+                (value) => setState(() => _sabor = value.toLowerCase()),
+              ),
+            ),
             const SizedBox(width: 8),
             SizedBox(
               height: 40,
@@ -281,10 +324,11 @@ class _InventarioScreenState extends State<InventarioScreen> {
     );
   }
 
-  Widget _campoBusqueda(String texto) {
+  Widget _campoBusqueda(String texto, ValueChanged<String> onChanged) {
     return SizedBox(
       height: 40,
       child: TextField(
+        onChanged: onChanged,
         style: const TextStyle(fontSize: 12),
         decoration: InputDecoration(
           hintText: texto,

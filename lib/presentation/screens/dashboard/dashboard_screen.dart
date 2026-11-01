@@ -2,14 +2,15 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../providers/dashboard_provider.dart';
 
+import '../../providers/dashboard_provider.dart';
 import '../../routes/app_routes.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/bottom_navbar.dart';
 import '../../widgets/dashboard/alert_card.dart';
 import '../../widgets/dashboard/ventas_card.dart';
+import '../../widgets/empty_list_message.dart';
 import 'widgets/venta_reciente_card.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -150,7 +151,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
             if (dashboard.viewStatus == ViewStatus.loading)
               const Center(child: CircularProgressIndicator())
             else if (dashboard.viewStatus == ViewStatus.error)
-              Text(dashboard.errorMessage)
+              Text(
+                "Ha ocurrido un error inesperado al cargar la pantalla de incio, por favor intente mas tarde.",
+              )
+            else if (dashboard.ventas.isEmpty)
+              const EmptyListMessage(
+                message: 'No ha habido actividad en el sistema',
+              )
             else
               ...dashboard.ventas
                   .take(3)

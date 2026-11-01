@@ -61,7 +61,7 @@ class ApiClient {
     //aqui faltaria la implementacion del storage de la sesion de la api
     final TokenModel? token = await authTokenProvider?.call();
 
-    if (authorized && token != null && token.isAccessTokenExpired) {
+    if (authorized && token != null && !token.isAccessTokenExpired) {
       headers["Authorization"] = "Bearer ${token.accessToken}";
     }
 
@@ -89,23 +89,30 @@ class ApiClient {
 
     //manejo de statuscode error
 
+    final errorMessage = _errorMessage(response);
+
     if (response.statusCode == 401) {
       throw const UnauthorizedException();
     } else if (response.statusCode == 404) {
       throw const NotFountException();
-    } else if (response.statusCode == 500) {
+    } else if (response.statusCode < 200 || response.statusCode >= 300) {
       throw ServerException(
-        'error interno de servidor',
-        statusCode: response.statusCode,
-      );
-    } else if (response.statusCode < 200 || response.statusCode > 300) {
-      throw ServerException(
-        'error en le peticion',
+        'HTTP ${response.statusCode}: $errorMessage',
         statusCode: response.statusCode,
       );
     }
 
     return HttpResponse.fromHttpResponse(response);
+  }
+
+  String _errorMessage(http.Response response) {
+    try {
+      final body = jsonDecode(response.body);
+      if (body is Map<String, dynamic> && body['message'] is String) {
+        return body['message'] as String;
+      }
+    } catch (_) {}
+    return response.body.isEmpty ? 'La petición falló' : response.body;
   }
 
   void dispose() => _client.close();
