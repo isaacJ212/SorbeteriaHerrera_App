@@ -27,15 +27,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Sorbeteria Herrera',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      initialRoute: AppRoutes.login,
-      onGenerateRoute: AppRouter.onGenerateRoute,
-      onUnknownRoute: AppRouter.onGenerateRoute,
-      debugShowCheckedModeBanner: false,
+    return Consumer<AuthProvider>(
+      builder: (context, authProvider, _) {
+        final bool isAuthenticated = authProvider.authStatus == AuthStatus.authenticated;
+
+        return MaterialApp(
+          title: 'Sorbeteria Herrera',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          ),
+          initialRoute: isAuthenticated ? AppRoutes.dashboard : AppRoutes.login,
+          onGenerateRoute: AppRouter.onGenerateRoute,
+          onUnknownRoute: AppRouter.onGenerateRoute,
+          debugShowCheckedModeBanner: false,
+        );
+      },
     );
   }
 }
