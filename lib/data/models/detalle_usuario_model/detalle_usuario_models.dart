@@ -7,7 +7,7 @@ class DetalleUsuarioResponseModels {
   final String userName;
   final String email;
   final String dni;
-  final String firsName;
+  final String firstName;
   final String lastName;
   final bool isActive;
   final List<String> roles;
@@ -17,7 +17,7 @@ class DetalleUsuarioResponseModels {
     required this.userName,
     required this.email,
     required this.dni,
-    required this.firsName,
+    required this.firstName,
     required this.lastName,
     required this.isActive,
     required this.roles
@@ -31,7 +31,7 @@ class DetalleUsuarioResponseModels {
       userName: json['userName'] as String, 
       email: json['email'] as String, 
       dni: json['dni'] as String, 
-      firsName: json['firsName'] as String, 
+      firstName: json['firstName'] as String, 
       lastName: json['lastName'] as String, 
       isActive: json['isActive'] as bool, 
       roles: (json['roles'] as List<dynamic>).map((role) => role as String).toList()
@@ -44,7 +44,7 @@ class DetalleUsuarioResponseModels {
       'userName': userName, 
       'email': email, 
       'dni': dni, 
-      'firsName': firsName, 
+      'firstName': firstName, 
       'lastName': lastName, 'isActive': isActive, 
       'roles': roles
     };
