@@ -1,9 +1,13 @@
+import 'dart:collection';
+
+import 'package:flutter/material.dart';
+
 class DetalleUsuarioResponseModels {
   final int id;
   final String userName;
   final String email;
   final String dni;
-  final String firsName;
+  final String firstName;
   final String lastName;
   final bool isActive;
   final List<String> roles;
@@ -13,13 +17,36 @@ class DetalleUsuarioResponseModels {
     required this.userName,
     required this.email,
     required this.dni,
-    required this.firsName,
+    required this.firstName,
     required this.lastName,
     required this.isActive,
     required this.roles
   });
-}
 
-/// campo que nos hacen que vengan en el response
-///  numero de telefoino, turno, los persimos que posee el usaario
-/// y los logs/activcidad reciente
+
+
+  static DetalleUsuarioResponseModels fromJson(Map<String, dynamic>json){
+    return DetalleUsuarioResponseModels(
+      id: json['id'] as int, 
+      userName: json['userName'] as String, 
+      email: json['email'] as String, 
+      dni: json['dni'] as String, 
+      firstName: json['firstName'] as String, 
+      lastName: json['lastName'] as String, 
+      isActive: json['isActive'] as bool, 
+      roles: (json['roles'] as List<dynamic>).map((role) => role as String).toList()
+    );
+  }
+
+  Map<String, dynamic> toJson(){
+    return {
+      'id': id, 
+      'userName': userName, 
+      'email': email, 
+      'dni': dni, 
+      'firstName': firstName, 
+      'lastName': lastName, 'isActive': isActive, 
+      'roles': roles
+    };
+  }
+}
