@@ -32,8 +32,8 @@ class UnauthorizedException extends AppException {
   ]);
 }
 
-class NotFountException extends AppException {
-  const NotFountException([super.message = 'Recurso no Encontrado']);
+class NotFoundtException extends AppException {
+  const NotFoundtException([super.message = 'Recurso no Encontrado']);
 }
 
 class BadRequestException extends AppException {

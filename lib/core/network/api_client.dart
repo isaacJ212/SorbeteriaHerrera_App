@@ -76,7 +76,7 @@ class ApiClient {
     try {
       response = await _client
           .send(request)
-          .timeout(const Duration(seconds: 10))
+          .timeout(const Duration(seconds: 30))
           .then(http.Response.fromStream);
     } on TimeoutException {
       throw NetException(
