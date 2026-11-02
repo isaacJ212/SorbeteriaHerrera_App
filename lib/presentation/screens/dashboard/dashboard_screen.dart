@@ -1,12 +1,17 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
-import '../../widgets/dashboard/alert_card.dart';
-import '../../widgets/dashboard/ventas_card.dart';
-import 'widgets/venta_reciente_card.dart';
-import '../../widgets/bottom_navbar.dart';
-import '../../widgets/app_bar.dart';
-import '../../../data/models/dashboard_models/recent_sale.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/dashboard_provider.dart';
 import '../../routes/app_routes.dart';
 import '../../theme/app_colors.dart';
+import '../../widgets/app_bar.dart';
+import '../../widgets/bottom_navbar.dart';
+import '../../widgets/dashboard/alert_card.dart';
+import '../../widgets/dashboard/ventas_card.dart';
+import '../../widgets/empty_list_message.dart';
+import 'widgets/venta_reciente_card.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -18,62 +23,13 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int _tabActual = 0;
 
-  final List<RecentSale> _ventas = const [
-    RecentSale(
-      fecha: '8-21, 3:00pm',
-      usuario: 'Juan Sanchez',
-      cliente: 'Juan Perez',
-      total: '90 C\$',
-    ),
-    RecentSale(
-      fecha: '8-21, 1:30pm',
-      usuario: 'Maria Lopez',
-      cliente: 'Ana Torres',
-      total: '150 C\$',
-    ),
-    RecentSale(
-      fecha: '8-21, 12:00pm',
-      usuario: 'Carlos Ruiz',
-      cliente: 'Pedro Gomez',
-      total: '245 C\$',
-    ),
-    RecentSale(
-      fecha: '8-20, 5:45pm',
-      usuario: 'Juan Sanchez',
-      cliente: 'Luis Martinez',
-      total: '78 C\$',
-    ),
-    RecentSale(
-      fecha: '8-20, 4:00pm',
-      usuario: 'Maria Lopez',
-      cliente: 'Rosa Flores',
-      total: '185 C\$',
-    ),
-    RecentSale(
-      fecha: '8-20, 2:15pm',
-      usuario: 'Carlos Ruiz',
-      cliente: 'Juan Perez',
-      total: '185 C\$',
-    ),
-    RecentSale(
-      fecha: '8-19, 11:00am',
-      usuario: 'Juan Sanchez',
-      cliente: 'Sofía Reyes',
-      total: '65 C\$',
-    ),
-    RecentSale(
-      fecha: '8-19, 9:30am',
-      usuario: 'Maria Lopez',
-      cliente: 'Diego Mora',
-      total: '410 C\$',
-    ),
-    RecentSale(
-      fecha: '8-19, 9:00am',
-      usuario: 'Carlos Ruiz',
-      cliente: 'Carmen Díaz',
-      total: '127 C\$',
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) context.read<DashboardProvider>().fetchDashboard();
+    });
+  }
 
   void _mostrarSnack(String mensaje) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -103,6 +59,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final dashboard = context.watch<DashboardProvider>();
+    final cards = dashboard.dashboardCards;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF3F4F5), // fondo gris del diseño
       appBar: AppAppBar(
@@ -148,6 +107,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             const SizedBox(height: 16),
             VentasCard(
+              total: cards?.totalVentasSemana ?? 0,
+              crecimiento: cards?.crecimientoVentasSemana ?? 0,
               onTap: () => Navigator.pushNamed(context, AppRoutes.ventas),
             ),
             const SizedBox(height: 12),
@@ -156,7 +117,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Expanded(
                   child: AlertCard(
                     titulo: 'Alertas de stock',
-                    cantidad: '3 PRODUCTOS',
+                    cantidad: '${cards?.alertasStock ?? 0} PRODUCTOS',
                     colorFondo: const Color(0xFFFFF8C9),
                     colorBorde: const Color(0xFFE7D76A),
                     icono: Icons.warning_amber_outlined,
@@ -168,7 +129,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Expanded(
                   child: AlertCard(
                     titulo: 'Pedidos pendientes',
-                    cantidad: '10 PENDIENTES',
+                    cantidad: '${cards?.pedidosPendientes ?? 0} PENDIENTES',
                     colorFondo: Colors.white,
                     colorBorde: const Color(0xFFE1E1E1),
                     onTap: () =>
@@ -187,15 +148,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            ..._ventas
-                .take(3)
-                .map(
-                  (venta) => VentaRecienteDashboardCard(
-                    venta: venta,
-                    onTap: () =>
-                        Navigator.pushNamed(context, AppRoutes.detalleVenta),
+            if (dashboard.viewStatus == ViewStatus.loading)
+              const Center(child: CircularProgressIndicator())
+            else if (dashboard.viewStatus == ViewStatus.error)
+              Text(
+                "Ha ocurrido un error inesperado al cargar la pantalla de incio, por favor intente mas tarde.",
+              )
+            else if (dashboard.ventas.isEmpty)
+              const EmptyListMessage(
+                message: 'No ha habido actividad en el sistema',
+              )
+            else
+              ...dashboard.ventas
+                  .take(3)
+                  .map(
+                    (venta) => VentaRecienteDashboardCard(
+                      venta: venta,
+                      onTap: () =>
+                          Navigator.pushNamed(context, AppRoutes.detalleVenta),
+                    ),
                   ),
-                ),
           ],
         ),
       ),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../../../data/models/dashboard_models/recent_sale.dart';
+import 'package:herrera_app/data/models/ventas_models/ventas_models.dart';
+
 import '../../../widgets/boton_mirar_detalles.dart';
 
 class VentaRecienteDashboardCard extends StatelessWidget {
-  final RecentSale venta;
+  final VentasResponseModel venta;
   final VoidCallback? onTap;
 
   const VentaRecienteDashboardCard({
@@ -40,10 +41,10 @@ class VentaRecienteDashboardCard extends StatelessWidget {
                 children: [
                   const Text('Venta realizada', style: _estiloEncabezado),
                   const SizedBox(height: 4),
-                  Text(venta.fecha, style: _estiloCelda),
+                  Text(venta.saleDate, style: _estiloCelda),
                 ],
               ),
-              Text(venta.total, style: _estiloTotal),
+              Text(venta.total.toString(), style: _estiloTotal),
             ],
           ),
           const Padding(
@@ -52,8 +53,8 @@ class VentaRecienteDashboardCard extends StatelessWidget {
           ),
           Row(
             children: [
-              Expanded(child: _datoVenta('Usuario', venta.usuario)),
-              Expanded(child: _datoVenta('Cliente', venta.cliente)),
+              Expanded(child: _datoVenta('Tipo Venta', venta.saleTypeName)),
+              Expanded(child: _datoVenta('Cliente', venta.customerName)),
             ],
           ),
           if (onTap != null) ...[
