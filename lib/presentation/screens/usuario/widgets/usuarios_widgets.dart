@@ -273,8 +273,7 @@ class TarjetaUsuario extends StatelessWidget {
           ),
           if (onTap != null) ...[
             const SizedBox(height: 12),
-            BotonMirarDetalles(onPressed: onTap ?? () {
-              Navigator.pushNamed(context, AppRoutes.detalleUsuario, arguments: userId);           }),
+            BotonMirarDetalles(onPressed: onTap!)
           ],
         ],
       ),

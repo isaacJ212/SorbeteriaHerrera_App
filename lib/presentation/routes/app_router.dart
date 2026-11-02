@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:herrera_app/core/dependency_injection/DI.dart';
+import 'package:herrera_app/presentation/providers/userDetails_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../screens/dashboard/dashboard_screen.dart';
 import '../screens/detalle_producto/detalle_producto_screen.dart';
@@ -61,7 +64,13 @@ abstract class AppRouter {
         return MaterialPageRoute(builder: (_) => const MiCuentaScreen());
 
       case AppRoutes.detalleUsuario:
-        return MaterialPageRoute(builder: (_) => const DetalleUsuarioScreen());
+        final userId = settings.arguments as int? ?? 1;
+        return MaterialPageRoute(
+          builder: (_) => ChangeNotifierProvider(
+            create: (_) => getIt<UserdetailsProvider>()..loadUser(userId),
+            child: const DetalleUsuarioScreen(),
+          ),
+        );
 
       case AppRoutes.usuarios:
         return MaterialPageRoute(builder: (_) => const UsuarioScreen());
