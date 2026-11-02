@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:herrera_app/presentation/routes/app_router.dart';
+import 'package:herrera_app/presentation/routes/app_routes.dart';
 import '../../../theme/app_colors.dart';
 import '../../../widgets/boton_mirar_detalles.dart';
 
@@ -48,6 +50,8 @@ class TarjetaUsuario extends StatelessWidget {
   final Color colorAvatar;
   final VoidCallback? onTap;
 
+  final int userId;
+
   const TarjetaUsuario({
     super.key,
     required this.iniciales,
@@ -58,6 +62,10 @@ class TarjetaUsuario extends StatelessWidget {
     required this.ultimoAcceso,
     required this.activo,
     required this.colorAvatar,
+
+    required this.userId,
+    
+
     this.onTap,
   });
 
@@ -265,7 +273,8 @@ class TarjetaUsuario extends StatelessWidget {
           ),
           if (onTap != null) ...[
             const SizedBox(height: 12),
-            BotonMirarDetalles(onPressed: onTap!),
+            BotonMirarDetalles(onPressed: onTap ?? () {
+              Navigator.pushNamed(context, AppRoutes.detalleUsuario, arguments: userId);           }),
           ],
         ],
       ),

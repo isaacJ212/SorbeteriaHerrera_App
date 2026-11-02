@@ -73,7 +73,7 @@ class UsuarioScreen extends StatelessWidget {
             ultimoAcceso: 'Ayer 06:40 PM',
             activo: true,
             colorAvatar: AppColors.cardBackground,
-            onTap: () => Navigator.pushNamed(context, AppRoutes.detalleUsuario),
+            userId: 1,
           ),
           TarjetaUsuario(
             iniciales: 'RF',
@@ -84,7 +84,7 @@ class UsuarioScreen extends StatelessWidget {
             ultimoAcceso: '18/08/2026',
             activo: false,
             colorAvatar: AppColors.cardBackground,
-            onTap: () => Navigator.pushNamed(context, AppRoutes.detalleUsuario),
+            userId: 2,
           ),
           TarjetaUsuario(
             iniciales: 'PG',
@@ -95,7 +95,7 @@ class UsuarioScreen extends StatelessWidget {
             ultimoAcceso: '17/08/2026',
             activo: true,
             colorAvatar: AppColors.cardBackground,
-            onTap: () => Navigator.pushNamed(context, AppRoutes.detalleUsuario),
+            userId: 2003,
           ),
           TarjetaUsuario(
             iniciales: 'LH',
@@ -106,7 +106,7 @@ class UsuarioScreen extends StatelessWidget {
             ultimoAcceso: 'Hoy 07:30 AM',
             activo: true,
             colorAvatar: AppColors.cardBackground,
-            onTap: () => Navigator.pushNamed(context, AppRoutes.detalleUsuario),
+            userId: 1002,
           ),
         ],
       ),
