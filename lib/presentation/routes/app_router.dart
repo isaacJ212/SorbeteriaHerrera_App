@@ -45,7 +45,10 @@ abstract class AppRouter {
         );
 
       case AppRoutes.detalleVenta:
-        return MaterialPageRoute(builder: (_) => const DetalleDeVentaScreen());
+        final saleId = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => DetalleDeVentaScreen(saleId: saleId),
+        );
 
       // DESPUÉS
       case AppRoutes.reporteInventario:

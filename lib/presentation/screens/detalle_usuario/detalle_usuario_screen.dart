@@ -4,6 +4,7 @@ import 'package:herrera_app/presentation/providers/userDetails_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../widgets/app_bar.dart';
+import '../../widgets/error_retry_message.dart';
 import 'widgets/detalle_usuario_widgets.dart';
 import '../../theme/app_colors.dart';
 
@@ -27,11 +28,9 @@ class DetalleUsuarioScreen extends StatelessWidget {
           }
 
           if (provider.errorMessage != null) {
-            return Center(
-              child: Text(
-                provider.errorMessage!,
-                style: const TextStyle(color: AppColors.primaryText),
-              ),
+            return ErrorRetryMessage(
+              message: provider.errorMessage!,
+              onRetry: provider.retry,
             );
           }
 

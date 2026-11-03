@@ -7,6 +7,7 @@ import 'presentation/providers/auth_provider.dart';
 import 'presentation/providers/dashboard_provider.dart';
 import 'presentation/providers/inventario_provider.dart';
 import 'presentation/providers/usuario_provider.dart';
+import 'presentation/providers/ventas_provider.dart';
 import 'presentation/routes/app_router.dart';
 import 'presentation/routes/app_routes.dart';
 
@@ -26,6 +27,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => getIt<DashboardProvider>()),
         ChangeNotifierProvider(create: (_) => getIt<InventarioProvider>()),
         ChangeNotifierProvider(create: (_) => getIt<UsuarioProvider>()),
+        ChangeNotifierProvider(create: (_) => getIt<VentasProvider>()),
       ],
       child: const MyApp(),
     ),

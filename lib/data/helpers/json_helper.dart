@@ -2,7 +2,7 @@ Map<String, dynamic> ensureJsonMap(Object? value) {
   if (value is Map<String, dynamic>) {
     return value;
   } else {
-    return Map<String, dynamic>();
+    return <String, dynamic>{};
   }
 }
 
@@ -12,24 +12,7 @@ String? readString(Map<String, dynamic> json, List<String> keys) {
     if (value != null) {
       return value.toString();
     }
-    return null;
   }
-
-  int? readInt(Map<String, dynamic> json, List<String> keys) {
-    for (final key in keys) {
-      final value = json[key];
-      if (value is int) {
-        return value;
-      }
-      if (value is num) {
-        return value.toInt();
-      }
-      if (value is String) {
-        return int.tryParse(value);
-      }
-    }
-  }
-
   return null;
 }
 

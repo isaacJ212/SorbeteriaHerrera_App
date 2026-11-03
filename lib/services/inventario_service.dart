@@ -17,8 +17,8 @@ class InventarioService {
   Future<DetalleInventarioModel> obtenerDetalle(int productId) =>
       _repository.obtenerDetalle(productId);
 
-  Future<double> obtenerIngresosMensuales() =>
-      _salesRepository.obtenerIngresosMensuales();
+  Future<double> obtenerVentasDiarias() =>
+      _salesRepository.obtenerVentasDiarias();
 
   Future<ReporteInventarioModel> obtenerEstadisticas() =>
       _repository.obtenerEstadisticas();

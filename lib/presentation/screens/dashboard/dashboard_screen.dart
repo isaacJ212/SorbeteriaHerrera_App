@@ -11,6 +11,7 @@ import '../../widgets/bottom_navbar.dart';
 import '../../widgets/dashboard/alert_card.dart';
 import '../../widgets/dashboard/ventas_card.dart';
 import '../../widgets/empty_list_message.dart';
+import '../../widgets/error_retry_message.dart';
 import 'widgets/venta_reciente_card.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -151,8 +152,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             if (dashboard.viewStatus == ViewStatus.loading)
               const Center(child: CircularProgressIndicator())
             else if (dashboard.viewStatus == ViewStatus.error)
-              Text(
-                "Ha ocurrido un error inesperado al cargar la pantalla de incio, por favor intente mas tarde.",
+              ErrorRetryMessage(
+                message: dashboard.errorMessage,
+                onRetry: dashboard.fetchDashboard,
               )
             else if (dashboard.ventas.isEmpty)
               const EmptyListMessage(
@@ -164,8 +166,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   .map(
                     (venta) => VentaRecienteDashboardCard(
                       venta: venta,
-                      onTap: () =>
-                          Navigator.pushNamed(context, AppRoutes.detalleVenta),
+                      onTap: () => Navigator.pushNamed(
+                        context,
+                        AppRoutes.detalleVenta,
+                        arguments: venta.id,
+                      ),
                     ),
                   ),
           ],

@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class TokenModel {
   final String accessToken;
   final DateTime accessTokenExpiresAt;
