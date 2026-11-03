@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
-import 'core/dependency_injection/service_locator.dart';
+import 'core/dependency_injection/DI.dart';
+import 'presentation/providers/auth_provider.dart';
 import 'presentation/providers/dashboard_provider.dart';
 import 'presentation/providers/inventario_provider.dart';
 import 'presentation/providers/usuario_provider.dart';
@@ -10,15 +12,20 @@ import 'presentation/routes/app_routes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setupLocator();
 
-  //await dotenv.load(fileName: '.env');
+  setupDependencies();
+  await dotenv.load(fileName: '.env');
+  await getIt<AuthProvider>().checkSession();
+
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => sl<DashboardProvider>()),
-        ChangeNotifierProvider(create: (_) => sl<InventarioProvider>()),
-        ChangeNotifierProvider(create: (_) => sl<UsuarioProvider>()),
+        ChangeNotifierProvider<AuthProvider>.value(
+          value: getIt<AuthProvider>(),
+        ),
+        ChangeNotifierProvider(create: (_) => getIt<DashboardProvider>()),
+        ChangeNotifierProvider(create: (_) => getIt<InventarioProvider>()),
+        ChangeNotifierProvider(create: (_) => getIt<UsuarioProvider>()),
       ],
       child: const MyApp(),
     ),
@@ -28,18 +35,24 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Sorbeteria Herrera',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      initialRoute: AppRoutes.login,
-      onGenerateRoute: AppRouter.onGenerateRoute,
-      onUnknownRoute: AppRouter.onGenerateRoute,
-      debugShowCheckedModeBanner: false,
+    return Consumer<AuthProvider>(
+      builder: (context, authProvider, _) {
+        final bool isAuthenticated =
+            authProvider.authStatus == AuthStatus.authenticated;
+
+        return MaterialApp(
+          title: 'Sorbeteria Herrera',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          ),
+          initialRoute: isAuthenticated ? AppRoutes.dashboard : AppRoutes.login,
+          onGenerateRoute: AppRouter.onGenerateRoute,
+          onUnknownRoute: AppRouter.onGenerateRoute,
+          debugShowCheckedModeBanner: false,
+        );
+      },
     );
   }
 }

@@ -5,48 +5,50 @@ class LoginRequestModel {
 
   const LoginRequestModel({required this.UserName, required this.Password});
 
-  Map<String, dynamic> toJson() => {'userName': UserName, 'Password':Password };
+  Map<String, dynamic> toJson() => {'userName': UserName, 'Password': Password};
 }
 
 // respose de el login
 
-class LoginResponseModel{
+class LoginResponseModel {
   final String token;
   final String userName;
-  final String fistName;
+  final String firstName;
   final String lastName;
   final String email;
   final List<String> roles;
+  final String expiresAt;
 
   const LoginResponseModel({
     required this.token,
     required this.userName,
-    required this.fistName,
+    required this.firstName,
     required this.lastName,
     required this.email,
-    required this.roles
+    required this.roles,
+    required this.expiresAt,
   });
 
-  static LoginResponseModel fromJson(Map<String, dynamic> json){
+  static LoginResponseModel fromJson(Map<String, dynamic> json) {
     return LoginResponseModel(
-      token: json['token'] as String, 
-      userName: json['userName'] as String, 
-      fistName: json['fistName'] as String, 
-      lastName: json['lastName'] as String, 
-      email: json['email'] as String, 
+      token: json['token'] as String,
+      userName: json['userName'] as String,
+      firstName: json['firstName'] as String,
+      lastName: json['lastName'] as String,
+      email: json['email'] as String,
       roles: (json['roles'] as List).map((role) => role as String).toList(),
+      expiresAt: json['expiredAt'] as String,
     );
   }
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
-      'token': token, 
-      'userName': userName, 
-      'fistName': fistName, 
-      'lastName': lastName, 
-      'email': email, 
-      'roles': roles
+      'token': token,
+      'userName': userName,
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+      'roles': roles,
     };
   }
- }
-
+}

@@ -24,8 +24,8 @@ class UsuarioResponseModel {
       id: json['id'] as int,
       userName: json['userName'] as String,
       email: json['email'] as String,
-      firstName: json['firstName'] as String,
-      lastName: json['lastName'] as String,
+      firstName: json['firstName'] as String? ?? '',
+      lastName: json['lastName'] as String? ?? '',
       isActive: json['isActive'] as bool,
       roles: (json['roles'] as List).map((role) => role as String).toList(),
       lastAccessAtUtc: json['lastAccessAtUtc'] is String

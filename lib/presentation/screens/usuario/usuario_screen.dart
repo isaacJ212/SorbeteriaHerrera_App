@@ -127,8 +127,11 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
                     ultimoAcceso: _ultimoAcceso(usuario.lastAccessAtUtc),
                     activo: usuario.isActive,
                     colorAvatar: AppColors.cardBackground,
-                    onTap: () =>
-                        Navigator.pushNamed(context, AppRoutes.detalleUsuario),
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      AppRoutes.detalleUsuario,
+                      arguments: usuario.id,
+                    ),
                   ),
                 ),
               ],

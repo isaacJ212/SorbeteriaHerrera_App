@@ -23,7 +23,7 @@ class ReporteInventarioModel {
           : SaborMasVendido.fromJson(
               json['bestSellingFlavor'] as Map<String, dynamic>,
             ),
-      productosRiesgo: (json['productsInRisk'] as List<dynamic>)
+      productosRiesgo: (json['productsInRisk'] as List<dynamic>? ?? const [])
           .map((item) => ProductoRiesgo.fromJson(item as Map<String, dynamic>))
           .toList(),
     );

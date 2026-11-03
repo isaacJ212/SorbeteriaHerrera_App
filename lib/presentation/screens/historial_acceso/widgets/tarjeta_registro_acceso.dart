@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:herrera_app/data/models/historial_acceso_models/historial_models.dart';
 import 'package:herrera_app/presentation/theme/app_colors.dart';
 
 class TarjetaRegistroAcceso extends StatelessWidget {
-  final Map<String, dynamic> log;
+  final HistorialAccesoItem item;
+  const TarjetaRegistroAcceso({super.key, required this.item});
 
-  const TarjetaRegistroAcceso({super.key, required this.log});
+  String get _initials {
+    final nameParts = item.userName
+        .trim()
+        .split(RegExp(r'\s+'))
+        .where((part) => part.isNotEmpty)
+        .take(2);
+    return nameParts.map((part) => part[0].toUpperCase()).join();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +45,7 @@ class TarjetaRegistroAcceso extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    log['userInitials'],
+                    _initials,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -53,14 +62,14 @@ class TarjetaRegistroAcceso extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          log['userName'],
+                          item.userName,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: AppColors.primaryText,
                           ),
                         ),
-                        if ((log['userRole'] ?? '').toString().isNotEmpty) ...[
+                        if (item.rol.isNotEmpty) ...[
                           const SizedBox(width: 8),
                           Container(
                             padding: const EdgeInsets.symmetric(
@@ -72,7 +81,7 @@ class TarjetaRegistroAcceso extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
-                              log['userRole'],
+                              item.rol,
                               style: const TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w600,
@@ -83,18 +92,10 @@ class TarjetaRegistroAcceso extends StatelessWidget {
                         ],
                       ],
                     ),
-                    const SizedBox(height: 2),
-                    Text(
-                      log['action'].toString(),
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
                   ],
                 ),
               ),
-              _buildStatusBadge(log['status']),
+              _buildStatusBadge(item.status),
             ],
           ),
 
@@ -111,21 +112,17 @@ class TarjetaRegistroAcceso extends StatelessWidget {
                 _buildDetailRow(
                   icon: Icons.phone_android,
                   label: 'Dispositivo',
-                  value: log['device'],
+                  value: item.device,
                 ),
-                if (log['ipAddress'] != null) ...[
+                if (item.ip.isNotEmpty) ...[
                   const SizedBox(height: 8),
-                  _buildDetailRow(
-                    icon: Icons.dns,
-                    label: 'IP',
-                    value: log['ipAddress']!,
-                  ),
+                  _buildDetailRow(icon: Icons.dns, label: 'IP', value: item.ip),
                 ],
                 const SizedBox(height: 8),
                 _buildDetailRow(
                   icon: Icons.access_time,
                   label: 'Fecha',
-                  value: log['dateTime'],
+                  value: item.date,
                 ),
               ],
             ),

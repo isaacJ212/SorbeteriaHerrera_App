@@ -76,7 +76,7 @@ class ApiClient {
     try {
       response = await _client
           .send(request)
-          .timeout(const Duration(seconds: 10))
+          .timeout(const Duration(seconds: 30))
           .then(http.Response.fromStream);
     } on TimeoutException {
       throw NetException(
@@ -94,7 +94,7 @@ class ApiClient {
     if (response.statusCode == 401) {
       throw const UnauthorizedException();
     } else if (response.statusCode == 404) {
-      throw const NotFountException();
+      throw const NotFoundException();
     } else if (response.statusCode < 200 || response.statusCode >= 300) {
       throw ServerException(
         'HTTP ${response.statusCode}: $errorMessage',
