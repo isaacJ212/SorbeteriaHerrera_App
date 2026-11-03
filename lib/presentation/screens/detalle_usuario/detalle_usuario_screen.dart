@@ -20,14 +20,12 @@ class DetalleUsuarioScreen extends StatelessWidget {
       ),
       body: Consumer<UserdetailsProvider>(
         builder: (context, provider, _) {
-         
           if (provider.isLoading) {
             return const Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             );
           }
 
-          
           if (provider.errorMessage != null) {
             return Center(
               child: Text(
@@ -37,7 +35,6 @@ class DetalleUsuarioScreen extends StatelessWidget {
             );
           }
 
-         
           final user = provider.user;
           if (user == null) {
             return const Center(
@@ -45,7 +42,6 @@ class DetalleUsuarioScreen extends StatelessWidget {
             );
           }
 
-        
           return ListView(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 28),
             children: [
@@ -70,13 +66,15 @@ class DetalleUsuarioScreen extends StatelessWidget {
   }
 
   Widget _perfil(DetalleUsuarioResponseModels user) {
-   
     final nombreCompleto = '${user.firstName} ${user.lastName}'.trim();
     final nombre = nombreCompleto.isNotEmpty ? nombreCompleto : user.userName;
 
-   
     final iniciales = nombre.isNotEmpty
-        ? nombre.split(RegExp(r'\s+')).take(2).map((p) => p[0].toUpperCase()).join()
+        ? nombre
+              .split(RegExp(r'\s+'))
+              .take(2)
+              .map((p) => p[0].toUpperCase())
+              .join()
         : 'U';
     final rolPrincipal = user.roles.isNotEmpty ? user.roles.first : 'Sin rol';
 
@@ -86,7 +84,6 @@ class DetalleUsuarioScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-            
               Container(
                 width: 56,
                 height: 56,
@@ -128,7 +125,7 @@ class DetalleUsuarioScreen extends StatelessWidget {
                   ],
                 ),
               ),
-             
+
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
                 decoration: BoxDecoration(
@@ -138,7 +135,9 @@ class DetalleUsuarioScreen extends StatelessWidget {
                 child: Text(
                   user.isActive ? 'Activo' : 'Inactivo',
                   style: TextStyle(
-                    color: user.isActive ? AppColors.primaryText : AppColors.textSecondary,
+                    color: user.isActive
+                        ? AppColors.primaryText
+                        : AppColors.textSecondary,
                     fontSize: 10,
                     fontWeight: FontWeight.w600,
                   ),
@@ -151,12 +150,19 @@ class DetalleUsuarioScreen extends StatelessWidget {
           const SizedBox(height: 16),
           Row(
             children: [
-              const Icon(Icons.email_outlined, size: 18, color: AppColors.textSecondary),
+              const Icon(
+                Icons.email_outlined,
+                size: 18,
+                color: AppColors.textSecondary,
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   user.email,
-                  style: const TextStyle(color: AppColors.primaryText, fontSize: 12),
+                  style: const TextStyle(
+                    color: AppColors.primaryText,
+                    fontSize: 12,
+                  ),
                 ),
               ),
             ],
@@ -212,10 +218,7 @@ class DetalleUsuarioScreen extends StatelessWidget {
         spacing: 8,
         runSpacing: 8,
         children: roles.map((rol) {
-          return DetallePermiso(
-            icono: Icons.shield_outlined,
-            texto: rol,
-          );
+          return DetallePermiso(icono: Icons.shield_outlined, texto: rol);
         }).toList(),
       ),
     );

@@ -85,7 +85,7 @@ class _ReporteDeInventarioScreenState extends State<ReporteDeInventarioScreen> {
                   ),
                 ),
                 _buildSummaryCard(
-                  reporte.inventaryValue,
+                  reporte.inventoryValue,
                   reporte.lowStockProducts,
                 ),
                 _buildRiskProductSection(reporte.productosRiesgo),
@@ -226,12 +226,10 @@ class _ReporteDeInventarioScreenState extends State<ReporteDeInventarioScreen> {
               productName: producto.productName,
               size: '${producto.presentationName} · ${producto.flavorName}',
               currentStock: producto.currentStock,
-              maxStock: producto.minimunStock > producto.currentStock
-                  ? producto.minimunStock
+              maxStock: producto.minimumStock > producto.currentStock
+                  ? producto.minimumStock
                   : (producto.currentStock > 0 ? producto.currentStock : 1),
-              badgeText:
-                  producto.status ??
-                  (producto.isOutOfStock == true ? 'Agotado' : 'Stock bajo'),
+              badgeText: producto.status,
             ),
           ),
       ],

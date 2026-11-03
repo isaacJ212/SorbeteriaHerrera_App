@@ -13,24 +13,22 @@ class ReporteInventarioModel {
     required this.productosRiesgo,
   });
 
-  static ReporteInventarioModel fromJson(Map<String, dynamic> json){
+  factory ReporteInventarioModel.fromJson(Map<String, dynamic> json) {
     return ReporteInventarioModel(
-      totalProducts: json['totalProducts']as int, 
-      lowStockProducts: json['lowStockProducts']as int, 
-      inventaryValue: json['inventaryValue'] as double, 
-      productosRiesgo: (json['productosRiesgo'] as List).map((items) => ProductoRiesgo.fromJson(items as Map<String, dynamic>)).toList(),
+      totalProducts: json['totalProducts'] as int,
+      lowStockProducts: json['lowStockProducts'] as int,
+      inventoryValue: (json['inventoryValue'] as num).toDouble(),
+      bestSellingFlavor: json['bestSellingFlavor'] == null
+          ? null
+          : SaborMasVendido.fromJson(
+              json['bestSellingFlavor'] as Map<String, dynamic>,
+            ),
+      productosRiesgo: (json['productsInRisk'] as List<dynamic>? ?? const [])
+          .map((item) => ProductoRiesgo.fromJson(item as Map<String, dynamic>))
+          .toList(),
     );
   }
-
-  Map<String, dynamic> toJson(){
-    return {
-      'totalProducts': totalProducts, 
-      'lowStockProducts': lowStockProducts, 
-      'inventaryValue': inventaryValue, 
-      'productosRiesgo': productosRiesgo}
-    ;
-  }
-
+}
 
 class SaborMasVendido {
   final String flavorName;
@@ -73,32 +71,16 @@ class ProductoRiesgo {
     required this.status,
   });
 
-
-  static ProductoRiesgo fromJson(Map<String, dynamic> json){
+  factory ProductoRiesgo.fromJson(Map<String, dynamic> json) {
     return ProductoRiesgo(
-      productName: json['productName']as String, 
-      presentationName: json['presentationName']as String, 
-      flavorName: json['flavorName']as String, 
-      imageUrl:json['imageUrl'] as String,
-      currentStock: json['currentStock']as int, 
-      minimunStock: json['minimunStock']as int,
+      productName: json['productName'] as String,
+      presentationName: json['presentationName'] as String,
+      flavorName: json['flavorName'] as String,
+      imageUrl: json['imageUrl'] as String?,
+      currentStock: json['currentStock'] as int,
+      minimumStock: json['minimumStock'] as int,
       isOutOfStock: json['isOutOfStock'] as bool,
-      status: json['status']as String,
+      status: json['status'] as String,
     );
   }
-
-  Map<String, dynamic> toJson(){
-    return {
-      'productName': productName, 
-      'presentationName': presentationName, 
-      'flavorName': flavorName,
-      'imageUrl': imageUrl, 
-      'currentStock': currentStock, 
-      'minimunStock': minimunStock,
-      'isOutOfStock': isOutOfStock,
-      'status': status,
-    };
-  }
-
-
 }
