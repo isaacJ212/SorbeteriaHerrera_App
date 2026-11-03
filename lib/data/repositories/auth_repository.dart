@@ -5,15 +5,13 @@ import 'package:herrera_app/core/network/api_client.dart';
 import 'package:herrera_app/data/models/token_model.dart';
 import 'package:herrera_app/data/models/usuario_models/usuario_model.dart';
 import 'package:herrera_app/data/repositories/token_Repository.dart';
-import 'package:http/http.dart';
 
 class AuthRepository {
-
   final ApiClient _apiClient;
 
-  AuthRepository({required this._apiClient});
+  AuthRepository(this._apiClient);
 
-  Future<TokenModel> login(String userName, String password) async{
+  Future<TokenModel> login(String userName, String password) async {
     final response = await _apiClient.post(
       ApiConst.login,
       body: {'userName': userName, 'Password': password},
@@ -33,10 +31,9 @@ class AuthRepository {
     }
 
     return TokenModel.fromJson(data);
-    
   }
 
-  Future<UsuarioResponseModel> currentUser() async{
+  Future<UsuarioResponseModel> currentUser() async {
     final response = await _apiClient.get(ApiConst.infoMe);
 
     final json = response.jsonBody;
@@ -51,12 +48,8 @@ class AuthRepository {
   }
 
   //usamos esto por no tenemos endpoint dew logout
-  Future<void> logout([TokenModel? token]) async{
+  Future<void> logout([TokenModel? token]) async {
     final tokenRepo = GetIt.instance<TokenRepository>();
     await tokenRepo.removeToken();
   }
-
-
-
-
 }

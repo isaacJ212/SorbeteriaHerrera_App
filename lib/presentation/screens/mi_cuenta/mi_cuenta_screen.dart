@@ -65,7 +65,12 @@ class _MiCuentaScreenState extends State<MiCuentaScreen> {
 
   Widget _buildProfileCard(UsuarioResponseModel user) {
     final iniciales = user.userName.trim().isNotEmpty
-        ? user.userName.trim().split(RegExp(r'\s+')).take(2).map((part) => part[0].toUpperCase()).join()
+        ? user.userName
+              .trim()
+              .split(RegExp(r'\s+'))
+              .take(2)
+              .map((part) => part[0].toUpperCase())
+              .join()
         : 'U';
     final rolPrincipal = user.roles.isNotEmpty ? user.roles.first : 'Sin Rol';
 
@@ -236,10 +241,8 @@ class _MiCuentaScreenState extends State<MiCuentaScreen> {
         runSpacing: 8,
         children: permisos
             .map(
-              (rol) => DetallePermiso(
-                icono: Icons.security_outlined,
-                texto: rol,
-              ),
+              (rol) =>
+                  DetallePermiso(icono: Icons.security_outlined, texto: rol),
             )
             .toList(),
       ),
