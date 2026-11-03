@@ -1,38 +1,31 @@
 class InventarioResponseGeneralModels {
-  final int id;
+  final int productId;
   final String productName;
-  final String imageUrl;
+  final String lineName;
+  final String presentationName;
+  final String flavorName;
   final int totalStock;
-  final int? retailStock;
+  final double? retailPrice;
 
   const InventarioResponseGeneralModels({
-    required this.id,
+    required this.productId,
     required this.productName,
-    required this.imageUrl,
+    required this.lineName,
+    required this.presentationName,
+    required this.flavorName,
     required this.totalStock,
-    this.retailStock
-
+    required this.retailPrice,
   });
 
-
-  static InventarioResponseGeneralModels fromJson(Map<String, dynamic> json){
+  factory InventarioResponseGeneralModels.fromJson(Map<String, dynamic> json) {
     return InventarioResponseGeneralModels(
-      id: json['id'] as int, 
-      productName: json['productName'] as String, 
-      imageUrl: json['imageUrl'] as String, 
+      productId: json['productId'] as int,
+      productName: json['productName'] as String,
+      lineName: json['lineName'] as String,
+      presentationName: json['presentationName'] as String,
+      flavorName: json['flavorName'] as String,
       totalStock: json['totalStock'] as int,
-      retailStock: json['retailStock'] as int,
+      retailPrice: (json['retailPrice'] as num?)?.toDouble(),
     );
-  }
-
-
-  Map<String, dynamic> toJson(){
-    return {
-      'id': id, 
-      'productName': productName, 
-      'imageUrl': imageUrl, 
-      'totalStock': totalStock,
-      'retailStock': retailStock,
-    };
   }
 }

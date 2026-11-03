@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:herrera_app/core/dependency_injection/DI.dart';
+import 'package:herrera_app/presentation/providers/reporte_inventario_provider.dart';
+import 'package:herrera_app/presentation/providers/userDetails_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../screens/dashboard/dashboard_screen.dart';
 import '../screens/detalle_producto/detalle_producto_screen.dart';
@@ -34,25 +38,30 @@ abstract class AppRouter {
         return MaterialPageRoute(builder: (_) => const ReportesScreen());
 
       case AppRoutes.detalleProducto:
-        final datos = settings.arguments as Map<String, String>?;
+        final productId = settings.arguments as int;
         return MaterialPageRoute(
-          builder: (_) => DetalleDeProductoScreen(
-            nombre: datos?['nombre'] ?? 'Producto',
-            stock: datos?['stock'] ?? '0',
-            precio: datos?['precio'] ?? 'C\$ 0',
-          ),
+          builder: (_) => DetalleDeProductoScreen(productId: productId),
         );
 
       case AppRoutes.detalleVenta:
         return MaterialPageRoute(builder: (_) => const DetalleDeVentaScreen());
 
+      // DESPUÉS
       case AppRoutes.reporteInventario:
         return MaterialPageRoute(
-          builder: (_) => const ReporteDeInventarioScreen(),
+          builder: (_) => ChangeNotifierProvider(
+            create: (_) => getIt<ReporteInventarioProvider>()..cargarReporte(),
+            child: const ReporteDeInventarioScreen(),
+          ),
         );
 
       case AppRoutes.historialAcceso:
-        return MaterialPageRoute(builder: (_) => const HistorialAccesoScreen());
+        return MaterialPageRoute(
+          builder: (_) => ChangeNotifierProvider(
+            create: (_) => getIt<HistorialAccesoProvider>()..cargarHistorial(),
+            child: const HistorialAccesoScreen(),
+          ),
+        );
 
       case AppRoutes.mas:
         return MaterialPageRoute(builder: (_) => const MasScreen());
@@ -61,7 +70,13 @@ abstract class AppRouter {
         return MaterialPageRoute(builder: (_) => const MiCuentaScreen());
 
       case AppRoutes.detalleUsuario:
-        return MaterialPageRoute(builder: (_) => const DetalleUsuarioScreen());
+        final userId = settings.arguments as int? ?? 1;
+        return MaterialPageRoute(
+          builder: (_) => ChangeNotifierProvider(
+            create: (_) => getIt<UserdetailsProvider>()..loadUser(userId),
+            child: const DetalleUsuarioScreen(),
+          ),
+        );
 
       case AppRoutes.usuarios:
         return MaterialPageRoute(builder: (_) => const UsuarioScreen());

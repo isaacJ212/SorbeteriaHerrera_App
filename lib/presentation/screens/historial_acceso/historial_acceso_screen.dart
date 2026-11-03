@@ -1,72 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:herrera_app/data/models/historial_acceso_models/historial_models.dart';
+import 'package:herrera_app/presentation/providers/historial_acceso_provider.dart';
 import 'package:herrera_app/presentation/theme/app_colors.dart';
+import 'package:provider/provider.dart';
+
 import '../../widgets/app_bar.dart';
 import 'widgets/resumen_auditoria.dart';
 import 'widgets/tarjeta_registro_acceso.dart';
 
-class HistorialAccesoScreen extends StatelessWidget {
+class HistorialAccesoScreen extends StatefulWidget {
   const HistorialAccesoScreen({super.key});
 
-  static const List<Map<String, dynamic>> _accessLogs = [
-    {
-      'userName': 'Carlos Ruiz',
-      'userRole': 'Cajero',
-      'userInitials': 'CR',
-      'action': 'Apertura de turno / caja',
-      'status': 'Aviso',
-      'device': 'POS Mostrador 1',
-      'ipAddress': '192.168.1.45',
-      'dateTime': 'Hoy, 08:00 AM',
-      'avatarColor': const Color(0xFFC5D4F5),
-    },
-    {
-      'userName': 'Carlos Ruiz',
-      'userRole': 'Cajero',
-      'userInitials': 'CR',
-      'action': 'Apertura de turno / caja',
-      'status': 'Exitoso',
-      'device': 'POS Mostrador 1',
-      'ipAddress': '192.168.1.45',
-      'dateTime': 'Hoy, 08:00 AM',
-      'avatarColor': const Color(0xFFC5D4F5),
-    },
-    {
-      'userName': 'Carlos Ruiz',
-      'userRole': 'Cajero',
-      'userInitials': 'CR',
-      'action': 'Apertura de turno / caja',
-      'status': 'Aviso',
-      'device': 'POS Mostrador 1',
-      'ipAddress': '192.168.1.45',
-      'dateTime': 'Hoy, 08:00 AM',
-      'avatarColor': const Color(0xFFC5D4F5),
-    },
-    {
-      'userName': 'Juan Sánchez',
-      'userRole': 'Admin',
-      'userInitials': 'JS',
-      'action': 'Inicio de sesión exitoso',
-      'status': 'Exitoso',
-      'device': 'Samsung S23 · App v2.4',
-      'ipAddress': '190.212.44.12',
-      'dateTime': 'Hoy, 10:30 AM',
-      'avatarColor': const Color(0xFFA6F2D1),
-    },
-    {
-      'userName': 'Juan Sánchez',
-      'userRole': 'Admin',
-      'userInitials': 'JS',
-      'action': 'Inicio de sesión exitoso',
-      'status': 'Bloqueado',
-      'device': 'Samsung S23 · App v2.4',
-      'ipAddress': '190.212.44.12',
-      'dateTime': 'Hoy, 10:30 AM',
-      'avatarColor': const Color(0xFFA6F2D1),
-    },
-  ];
+  @override
+  State<HistorialAccesoScreen> createState() => _HistorialAccesoScreenState();
+}
 
+class _HistorialAccesoScreenState extends State<HistorialAccesoScreen> {
   @override
   Widget build(BuildContext context) {
+    return Consumer<HistorialAccesoProvider>(
+      builder: (context, provider, _) {
+        if (provider.isLoading) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        if (provider.errorMessage != null) {
+          return Scaffold(
+            appBar: const AppAppBar(
+              title: 'Historial de Acceso',
+              showBackButton: true,
+            ),
+            body: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(provider.errorMessage!),
+                  const SizedBox(height: 12),
+                  ElevatedButton(
+                    onPressed: provider.cargarHistorial,
+                    child: const Text('Reintentar'),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        final historial = provider.historial;
+        if (historial == null) {
+          return const Scaffold(
+            appBar: AppAppBar(
+              title: 'Historial de Acceso',
+              showBackButton: true,
+            ),
+            body: Center(child: Text('No hay datos del historial disponibles')),
+          );
+        }
+
+        return _buildContent(historial);
+      },
+    );
+  }
+
+  Widget _buildContent(HistorialAccesoResponse historial) {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppAppBar(
@@ -98,13 +96,13 @@ class HistorialAccesoScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildDateFiltrer(),
-            const ResumenAuditoria(),
+            ResumenAuditoria(stats: historial.stats),
             _buildSectionTitle('Inicios de Sesion'),
             _buildSectionTitle(
               'Bitacoras Cronologicas',
-              subtitle: '5 registros recientes',
+              subtitle: '${historial.history.length} registros',
             ),
-            _buildAccessLogsList(),
+            _buildAccessLogsList(historial.history),
             const SizedBox(height: 20),
           ],
         ),
@@ -168,15 +166,21 @@ class HistorialAccesoScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAccessLogsList() {
+  Widget _buildAccessLogsList(List<HistorialAccesoItem> items) {
+    if (items.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: Center(child: Text('No hay registros de acceso.')),
+      );
+    }
+
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: _accessLogs.length,
+      itemCount: items.length,
       padding: const EdgeInsets.symmetric(horizontal: 16),
       itemBuilder: (context, index) {
-        final log = _accessLogs[index];
-        return TarjetaRegistroAcceso(log: log);
+        return TarjetaRegistroAcceso(item: items[index]);
       },
     );
   }

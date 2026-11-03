@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:herrera_app/data/models/detalle_usuario_model/detalle_usuario_models.dart';
+import 'package:herrera_app/presentation/providers/userDetails_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../widgets/app_bar.dart';
 import 'widgets/detalle_usuario_widgets.dart';
@@ -15,77 +18,109 @@ class DetalleUsuarioScreen extends StatelessWidget {
         title: 'Detalle de usuario',
         showBackButton: true,
       ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 28),
-        children: [
-          _perfil(),
-          const SizedBox(height: 24),
-          const DetalleTituloSeccion(titulo: 'INFORMACIÓN DEL USUARIO'),
-          const SizedBox(height: 10),
-          _informacion(),
+      body: Consumer<UserdetailsProvider>(
+        builder: (context, provider, _) {
+         
+          if (provider.isLoading) {
+            return const Center(
+              child: CircularProgressIndicator(color: AppColors.primary),
+            );
+          }
 
-          const SizedBox(height: 24),
-          const DetalleTituloSeccion(titulo: 'PERMISOS OPERATIVOS'),
-          const SizedBox(height: 10),
-          _permisos(),
-          const SizedBox(height: 24),
-          const DetalleTituloSeccion(titulo: 'ACTIVIDAD RECIENTE'),
-          const SizedBox(height: 10),
-          _actividad(),
-        ],
+          
+          if (provider.errorMessage != null) {
+            return Center(
+              child: Text(
+                provider.errorMessage!,
+                style: const TextStyle(color: AppColors.primaryText),
+              ),
+            );
+          }
+
+         
+          final user = provider.user;
+          if (user == null) {
+            return const Center(
+              child: Text('No se encontró información del usuario'),
+            );
+          }
+
+        
+          return ListView(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 28),
+            children: [
+              _perfil(user),
+              const SizedBox(height: 24),
+              const DetalleTituloSeccion(titulo: 'INFORMACIÓN DEL USUARIO'),
+              const SizedBox(height: 10),
+              _informacion(user),
+              const SizedBox(height: 24),
+              const DetalleTituloSeccion(titulo: 'PERMISOS OPERATIVOS'),
+              const SizedBox(height: 10),
+              _permisos(user.roles),
+              const SizedBox(height: 24),
+              const DetalleTituloSeccion(titulo: 'ACTIVIDAD RECIENTE'),
+              const SizedBox(height: 10),
+              _actividad(),
+            ],
+          );
+        },
       ),
     );
   }
 
-  Widget _perfil() {
+  Widget _perfil(DetalleUsuarioResponseModels user) {
+   
+    final nombreCompleto = '${user.firstName} ${user.lastName}'.trim();
+    final nombre = nombreCompleto.isNotEmpty ? nombreCompleto : user.userName;
+
+   
+    final iniciales = nombre.isNotEmpty
+        ? nombre.split(RegExp(r'\s+')).take(2).map((p) => p[0].toUpperCase()).join()
+        : 'U';
+    final rolPrincipal = user.roles.isNotEmpty ? user.roles.first : 'Sin rol';
+
     return DetallePanel(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(14),
-                child: Image.network(
-                  'https://i.pinimg.com/564x/9d/6b/9d/9d6b9db2dcb0526a09b89fb35d075c72.jpg',
-                  width: 56,
-                  height: 56,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      width: 56,
-                      height: 56,
-                      alignment: Alignment.center,
-                      color: AppColors.cardBackground,
-                      child: const Text(
-                        'EA',
-                        style: TextStyle(
-                          color: AppColors.primaryText,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    );
-                  },
+            
+              Container(
+                width: 56,
+                height: 56,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: AppColors.cardBackground,
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Text(
+                  iniciales,
+                  style: const TextStyle(
+                    color: AppColors.primaryText,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Enmanuel Acuña',
-                      style: TextStyle(
+                      nombre,
+                      style: const TextStyle(
                         color: AppColors.primaryText,
                         fontSize: 17,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
-                      'Cajero / Ventas',
-                      style: TextStyle(
+                      rolPrincipal,
+                      style: const TextStyle(
                         color: AppColors.textSecondary,
                         fontSize: 13,
                       ),
@@ -93,23 +128,35 @@ class DetalleUsuarioScreen extends StatelessWidget {
                   ],
                 ),
               ),
+             
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+                decoration: BoxDecoration(
+                  color: AppColors.cardBackground,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Text(
+                  user.isActive ? 'Activo' : 'Inactivo',
+                  style: TextStyle(
+                    color: user.isActive ? AppColors.primaryText : AppColors.textSecondary,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 16),
           const Divider(height: 1, color: AppColors.cardBackground),
           const SizedBox(height: 16),
-          const Row(
+          Row(
             children: [
-              Icon(
-                Icons.email_outlined,
-                size: 18,
-                color: AppColors.textSecondary,
-              ),
-              SizedBox(width: 8),
+              const Icon(Icons.email_outlined, size: 18, color: AppColors.textSecondary),
+              const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'Enmanuel@Sorbeteriaherrera.com',
-                  style: TextStyle(color: AppColors.primaryText, fontSize: 12),
+                  user.email,
+                  style: const TextStyle(color: AppColors.primaryText, fontSize: 12),
                 ),
               ),
             ],
@@ -119,54 +166,57 @@ class DetalleUsuarioScreen extends StatelessWidget {
     );
   }
 
-  Widget _informacion() {
-    return const DetallePanel(
+  Widget _informacion(DetalleUsuarioResponseModels user) {
+    return DetallePanel(
       child: Column(
         children: [
           DetalleDato(
-            icono: Icons.phone_outlined,
-            etiqueta: 'Teléfono directo',
-            valor: '8159-4717',
+            icono: Icons.account_circle_outlined,
+            etiqueta: 'Nombre de usuario',
+            valor: user.userName,
           ),
-          Divider(height: 24, color: AppColors.cardBackground),
+          const Divider(height: 24, color: AppColors.cardBackground),
           DetalleDato(
-            icono: Icons.calendar_today_outlined,
-            etiqueta: 'Fecha de inicio',
-            valor: '15/09/2026',
+            icono: Icons.badge_outlined,
+            etiqueta: 'Cédula / DNI',
+            valor: user.dni.isNotEmpty ? user.dni : 'No registrada',
           ),
-          Divider(height: 24, color: AppColors.cardBackground),
+          const Divider(height: 24, color: AppColors.cardBackground),
           DetalleDato(
-            icono: Icons.store_outlined,
-            etiqueta: 'Sucursal',
-            valor: 'Central Carazo',
+            icono: Icons.numbers_outlined,
+            etiqueta: 'ID de usuario',
+            valor: user.id.toString(),
           ),
-          Divider(height: 24, color: AppColors.cardBackground),
+          const Divider(height: 24, color: AppColors.cardBackground),
           DetalleDato(
-            icono: Icons.schedule_outlined,
-            etiqueta: 'Turno',
-            valor: 'Vespertino',
+            icono: Icons.verified_user_outlined,
+            etiqueta: 'Estado de cuenta',
+            valor: user.isActive ? 'Activa' : 'Inactiva',
           ),
         ],
       ),
     );
   }
 
-  Widget _permisos() {
-    return const DetallePanel(
+  Widget _permisos(List<String> roles) {
+    if (roles.isEmpty) {
+      return const DetallePanel(
+        child: Text(
+          'Sin roles asignados',
+          style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+        ),
+      );
+    }
+    return DetallePanel(
       child: Wrap(
         spacing: 8,
         runSpacing: 8,
-        children: [
-          DetallePermiso(
-            icono: Icons.point_of_sale,
-            texto: 'Ventas en mostrador',
-          ),
-          DetallePermiso(
-            icono: Icons.inventory_2_outlined,
-            texto: 'Consulta de inventario',
-          ),
-          DetallePermiso(icono: Icons.lock_outline, texto: 'Cierre de caja'),
-        ],
+        children: roles.map((rol) {
+          return DetallePermiso(
+            icono: Icons.shield_outlined,
+            texto: rol,
+          );
+        }).toList(),
       ),
     );
   }
