@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'core/dependency_injection/service_locator.dart';
 import 'presentation/providers/dashboard_provider.dart';
 import 'presentation/providers/inventario_provider.dart';
+import 'presentation/providers/usuario_provider.dart';
 import 'presentation/routes/app_router.dart';
 import 'presentation/routes/app_routes.dart';
 
@@ -17,6 +18,7 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => sl<DashboardProvider>()),
         ChangeNotifierProvider(create: (_) => sl<InventarioProvider>()),
+        ChangeNotifierProvider(create: (_) => sl<UsuarioProvider>()),
       ],
       child: const MyApp(),
     ),

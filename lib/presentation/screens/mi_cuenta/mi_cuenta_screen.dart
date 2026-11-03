@@ -181,12 +181,6 @@ class MiCuentaScreen extends StatelessWidget {
           ),
           Divider(height: 24, color: AppColors.cardBackground),
           DetalleDato(
-            icono: Icons.store_outlined,
-            etiqueta: 'Sucursal',
-            valor: 'Central Carazo',
-          ),
-          Divider(height: 24, color: AppColors.cardBackground),
-          DetalleDato(
             icono: Icons.schedule_outlined,
             etiqueta: 'Turno',
             valor: 'Vespertino',

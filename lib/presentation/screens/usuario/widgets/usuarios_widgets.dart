@@ -5,32 +5,42 @@ import '../../../widgets/boton_mirar_detalles.dart';
 class EtiquetaFiltro extends StatelessWidget {
   final String texto;
   final bool seleccionado;
+  final VoidCallback? onTap;
 
   const EtiquetaFiltro({
     super.key,
     required this.texto,
     this.seleccionado = false,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 7),
-      decoration: BoxDecoration(
-        color: seleccionado ? AppColors.cardBackground : Colors.white,
+    return Semantics(
+      button: true,
+      selected: seleccionado,
+      child: InkWell(
+        onTap: onTap,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: seleccionado
-              ? AppColors.cardBackground
-              : AppColors.cardBackground,
-        ),
-      ),
-      child: Text(
-        texto,
-        style: TextStyle(
-          color: seleccionado ? AppColors.primaryText : AppColors.textSecondary,
-          fontSize: 10,
-          fontWeight: seleccionado ? FontWeight.w600 : FontWeight.w400,
+        child: Container(
+          constraints: const BoxConstraints(minHeight: 44),
+          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(horizontal: 13),
+          decoration: BoxDecoration(
+            color: seleccionado ? AppColors.cardBackground : Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: AppColors.cardBackground),
+          ),
+          child: Text(
+            texto,
+            style: TextStyle(
+              color: seleccionado
+                  ? AppColors.primaryText
+                  : AppColors.textSecondary,
+              fontSize: 12,
+              fontWeight: seleccionado ? FontWeight.w600 : FontWeight.w400,
+            ),
+          ),
         ),
       ),
     );
@@ -42,7 +52,6 @@ class TarjetaUsuario extends StatelessWidget {
   final String nombre;
   final String correo;
   final String rol;
-  final String sucursal;
   final String ultimoAcceso;
   final bool activo;
   final Color colorAvatar;
@@ -54,7 +63,6 @@ class TarjetaUsuario extends StatelessWidget {
     required this.nombre,
     required this.correo,
     required this.rol,
-    required this.sucursal,
     required this.ultimoAcceso,
     required this.activo,
     required this.colorAvatar,
@@ -129,7 +137,7 @@ class TarjetaUsuario extends StatelessWidget {
                       correo,
                       style: const TextStyle(
                         color: AppColors.textSecondary,
-                        fontSize: 9,
+                        fontSize: 12,
                       ),
                     ),
                   ],
@@ -159,7 +167,7 @@ class TarjetaUsuario extends StatelessWidget {
                         color: activo
                             ? AppColors.primaryText
                             : AppColors.textSecondary,
-                        fontSize: 8,
+                        fontSize: 11,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -186,10 +194,10 @@ class TarjetaUsuario extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'ROL',
+                      'Rol',
                       style: TextStyle(
                         color: AppColors.primary,
-                        fontSize: 8,
+                        fontSize: 11,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -198,32 +206,8 @@ class TarjetaUsuario extends StatelessWidget {
                       rol,
                       style: const TextStyle(
                         color: AppColors.primaryText,
-                        fontSize: 9,
+                        fontSize: 12,
                         fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'SUCURSAL',
-                      style: TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 8,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      sucursal,
-                      style: const TextStyle(
-                        color: AppColors.primaryText,
-                        fontSize: 9,
                       ),
                     ),
                   ],
@@ -242,7 +226,7 @@ class TarjetaUsuario extends StatelessWidget {
                             'Último acceso',
                             style: TextStyle(
                               color: AppColors.textSecondary,
-                              fontSize: 8,
+                              fontSize: 11,
                             ),
                           ),
                           const SizedBox(height: 3),
@@ -251,7 +235,7 @@ class TarjetaUsuario extends StatelessWidget {
                             textAlign: TextAlign.end,
                             style: const TextStyle(
                               color: AppColors.primaryText,
-                              fontSize: 9,
+                              fontSize: 12,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
