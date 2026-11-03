@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:herrera_app/data/models/historial_acceso_models/historial_models.dart';
 import 'package:herrera_app/presentation/theme/app_colors.dart';
 
 class ResumenAuditoria extends StatelessWidget {
-  const ResumenAuditoria({super.key});
+  final HistorialAccesoStats stats;
+  const ResumenAuditoria({super.key, required this.stats});
+
 
   @override
   Widget build(BuildContext context) {
@@ -46,32 +49,6 @@ class ResumenAuditoria extends StatelessWidget {
                   color: AppColors.textSecondary,
                 ),
               ),
-              const Spacer(),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: Color(0xFF95F1D0),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.circle, size: 6, color: Color(0xFF00A86B)),
-                    SizedBox(width: 4),
-                    Text(
-                      'En linea',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF00A86B),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ],
           ),
           const SizedBox(height: 16),
@@ -80,23 +57,23 @@ class ResumenAuditoria extends StatelessWidget {
               Expanded(
                 child: _buildSummaryCard(
                   label: 'Sesiones activas',
-                  value: '2',
-                  suffix: 'locales',
+                  value: stats.activeSessions.toString(),
+                  suffix: '',
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: _buildSummaryCard(
                   label: 'Intentos fallidos',
-                  value: '0',
-                  suffix: 'Hoy',
+                  value: stats.failedAttemptsToday.toString(),
+                  suffix: 'hoy',
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: _buildSummaryCard(
-                  label: 'Ultimos Ingreso',
-                  value: '10:00 PM',
+                  label: 'Último ingreso',
+                  value: stats.lastLoginTime,
                   isTime: true,
                   suffix: '',
                 ),
