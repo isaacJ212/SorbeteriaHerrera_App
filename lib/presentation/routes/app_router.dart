@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:herrera_app/core/dependency_injection/DI.dart';
+import 'package:herrera_app/presentation/providers/reporte_inventario_provider.dart';
 import 'package:herrera_app/presentation/providers/userDetails_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -45,13 +46,22 @@ abstract class AppRouter {
       case AppRoutes.detalleVenta:
         return MaterialPageRoute(builder: (_) => const DetalleDeVentaScreen());
 
+      // DESPUÉS
       case AppRoutes.reporteInventario:
         return MaterialPageRoute(
-          builder: (_) => const ReporteDeInventarioScreen(),
+          builder: (_) => ChangeNotifierProvider(
+            create: (_) => getIt<ReporteInventarioProvider>()..cargarReporte(),
+            child: const ReporteDeInventarioScreen(),
+          ),
         );
 
       case AppRoutes.historialAcceso:
-        return MaterialPageRoute(builder: (_) => const HistorialAccesoScreen());
+        return MaterialPageRoute(
+          builder: (_) => ChangeNotifierProvider(
+            create: (_) => getIt<HistorialAccesoProvider>()..cargarHistorial(),
+            child: const HistorialAccesoScreen(),
+          ),
+        );
 
       case AppRoutes.mas:
         return MaterialPageRoute(builder: (_) => const MasScreen());

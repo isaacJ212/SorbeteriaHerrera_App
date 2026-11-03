@@ -4,11 +4,14 @@ import 'package:herrera_app/data/repositories/dashboard_repository.dart';
 import 'package:herrera_app/presentation/providers/dashboard_provider.dart';
 import 'package:herrera_app/services/dashboard_services.dart';
 import 'package:herrera_app/data/repositories/auth_repository.dart';
+import 'package:herrera_app/data/repositories/reporte_inventario_repository.dart';
 import 'package:herrera_app/data/repositories/token_Repository.dart';
 import 'package:herrera_app/data/repositories/userDetails_repository.dart';
 import 'package:herrera_app/presentation/providers/auth_provider.dart';
+import 'package:herrera_app/presentation/providers/reporte_inventario_provider.dart';
 import 'package:herrera_app/presentation/providers/userDetails_provider.dart';
 import 'package:herrera_app/services/auth_service.dart';
+import 'package:herrera_app/services/reporte_inventario_service.dart';
 import 'package:herrera_app/services/user.services.dart';
 import 'package:http/http.dart';
 
@@ -61,5 +64,33 @@ void setupDependencies() {
     () => UserdetailsProvider(getIt<UserService>()),
   );
 
+  //detalle de usuarios 
+    // reporte de inventario
+  getIt.registerLazySingleton<ReporteInventarioRepository>(
+    () => ReporteInventarioRepository(apiClient: getIt<ApiClient>()),
+  );
+
+  getIt.registerLazySingleton<ReporteInventarioService>(
+    () => ReporteInventarioService(getIt<ReporteInventarioRepository>()),
+  );
+
+  getIt.registerFactory<ReporteInventarioProvider>(
+    () => ReporteInventarioProvider(getIt<ReporteInventarioService>()),
+  );
+
+
+
+    // historial de acceso
+  getIt.registerLazySingleton<HistorialAccesoRepository>(
+    () => HistorialAccesoRepository(apiClient: getIt<ApiClient>()),
+  );
+
+  getIt.registerLazySingleton<HistorialAccesoService>(
+    () => HistorialAccesoService(getIt<HistorialAccesoRepository>()),
+  );
+
+  getIt.registerFactory<HistorialAccesoProvider>(
+    () => HistorialAccesoProvider(getIt<HistorialAccesoService>()),
+  );
 
 }
