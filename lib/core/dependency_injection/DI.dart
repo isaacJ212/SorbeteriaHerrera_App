@@ -58,7 +58,9 @@ void setupDependencies() {
   getIt.registerLazySingleton(() => ReporteInventarioService(getIt()));
   getIt.registerFactory(() => ReporteInventarioProvider(getIt()));
 
-  getIt.registerLazySingleton(() => HistorialAccesoRepository(getIt()));
+  getIt.registerLazySingleton(
+    () => HistorialAccesoRepository(apiClient: getIt()),
+  );
   getIt.registerLazySingleton(() => HistorialAccesoService(getIt()));
   getIt.registerFactory(() => HistorialAccesoProvider(getIt()));
 }
