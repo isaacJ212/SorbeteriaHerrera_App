@@ -60,7 +60,12 @@ abstract class AppRouter {
         );
 
       case AppRoutes.historialAcceso:
-        return MaterialPageRoute(builder: (_) => const HistorialAccesoScreen());
+        return MaterialPageRoute(
+          builder: (_) => ChangeNotifierProvider(
+            create: (_) => getIt<HistorialAccesoProvider>()..cargarHistorial(),
+            child: const HistorialAccesoScreen(),
+          ),
+        );
 
       case AppRoutes.mas:
         return MaterialPageRoute(builder: (_) => const MasScreen());
