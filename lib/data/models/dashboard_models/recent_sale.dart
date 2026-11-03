@@ -1,18 +1,13 @@
 class RecentSale {
-  final String saleCode;
-  final String saleDate;
-  final String custumerName;
-  final int saleTypeId;
-  final String saleTypeName;
-  final int paymentTypeId;
-  final String paymentTypeName;
-  final int total ;
+  final String fecha;
+  final String usuario;
+  final String cliente;
+  final String total;
 
-
-  const RecentSale ({
-    required this.
+  const RecentSale({
+    required this.fecha,
+    required this.usuario,
+    required this.cliente,
+    required this.total,
   });
-
-
-
 }
