@@ -1,45 +1,104 @@
 import 'package:flutter/material.dart';
+import 'package:herrera_app/data/models/reporte_inventario/reporte_inventario_models.dart';
+import 'package:herrera_app/presentation/providers/reporte_inventario_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'widgets/productos_en_riesgos_cards.dart';
 import '../../widgets/app_bar.dart';
 import '../../theme/app_colors.dart';
 
-class ReporteDeInventarioScreen extends StatelessWidget {
+class ReporteDeInventarioScreen extends StatefulWidget {
   const ReporteDeInventarioScreen({super.key});
 
   @override
+  State<ReporteDeInventarioScreen> createState() =>
+      _ReporteDeInventarioScreenState();
+}
+
+class _ReporteDeInventarioScreenState extends State<ReporteDeInventarioScreen> {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: const AppAppBar(
-        title: 'Reporte de Inventario',
-        showBackButton: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsetsGeometry.fromLTRB(16, 16, 16, 0),
-              child: Text(
-                'Inventario',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primaryText,
-                ),
+    return Consumer<ReporteInventarioProvider>(
+      builder: (context, provider, _) {
+        if (provider.isLoading) {
+          return const Scaffold(
+            appBar: AppAppBar(
+              title: 'Reporte de Inventario',
+              showBackButton: true,
+            ),
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        if (provider.errorMessage != null) {
+          return Scaffold(
+            appBar: const AppAppBar(
+              title: 'Reporte de Inventario',
+              showBackButton: true,
+            ),
+            body: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(provider.errorMessage!),
+                  const SizedBox(height: 12),
+                  ElevatedButton(
+                    onPressed: provider.cargarReporte,
+                    child: const Text('Reintentar'),
+                  ),
+                ],
               ),
             ),
-            _buildSummaryCard(),
-            _buildRiskProductSection(),
-            const SizedBox(height: 20),
-          ],
-        ),
-      ),
+          );
+        }
+
+        final reporte = provider.reporte;
+        if (reporte == null) {
+          return const Scaffold(
+            appBar: AppAppBar(
+              title: 'Reporte de Inventario',
+              showBackButton: true,
+            ),
+            body: Center(child: Text('No hay datos del reporte disponibles')),
+          );
+        }
+
+        return Scaffold(
+          backgroundColor: Colors.white,
+          appBar: const AppAppBar(
+            title: 'Reporte de Inventario',
+            showBackButton: true,
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  child: Text(
+                    'Inventario',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primaryText,
+                    ),
+                  ),
+                ),
+                _buildSummaryCard(
+                  reporte.inventaryValue,
+                  reporte.lowStockProducts,
+                ),
+                _buildRiskProductSection(reporte.productosRiesgo),
+                const SizedBox(height: 20),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildSummaryCard() {
+  Widget _buildSummaryCard(double inventoryValue, int lowStockProducts) {
     return Container(
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(20),
@@ -72,8 +131,8 @@ class ReporteDeInventarioScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                const Text(
-                  'C\$30,000',
+                Text(
+                  'C\$${inventoryValue.toStringAsFixed(2)}',
                   style: TextStyle(
                     fontSize: 23,
                     fontWeight: FontWeight.bold,
@@ -113,12 +172,12 @@ class ReporteDeInventarioScreen extends StatelessWidget {
                       width: 1,
                     ),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        '3 Agotado',
-                        style: TextStyle(
+                        '$lowStockProducts en alerta',
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: Color(0xFFBA1A1A),
@@ -141,13 +200,13 @@ class ReporteDeInventarioScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRiskProductSection() {
+  Widget _buildRiskProductSection(List<ProductoRiesgo> productosRiesgo) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsetsGeometry.fromLTRB(16, 24, 16, 12),
-          child: const Text(
+        const Padding(
+          padding: EdgeInsets.fromLTRB(16, 24, 16, 12),
+          child: Text(
             'Productos en Riesgo',
             style: TextStyle(
               fontSize: 18,
@@ -156,27 +215,25 @@ class ReporteDeInventarioScreen extends StatelessWidget {
             ),
           ),
         ),
-        ProductoEnRiesgoCard(
-          productName: 'Helado de coco',
-          size: '10 oz',
-          currentStock: 4,
-          maxStock: 30,
-          badgeText: 'Stock Normal',
-        ),
-        ProductoEnRiesgoCard(
-          productName: 'Helado de mani',
-          size: '4 oz',
-          currentStock: 6,
-          maxStock: 25,
-          badgeText: 'Stock Bajo',
-        ),
-        ProductoEnRiesgoCard(
-          productName: 'Helado de fresa',
-          size: '2 oz',
-          currentStock: 1,
-          maxStock: 25,
-          badgeText: 'Stock bajo',
-        ),
+        if (productosRiesgo.isEmpty)
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Text('No hay productos en riesgo.'),
+          )
+        else
+          ...productosRiesgo.map(
+            (producto) => ProductoEnRiesgoCard(
+              productName: producto.productName,
+              size: '${producto.presentationName} · ${producto.flavorName}',
+              currentStock: producto.currentStock,
+              maxStock: producto.minimunStock > producto.currentStock
+                  ? producto.minimunStock
+                  : (producto.currentStock > 0 ? producto.currentStock : 1),
+              badgeText:
+                  producto.status ??
+                  (producto.isOutOfStock == true ? 'Agotado' : 'Stock bajo'),
+            ),
+          ),
       ],
     );
   }
