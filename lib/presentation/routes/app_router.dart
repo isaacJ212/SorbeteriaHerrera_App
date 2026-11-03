@@ -38,13 +38,9 @@ abstract class AppRouter {
         return MaterialPageRoute(builder: (_) => const ReportesScreen());
 
       case AppRoutes.detalleProducto:
-        final datos = settings.arguments as Map<String, String>?;
+        final productId = settings.arguments as int;
         return MaterialPageRoute(
-          builder: (_) => DetalleDeProductoScreen(
-            nombre: datos?['nombre'] ?? 'Producto',
-            stock: datos?['stock'] ?? '0',
-            precio: datos?['precio'] ?? 'C\$ 0',
-          ),
+          builder: (_) => DetalleDeProductoScreen(productId: productId),
         );
 
       case AppRoutes.detalleVenta:

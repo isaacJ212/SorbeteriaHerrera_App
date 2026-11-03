@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:herrera_app/core/dependency_injection/DI.dart';
-import 'package:herrera_app/presentation/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
+import 'core/dependency_injection/DI.dart';
+import 'presentation/providers/auth_provider.dart';
+import 'presentation/providers/dashboard_provider.dart';
+import 'presentation/providers/inventario_provider.dart';
 import 'presentation/routes/app_router.dart';
 import 'presentation/routes/app_routes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  
   setupDependencies();
   await dotenv.load(fileName: '.env');
   await getIt<AuthProvider>().checkSession();
 
   runApp(
-    ChangeNotifierProvider<AuthProvider>.value(
-      value: getIt<AuthProvider>(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthProvider>.value(
+          value: getIt<AuthProvider>(),
+        ),
+        ChangeNotifierProvider(create: (_) => getIt<DashboardProvider>()),
+        ChangeNotifierProvider(create: (_) => getIt<InventarioProvider>()),
+      ],
       child: const MyApp(),
     ),
   );

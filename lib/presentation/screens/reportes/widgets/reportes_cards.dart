@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../theme/app_colors.dart';
 
 class CardReportePrincipal extends StatelessWidget {
@@ -108,7 +109,6 @@ class CardReportePrincipal extends StatelessWidget {
 class CardReporteSecundario extends StatelessWidget {
   final String titulo;
   final String descripcion;
-  final String actualizacion;
   final Color colorFondoIcono;
   final Color colorIcono;
   final VoidCallback onTap;
@@ -117,7 +117,6 @@ class CardReporteSecundario extends StatelessWidget {
     super.key,
     required this.titulo,
     required this.descripcion,
-    required this.actualizacion,
     required this.colorFondoIcono,
     required this.colorIcono,
     required this.onTap,
@@ -189,15 +188,6 @@ class CardReporteSecundario extends StatelessWidget {
                   color: AppColors.textSecondary,
                 ),
                 const SizedBox(width: 4),
-                Expanded(
-                  child: Text(
-                    actualizacion,
-                    style: const TextStyle(
-                      fontSize: 9,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ),
               ],
             ),
           ],

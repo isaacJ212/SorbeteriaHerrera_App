@@ -1,17 +1,15 @@
 class ReporteInventarioModel {
-  //endpoitn de /api/Inventory/stats
-  //parte general
   final int totalProducts;
   final int lowStockProducts;
-  final double inventaryValue;
-
-  //productos en riesgos
+  final double inventoryValue;
+  final SaborMasVendido? bestSellingFlavor;
   final List<ProductoRiesgo> productosRiesgo;
 
   const ReporteInventarioModel({
     required this.totalProducts,
     required this.lowStockProducts,
-    required this.inventaryValue,
+    required this.inventoryValue,
+    required this.bestSellingFlavor,
     required this.productosRiesgo,
   });
 
@@ -34,19 +32,35 @@ class ReporteInventarioModel {
   }
 
 
+class SaborMasVendido {
+  final String flavorName;
+  final int quantitySold;
+  final String period;
 
+  const SaborMasVendido({
+    required this.flavorName,
+    required this.quantitySold,
+    required this.period,
+  });
 
+  factory SaborMasVendido.fromJson(Map<String, dynamic> json) {
+    return SaborMasVendido(
+      flavorName: json['flavorName'] as String,
+      quantitySold: json['quantitySold'] as int,
+      period: json['period'] as String,
+    );
+  }
 }
 
-class ProductoRiesgo{
+class ProductoRiesgo {
   final String productName;
   final String presentationName;
   final String flavorName;
   final String? imageUrl;
   final int currentStock;
-  final int minimunStock;
-  final bool? isOutOfStock;
-  final String?  status;
+  final int minimumStock;
+  final bool isOutOfStock;
+  final String status;
 
   const ProductoRiesgo({
     required this.productName,
@@ -54,9 +68,9 @@ class ProductoRiesgo{
     required this.flavorName,
     this.imageUrl,
     required this.currentStock,
-    required this.minimunStock,
-    this.isOutOfStock,
-    this.status,
+    required this.minimumStock,
+    required this.isOutOfStock,
+    required this.status,
   });
 
 
