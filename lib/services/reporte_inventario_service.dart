@@ -6,7 +6,7 @@ import 'package:herrera_app/data/repositories/reporte_inventario_repository.dart
 class ReporteInventarioService {
   final ReporteInventarioRepository _repository;
 
-  ReporteInventarioService({required this._repository});
+  ReporteInventarioService(this._repository);
 
   Future<ReporteInventarioModel> getReporte(){
     return _repository.getReporte();
