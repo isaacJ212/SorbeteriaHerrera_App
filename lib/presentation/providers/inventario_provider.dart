@@ -23,8 +23,8 @@ class InventarioProvider extends ChangeNotifier {
   String _errorMessage = '';
   String get errorMessage => _errorMessage;
 
-  double _ventasDiarias = 0;
-  double get ventasDiarias => _ventasDiarias;
+  double _ingresosMensuales = 0;
+  double get ingresosMensuales => _ingresosMensuales;
 
   ReporteInventarioModel? _estadisticas;
   ReporteInventarioModel? get estadisticas => _estadisticas;
@@ -51,10 +51,10 @@ class InventarioProvider extends ChangeNotifier {
     try {
       final results = await Future.wait([
         _service.obtenerProductos(),
-        _service.obtenerVentasDiarias(),
+        _service.obtenerIngresosMensuales(),
       ]);
       _productos = results[0] as List<InventarioResponseGeneralModels>;
-      _ventasDiarias = results[1] as double;
+      _ingresosMensuales = results[1] as double;
       _viewStatus = InventarioViewStatus.success;
     } catch (e) {
       _viewStatus = InventarioViewStatus.error;

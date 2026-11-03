@@ -6,7 +6,7 @@ class SalesRepository {
   final ApiClient _apiClient;
   SalesRepository(this._apiClient);
 
-  Future<double> obtenerVentasDiarias() async {
+  Future<double> obtenerIngresosMensuales() async {
     final response = await _apiClient.get(ApiConst.dailySales);
     final data = response.jsonBody?['data'];
     if (data is! num) {

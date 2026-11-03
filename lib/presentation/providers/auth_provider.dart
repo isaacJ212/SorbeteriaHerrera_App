@@ -42,6 +42,7 @@ class AuthProvider extends ChangeNotifier {
       _authStatus = AuthStatus.unauthenticated;
     } on FormatException catch (e) {
       _errorMessage = e.message;
+      _authStatus = AuthStatus.unauthenticated;
     } catch (e) {
       _errorMessage =
           'Se ha producido un error inesperado. Por favor, inténtalo de nuevo.';

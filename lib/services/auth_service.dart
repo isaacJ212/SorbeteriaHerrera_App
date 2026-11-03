@@ -35,9 +35,10 @@ class AuthService {
       throw const FormatException('El usuario y la contraseña no pueden estar vacíos');
     }
 
-    final TokenModel token = await _authRepository.login(userName, password);
+    final TokenModel token = await _authRepository.login(trimmedUserName, password);
     await _tokenRepository.saveToken(token);
-    return await _authRepository.currentUser();
+    final user = await _authRepository.currentUser();
+    return user;
 
   }
 
