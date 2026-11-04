@@ -15,7 +15,7 @@ class UserRepository {
     FiltroRolUsuario filtroRol = FiltroRolUsuario.todos,
   }) async {
     final response = await _apiClient.get(
-      ApiConst.activeUsers,
+      ApiConst.users,
       authorized: false,
     );
     final data = response.jsonBody?['data'];
@@ -38,7 +38,9 @@ class UserRepository {
           nombreCompleto.contains(termino) ||
           usuario.email.toLowerCase().contains(termino);
 
-      return coincideBusqueda && _coincideRol(usuario.roles, filtroRol);
+      return usuario.isActive &&
+          coincideBusqueda &&
+          _coincideRol(usuario.roles, filtroRol);
     }).toList();
   }
 

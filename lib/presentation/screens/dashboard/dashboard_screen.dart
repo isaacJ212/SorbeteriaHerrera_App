@@ -11,7 +11,6 @@ import '../../widgets/bottom_navbar.dart';
 import '../../widgets/dashboard/alert_card.dart';
 import '../../widgets/dashboard/ventas_card.dart';
 import '../../widgets/empty_list_message.dart';
-import '../../widgets/error_retry_message.dart';
 import 'widgets/venta_reciente_card.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -152,13 +151,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             if (dashboard.viewStatus == ViewStatus.loading)
               const Center(child: CircularProgressIndicator())
             else if (dashboard.viewStatus == ViewStatus.error)
-              ErrorRetryMessage(
-                message: dashboard.errorMessage,
-                onRetry: dashboard.fetchDashboard,
+              const EmptyListMessage(
+                message: 'No hay ventas ni actividad en el sistema',
               )
             else if (dashboard.ventas.isEmpty)
               const EmptyListMessage(
-                message: 'No ha habido actividad en el sistema',
+                message: 'No hay ventas ni actividad en el sistema',
               )
             else
               ...dashboard.ventas

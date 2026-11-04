@@ -21,7 +21,6 @@ class ApiConst {
   static String get inventory => '$baseUrl/Inventory';
   static String get reportInventary => '$baseUrl/Inventory/stats';
   static String get users => '$baseUrl/Users';
-  static String get activeUsers => '$baseUrl/Users/active';
   static String get infoMe => '$baseUrl/Users/me';
   static String get audit => '$baseUrl/Audit';
 

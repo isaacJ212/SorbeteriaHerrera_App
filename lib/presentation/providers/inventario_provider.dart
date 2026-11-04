@@ -51,7 +51,7 @@ class InventarioProvider extends ChangeNotifier {
     try {
       final results = await Future.wait([
         _service.obtenerProductos(),
-        _service.obtenerVentasDiarias(),
+        _obtenerVentasDiariasOZero(),
       ]);
       _productos = results[0] as List<InventarioResponseGeneralModels>;
       _ventasDiarias = results[1] as double;
@@ -61,6 +61,14 @@ class InventarioProvider extends ChangeNotifier {
       _errorMessage = e.toString();
     } finally {
       notifyListeners();
+    }
+  }
+
+  Future<double> _obtenerVentasDiariasOZero() async {
+    try {
+      return await _service.obtenerVentasDiarias();
+    } catch (_) {
+      return 0;
     }
   }
 
