@@ -15,7 +15,7 @@ class DashboardRepository {
     try {
       final response = await _apiClient.get(
         ApiConst.dashboard,
-        authorized: false,
+        authorized: true,
       );
       if (response.jsonBody is! Map<String, dynamic>) {
         throw ParsingException("Invalid response format for dashboard cards");
@@ -44,7 +44,7 @@ class DashboardRepository {
     try {
       final response = await _apiClient.get(
         ApiConst.sales,
-        authorized: false,
+        authorized: true,
         query: queryParams,
       );
       if (response.jsonBody is! Map<String, dynamic>) {

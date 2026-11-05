@@ -16,7 +16,7 @@ class UserRepository {
   }) async {
     final response = await _apiClient.get(
       ApiConst.activeUsers,
-      authorized: false,
+      authorized: true,
     );
     final data = response.jsonBody?['data'];
     if (data is! List) {
