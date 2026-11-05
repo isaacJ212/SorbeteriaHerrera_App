@@ -1,0 +1,336 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../data/models/inventario_models/inventario_models.dart';
+import '../../providers/inventario_provider.dart';
+import '../../routes/app_routes.dart';
+import '../../theme/app_colors.dart';
+import '../../theme/app_text_styles.dart';
+import '../../widgets/app_bar.dart';
+import '../../widgets/bottom_navbar.dart';
+import '../../widgets/empty_list_message.dart';
+import '../../widgets/error_retry_message.dart';
+import 'widgets/fila_producto_inventario.dart';
+
+class InventarioScreen extends StatefulWidget {
+  const InventarioScreen({super.key});
+  @override
+  State<InventarioScreen> createState() => _InventarioScreenState();
+}
+
+class _InventarioScreenState extends State<InventarioScreen> {
+  int _tabActual = 2;
+  String _filtroActual = 'Todos';
+  String _sabor = '';
+  Timer? _debounceBusqueda;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) context.read<InventarioProvider>().cargarDatos();
+    });
+  }
+
+  @override
+  void dispose() {
+    _debounceBusqueda?.cancel();
+    super.dispose();
+  }
+
+  void _buscarPorNombre(String value) {
+    _debounceBusqueda?.cancel();
+    _debounceBusqueda = Timer(const Duration(milliseconds: 400), () {
+      if (mounted) {
+        context.read<InventarioProvider>().cargarProductos(search: value);
+      }
+    });
+  }
+
+  void _mostrarSnack(String mensaje) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(mensaje),
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _navegarTab(int index) {
+    if (index == _tabActual) return;
+    setState(() => _tabActual = index);
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, AppRoutes.dashboard);
+      case 1:
+        Navigator.pushReplacementNamed(context, AppRoutes.ventas);
+      case 3:
+        Navigator.pushReplacementNamed(context, AppRoutes.reportes);
+      case 4:
+        Navigator.pushReplacementNamed(context, AppRoutes.mas);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final inventario = context.watch<InventarioProvider>();
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFF3F4F5),
+      appBar: AppAppBar(
+        title: 'Inventario',
+        actions: [
+          IconButton(
+            tooltip: 'Notificaciones',
+            icon: const Icon(
+              Icons.notifications_none,
+              size: 22,
+              color: AppColors.primaryText,
+            ),
+            onPressed: () => _mostrarSnack('Sin notificaciones nuevas'),
+          ),
+          IconButton(
+            tooltip: 'Perfil',
+            icon: const Icon(
+              Icons.account_circle_outlined,
+              size: 22,
+              color: AppColors.primaryText,
+            ),
+            onPressed: () => _mostrarSnack('Perfil próximamente'),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _filtros(),
+            const SizedBox(height: 16),
+            _ventasHoy(inventario.ventasDiarias),
+            const SizedBox(height: 12),
+            _buscadores(),
+            const SizedBox(height: 16),
+            const Text(
+              'Resultados',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF10251F),
+              ),
+            ),
+            const SizedBox(height: 8),
+            if (inventario.viewStatus == InventarioViewStatus.loading)
+              const Center(child: CircularProgressIndicator())
+            else if (inventario.viewStatus == InventarioViewStatus.error)
+              ErrorRetryMessage(
+                message: inventario.errorMessage,
+                onRetry: inventario.cargarDatos,
+              )
+            else
+              _tablaInventario(inventario.productos),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavbar(
+        currentIndex: _tabActual,
+        onTap: _navegarTab,
+      ),
+    );
+  }
+
+  Widget _tablaInventario(List<InventarioResponseGeneralModels> inventario) {
+    final productos = inventario.where((producto) {
+      final sabor = producto.flavorName.toLowerCase();
+      if (!sabor.contains(_sabor)) return false;
+      if (_filtroActual == 'Stock bajo') {
+        // ponytail: umbral temporal; usar minimumStock cuando el listado lo exponga.
+        return producto.totalStock > 0 && producto.totalStock <= 5;
+      }
+      if (_filtroActual == 'Disponibles') return producto.totalStock > 0;
+      if (_filtroActual == 'Agotados') return producto.totalStock == 0;
+      return true;
+    }).toList();
+
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: const [
+          BoxShadow(color: Colors.black26, blurRadius: 2, offset: Offset(0, 2)),
+        ],
+      ),
+      child: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 23,
+                  child: Text(
+                    'Producto',
+                    style: AppTextStyles.estiloEncabezado,
+                  ),
+                ),
+                Expanded(
+                  flex: 10,
+                  child: Text('Stock', style: AppTextStyles.estiloEncabezado),
+                ),
+                Expanded(
+                  flex: 13,
+                  child: Text('Precio', style: AppTextStyles.estiloEncabezado),
+                ),
+                SizedBox(width: 34),
+              ],
+            ),
+          ),
+
+          if (productos.isEmpty)
+            const EmptyListMessage(
+              message: 'No hay productos en el inventario',
+            ),
+
+          for (int index = 0; index < productos.length; index++) ...[
+            FilaProductoInventario(
+              nombre: productos[index].productName,
+              stock: '${productos[index].totalStock}',
+              precio: productos[index].retailPrice == null
+                  ? 'Sin precio'
+                  : 'C\$ ${productos[index].retailPrice!.toStringAsFixed(2)}',
+              stockBajo: productos[index].totalStock <= 5,
+              onVerDetalle: () {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.detalleProducto,
+                  arguments: productos[index].productId,
+                );
+              },
+            ),
+
+            //refactorizar el color para que valla de manera global
+            if (index != productos.length - 1)
+              const Divider(height: 1, color: Color(0xFFF0F0F0)),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _filtros() {
+    const filtros = ['Todos', 'Disponibles', 'Stock bajo', 'Agotados'];
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: filtros.map((filtro) {
+        final activo = filtro == _filtroActual;
+        return InkWell(
+          onTap: () => setState(() => _filtroActual = filtro),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Text(
+              filtro,
+              style: TextStyle(
+                fontSize: 11,
+                color: activo
+                    ? const Color(0xFF10251F)
+                    : const Color(0xFF64736D),
+                fontWeight: activo ? FontWeight.w700 : FontWeight.w400,
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _ventasHoy(double total) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: const Color(0xFFE1E1E1)),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x14000000),
+            blurRadius: 4,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              Icon(Icons.show_chart, size: 14, color: Color(0xFF64736D)),
+              SizedBox(width: 6),
+              Text(
+                'VENTAS DE HOY',
+                style: TextStyle(fontSize: 11, color: Color(0xFF64736D)),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'C\$ ${total.toStringAsFixed(2)}',
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w800,
+              color: Color(0xFF10251F),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buscadores() {
+    return Column(
+      children: [
+        _campoBusqueda('Buscar productos', _buscarPorNombre),
+        const SizedBox(height: 8),
+        _campoBusqueda(
+          'Buscar por sabor',
+          (value) => setState(() => _sabor = value.toLowerCase()),
+        ),
+      ],
+    );
+  }
+
+  Widget _campoBusqueda(String texto, ValueChanged<String> onChanged) {
+    return SizedBox(
+      height: 40,
+      child: TextField(
+        onChanged: onChanged,
+        style: const TextStyle(fontSize: 12),
+        decoration: InputDecoration(
+          hintText: texto,
+          hintStyle: const TextStyle(fontSize: 11, color: Color(0xFF8A9691)),
+          prefixIcon: const Icon(
+            Icons.search,
+            size: 18,
+            color: Color(0xFF64736D),
+          ),
+          filled: true,
+          fillColor: const Color(0xFFEAF7F1),
+          contentPadding: EdgeInsets.zero,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: const BorderSide(color: Color(0xFFD1E9DF)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: const BorderSide(color: Color(0xFFD1E9DF)),
+          ),
+        ),
+      ),
+    );
+  }
+}

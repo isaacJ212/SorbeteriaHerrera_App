@@ -1,0 +1,19 @@
+abstract class AppRoutes {
+  static const String login = '/login';
+  static const String dashboard = '/dashboard';
+  static const String inventario = '/inventario';
+  static const String detalleProducto = '/detalleProducto';
+  static const String detalleVenta = '/detalleVenta';
+  static const String reporteInventario = '/reporteInventario';
+  static const String notFound = '/not-found';
+  static const String usuarios = '/usuarios';
+
+  static const String miCuenta = '/miCuenta';
+  static const String detalleUsuario = '/detalleUsuario';
+  static const String ventas = '/ventas';
+  static const String pedidos = '/pedidos';
+  static const String detallePedido = '/detallePedido';
+  static const String reportes = '/reportes';
+  static const String mas = '/mas';
+  static const String historialAcceso = '/historialAcceso';
+}

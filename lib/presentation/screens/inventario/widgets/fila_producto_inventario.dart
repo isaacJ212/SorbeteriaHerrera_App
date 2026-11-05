@@ -1,0 +1,64 @@
+import 'package:flutter/material.dart';
+
+import '../../../theme/app_text_styles.dart';
+
+class FilaProductoInventario extends StatelessWidget {
+  final String nombre;
+  final String stock;
+  final String precio;
+  final bool stockBajo;
+  final VoidCallback onVerDetalle;
+
+  const FilaProductoInventario({
+    super.key,
+    required this.nombre,
+    required this.stock,
+    required this.precio,
+    required this.stockBajo,
+    required this.onVerDetalle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onVerDetalle,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 23,
+              child: Text(nombre, style: AppTextStyles.estiloCelda),
+            ),
+            Expanded(
+              flex: 10,
+              child: Text(
+                stock,
+                style: AppTextStyles.estiloCelda.copyWith(
+                  color: stockBajo
+                      ? const Color(0xFFB66A00)
+                      : const Color(0xFF10251F),
+                  fontWeight: stockBajo ? FontWeight.w700 : FontWeight.w400,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 13,
+              child: Text(precio, style: AppTextStyles.estiloCelda),
+            ),
+            SizedBox(
+              width: 34,
+              height: 26,
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                tooltip: 'Ver detalle',
+                icon: const Icon(Icons.visibility_outlined, size: 18),
+                onPressed: onVerDetalle,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
