@@ -38,7 +38,9 @@ class UserRepository {
           nombreCompleto.contains(termino) ||
           usuario.email.toLowerCase().contains(termino);
 
-      return coincideBusqueda && _coincideRol(usuario.roles, filtroRol);
+      return usuario.isActive &&
+          coincideBusqueda &&
+          _coincideRol(usuario.roles, filtroRol);
     }).toList();
   }
 
