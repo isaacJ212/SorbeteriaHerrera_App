@@ -23,6 +23,7 @@ class ApiConst {
   static String get users => '$baseUrl/Users';
   static String get infoMe => '$baseUrl/Users/me';
   static String get audit => '$baseUrl/Audit';
+  static String get activeUsers => '$baseUrl/Users/active';
 
   //static string to feed dashboard cards
   static String get dashboard => '$baseUrl/Dashboard';
