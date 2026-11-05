@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-
-class DetallePedidoResponseModel { //detalle general / ebcabezado
+class DetallePedidoResponseModel {
+  //detalle general / ebcabezado
   final int id;
   final String saleCode;
-  final String saleDate; 
+  final String saleDate;
   final String? orderCode;
   final Customer custumer;
   final List<DetallePedidoItem> details;
@@ -16,18 +15,28 @@ class DetallePedidoResponseModel { //detalle general / ebcabezado
     this.orderCode,
     required this.custumer,
     required this.details,
-    required this.payment
+    required this.payment,
   });
 
-  static DetallePedidoResponseModel fromJson(Map<String, dynamic> json){
+  static DetallePedidoResponseModel fromJson(Map<String, dynamic> json) {
     return DetallePedidoResponseModel(
-      id: json['id'] as  int, 
-      saleCode: json['saleCode'] as String, 
+      id: json['id'] as int,
+      saleCode: json['saleCode'] as String,
       saleDate: json['saleDate'] as String,
-      orderCode: json['orderCode'] as String?, 
+      orderCode: json['orderCode'] as String?,
       custumer: Customer.fromJson(json['custumer'] as Map<String, dynamic>),
-      details: (json['details'] as List).map((items) => DetallePedidoItem.fromJson(items as Map<String, dynamic>)).toList(),
-      payment: (json['payment'] as List).map((payments) => PaymentDetail.fromJson(payments as Map<String, dynamic>)).toList(),
+      details: (json['details'] as List)
+          .map(
+            (items) =>
+                DetallePedidoItem.fromJson(items as Map<String, dynamic>),
+          )
+          .toList(),
+      payment: (json['payment'] as List)
+          .map(
+            (payments) =>
+                PaymentDetail.fromJson(payments as Map<String, dynamic>),
+          )
+          .toList(),
     );
   }
 }
@@ -42,29 +51,29 @@ class Customer {
     required this.fullName,
     required this.departamentName,
     required this.municipalityName,
-    this.pointOfSale
+    this.pointOfSale,
   });
 
-  static Customer fromJson(Map<String, dynamic> json){
+  static Customer fromJson(Map<String, dynamic> json) {
     return Customer(
-      fullName: json['fullName'] as String, 
-      departamentName: json['departamentName'] as String, 
+      fullName: json['fullName'] as String,
+      departamentName: json['departamentName'] as String,
       municipalityName: json['municipalityName'] as String,
-      pointOfSale: json['pointOfSale'] as String?
+      pointOfSale: json['pointOfSale'] as String?,
     );
   }
 
-  Map<String , dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
-      'fullName': fullName, 
-      'departamentName': departamentName, 
+      'fullName': fullName,
+      'departamentName': departamentName,
       'municipalityName': municipalityName,
       'pointOfSale': pointOfSale,
     };
   }
 }
 
-// detalle de los items 
+// detalle de los items
 
 class DetallePedidoItem {
   final String productName;
@@ -79,31 +88,29 @@ class DetallePedidoItem {
     required this.lineSubTotal,
   });
 
-  static DetallePedidoItem fromJson(Map<String, dynamic> json){
+  static DetallePedidoItem fromJson(Map<String, dynamic> json) {
     return DetallePedidoItem(
-      productName: json['productName'] as String, 
-      quantity: json['quantity'] as int, 
-      unitPrice: json['unitPrice'] as double, 
-      lineSubTotal: json['lineSubTotal'] as double
+      productName: json['productName'] as String,
+      quantity: json['quantity'] as int,
+      unitPrice: json['unitPrice'] as double,
+      lineSubTotal: json['lineSubTotal'] as double,
     );
   }
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
-      'productName': productName, 
-      'quantity': quantity, 
-      'unitPrice': unitPrice, 
-      'lineSubTotal': lineSubTotal
+      'productName': productName,
+      'quantity': quantity,
+      'unitPrice': unitPrice,
+      'lineSubTotal': lineSubTotal,
     };
   }
 }
 
-
-class PaymentDetail{
+class PaymentDetail {
   final double amount;
   final String paymentMethodName;
   final String registraredByUserName;
-
 
   const PaymentDetail({
     required this.amount,
@@ -113,18 +120,17 @@ class PaymentDetail{
 
   static PaymentDetail fromJson(Map<String, dynamic> json) {
     return PaymentDetail(
-      amount: json['amount'] as double, 
-      paymentMethodName: json['paymentMethodName'] as String, 
+      amount: json['amount'] as double,
+      paymentMethodName: json['paymentMethodName'] as String,
       registraredByUserName: json['registraredByUserName'] as String,
     );
   }
 
-
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
-      'amount': amount, 
-      'paymentMethodName': paymentMethodName, 
-      'registraredByUserName': registraredByUserName
+      'amount': amount,
+      'paymentMethodName': paymentMethodName,
+      'registraredByUserName': registraredByUserName,
     };
   }
 }

@@ -1,7 +1,3 @@
-import 'dart:collection';
-
-import 'package:flutter/material.dart';
-
 class DetalleUsuarioResponseModels {
   final int id;
   final String userName;

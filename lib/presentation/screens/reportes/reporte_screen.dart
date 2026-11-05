@@ -6,6 +6,7 @@ import '../../routes/app_routes.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/bottom_navbar.dart';
+import '../../widgets/error_retry_message.dart';
 import 'widgets/reportes_cards.dart';
 
 class ReportesScreen extends StatefulWidget {
@@ -142,9 +143,9 @@ class _ReportesScreenState extends State<ReportesScreen> {
 
             // Tarjetas secundarias (2 columnas)
             if (inventario.viewStatus == InventarioViewStatus.error) ...[
-              Text(
-                inventario.errorMessage,
-                style: const TextStyle(color: Colors.red),
+              ErrorRetryMessage(
+                message: inventario.errorMessage,
+                onRetry: inventario.cargarEstadisticas,
               ),
               const SizedBox(height: 8),
             ],

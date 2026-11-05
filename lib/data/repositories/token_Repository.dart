@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:herrera_app/data/models/token_model.dart';
-import 'package:flutter/material.dart';
 
 class TokenRepository {
   final SharedPreferencesAsync _prefs = SharedPreferencesAsync();

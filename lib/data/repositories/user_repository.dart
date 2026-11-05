@@ -16,7 +16,7 @@ class UserRepository {
   }) async {
     final response = await _apiClient.get(
       ApiConst.activeUsers,
-      authorized: false,
+      authorized: true,
     );
     final data = response.jsonBody?['data'];
     if (data is! List) {
@@ -38,7 +38,9 @@ class UserRepository {
           nombreCompleto.contains(termino) ||
           usuario.email.toLowerCase().contains(termino);
 
-      return coincideBusqueda && _coincideRol(usuario.roles, filtroRol);
+      return usuario.isActive &&
+          coincideBusqueda &&
+          _coincideRol(usuario.roles, filtroRol);
     }).toList();
   }
 

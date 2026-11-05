@@ -52,10 +52,6 @@ class _MiCuentaScreenState extends State<MiCuentaScreen> {
               const DetalleTituloSeccion(titulo: 'PERMISOS OPERATIVOS'),
               const SizedBox(height: 10),
               _permisos(user.roles),
-              const SizedBox(height: 24),
-              const DetalleTituloSeccion(titulo: 'ACTIVIDAD RECIENTE'),
-              const SizedBox(height: 10),
-              _actividad(),
             ],
           ),
         );
@@ -249,23 +245,4 @@ class _MiCuentaScreenState extends State<MiCuentaScreen> {
     );
   }
 
-  Widget _actividad() {
-    return const DetallePanel(
-      child: Column(
-        children: [
-          DetalleRegistroActividad(
-            icono: Icons.login,
-            titulo: 'Apertura de sesión',
-            fecha: 'Hoy, 8:00 AM',
-          ),
-          Divider(height: 24, color: AppColors.cardBackground),
-          DetalleRegistroActividad(
-            icono: Icons.point_of_sale_outlined,
-            titulo: 'Cierre de caja',
-            fecha: 'Ayer, 8:00 PM',
-          ),
-        ],
-      ),
-    );
-  }
 }

@@ -16,12 +16,14 @@ import 'package:herrera_app/presentation/providers/inventario_provider.dart';
 import 'package:herrera_app/presentation/providers/reporte_inventario_provider.dart';
 import 'package:herrera_app/presentation/providers/userDetails_provider.dart';
 import 'package:herrera_app/presentation/providers/usuario_provider.dart';
+import 'package:herrera_app/presentation/providers/ventas_provider.dart';
 import 'package:herrera_app/services/auth_service.dart';
 import 'package:herrera_app/services/dashboard_services.dart';
 import 'package:herrera_app/services/historial_acceso_service.dart';
 import 'package:herrera_app/services/inventario_service.dart';
 import 'package:herrera_app/services/reporte_inventario_service.dart';
 import 'package:herrera_app/services/user.services.dart';
+import 'package:herrera_app/services/sales_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -39,6 +41,8 @@ void setupDependencies() {
 
   getIt.registerLazySingleton(() => InventarioRepository(getIt()));
   getIt.registerLazySingleton(() => SalesRepository(getIt()));
+  getIt.registerLazySingleton(() => SalesService(getIt()));
+  getIt.registerFactory(() => VentasProvider(getIt()));
   getIt.registerLazySingleton(() => InventarioService(getIt(), getIt()));
   getIt.registerFactory(() => InventarioProvider(getIt()));
 
@@ -58,7 +62,9 @@ void setupDependencies() {
   getIt.registerLazySingleton(() => ReporteInventarioService(getIt()));
   getIt.registerFactory(() => ReporteInventarioProvider(getIt()));
 
-  getIt.registerLazySingleton(() => HistorialAccesoRepository(getIt()));
+  getIt.registerLazySingleton(
+    () => HistorialAccesoRepository(apiClient: getIt()),
+  );
   getIt.registerLazySingleton(() => HistorialAccesoService(getIt()));
   getIt.registerFactory(() => HistorialAccesoProvider(getIt()));
 }

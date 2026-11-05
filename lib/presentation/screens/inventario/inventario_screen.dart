@@ -11,6 +11,7 @@ import '../../theme/app_text_styles.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/bottom_navbar.dart';
 import '../../widgets/empty_list_message.dart';
+import '../../widgets/error_retry_message.dart';
 import 'widgets/fila_producto_inventario.dart';
 
 class InventarioScreen extends StatefulWidget {
@@ -125,7 +126,10 @@ class _InventarioScreenState extends State<InventarioScreen> {
             if (inventario.viewStatus == InventarioViewStatus.loading)
               const Center(child: CircularProgressIndicator())
             else if (inventario.viewStatus == InventarioViewStatus.error)
-              Center(child: Text(inventario.errorMessage))
+              ErrorRetryMessage(
+                message: inventario.errorMessage,
+                onRetry: inventario.cargarDatos,
+              )
             else
               _tablaInventario(inventario.productos),
           ],
@@ -292,33 +296,9 @@ class _InventarioScreenState extends State<InventarioScreen> {
       children: [
         _campoBusqueda('Buscar productos', _buscarPorNombre),
         const SizedBox(height: 8),
-        Row(
-          children: [
-            Expanded(
-              child: _campoBusqueda(
-                'Buscar por sabor',
-                (value) => setState(() => _sabor = value.toLowerCase()),
-              ),
-            ),
-            const SizedBox(width: 8),
-            SizedBox(
-              height: 40,
-              child: FilledButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.filter_list, size: 16),
-                label: const Text('Filtrar lista'),
-                style: FilledButton.styleFrom(
-                  backgroundColor: const Color(0xFFD8F5EA),
-                  foregroundColor: const Color(0xFF10251F),
-                  textStyle: const TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                ),
-              ),
-            ),
-          ],
+        _campoBusqueda(
+          'Buscar por sabor',
+          (value) => setState(() => _sabor = value.toLowerCase()),
         ),
       ],
     );

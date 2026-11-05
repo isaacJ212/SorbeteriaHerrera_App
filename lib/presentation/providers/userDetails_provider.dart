@@ -17,7 +17,10 @@ class UserdetailsProvider extends ChangeNotifier {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
+  int? _lastUserId;
+
   Future<void> loadUser(int userId) async {
+    _lastUserId = userId;
     _isLoading = true;
     _errorMessage = null;
     _user = null;
@@ -33,5 +36,9 @@ class UserdetailsProvider extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  void retry() {
+    if (_lastUserId != null) loadUser(_lastUserId!);
   }
 }

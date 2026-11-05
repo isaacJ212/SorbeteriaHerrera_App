@@ -65,6 +65,11 @@ class ApiClient {
       headers["Authorization"] = "Bearer ${token.accessToken}";
     }
 
+    headers.remove('Authorization');
+    if (authorized && token != null && !token.isAccessTokenExpired) {
+      headers['Authorization'] = 'Bearer ${token.accessToken}';
+    }
+
     final request = http.Request(method, uri)..headers.addAll(headers);
     if (body != null) {
       request.body = jsonEncode(body);
@@ -86,8 +91,6 @@ class ApiClient {
     } on http.ClientException {
       throw NetException();
     }
-
-    //manejo de statuscode error
 
     final errorMessage = _errorMessage(response);
 

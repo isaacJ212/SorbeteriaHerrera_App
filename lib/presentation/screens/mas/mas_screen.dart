@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:herrera_app/presentation/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 import '../../widgets/bottom_navbar.dart';
 import '../../widgets/app_bar.dart';
 import '../../routes/app_routes.dart';
@@ -45,7 +47,9 @@ class _MasScreenState extends State<MasScreen> {
             child: const Text('Cancelar'),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
+              await context.read<AuthProvider>().logout();
+              if (!context.mounted) return;
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 AppRoutes.login,

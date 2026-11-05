@@ -151,12 +151,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             if (dashboard.viewStatus == ViewStatus.loading)
               const Center(child: CircularProgressIndicator())
             else if (dashboard.viewStatus == ViewStatus.error)
-              Text(
-                "Ha ocurrido un error inesperado al cargar la pantalla de incio, por favor intente mas tarde.",
+              const EmptyListMessage(
+                message: 'No hay ventas ni actividad en el sistema',
               )
             else if (dashboard.ventas.isEmpty)
               const EmptyListMessage(
-                message: 'No ha habido actividad en el sistema',
+                message: 'No hay ventas ni actividad en el sistema',
               )
             else
               ...dashboard.ventas
@@ -164,8 +164,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   .map(
                     (venta) => VentaRecienteDashboardCard(
                       venta: venta,
-                      onTap: () =>
-                          Navigator.pushNamed(context, AppRoutes.detalleVenta),
+                      onTap: () => Navigator.pushNamed(
+                        context,
+                        AppRoutes.detalleVenta,
+                        arguments: venta.id,
+                      ),
                     ),
                   ),
           ],

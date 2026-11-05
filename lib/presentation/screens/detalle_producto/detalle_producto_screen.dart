@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../providers/inventario_provider.dart';
 import '../../widgets/app_bar.dart';
+import '../../widgets/error_retry_message.dart';
 import '../../widgets/label.dart';
 import 'widgets/detalles_producto_widgets.dart';
 
@@ -42,7 +43,10 @@ class _DetalleDeProductoScreenState extends State<DetalleDeProductoScreen> {
       body: provider.viewStatus == InventarioViewStatus.loading
           ? const Center(child: CircularProgressIndicator())
           : provider.viewStatus == InventarioViewStatus.error
-          ? Center(child: Text(provider.errorMessage))
+          ? ErrorRetryMessage(
+              message: provider.errorMessage,
+              onRetry: () => provider.cargarDetalle(widget.productId),
+            )
           : detalle == null
           ? const Center(child: Text('Producto no encontrado'))
           : _contenido(detalle),

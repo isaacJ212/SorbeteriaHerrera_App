@@ -1,7 +1,18 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class ApiConst {
   ApiConst._();
 
-  static String get baseUrl => 'http://10.0.2.2:5177/api';
+  static String get baseUrl {
+    final configuredUrl = dotenv.env['BASE_URL_API']?.trim();
+    if (configuredUrl == null || configuredUrl.isEmpty) {
+      throw StateError(
+        'La variable BASE_URL_API no está definida en el archivo .env.',
+      );
+    }
+
+    return configuredUrl.replaceFirst(RegExp(r'/+$'), '');
+  }
 
   static String get login => '$baseUrl/Auth/login';
   static String get sales => '$baseUrl/Sales';
@@ -10,9 +21,9 @@ class ApiConst {
   static String get inventory => '$baseUrl/Inventory';
   static String get reportInventary => '$baseUrl/Inventory/stats';
   static String get users => '$baseUrl/Users';
-  static String get activeUsers => '$baseUrl/Users/active';
   static String get infoMe => '$baseUrl/Users/me';
   static String get audit => '$baseUrl/Audit';
+  static String get activeUsers => '$baseUrl/Users/active';
 
   //static string to feed dashboard cards
   static String get dashboard => '$baseUrl/Dashboard';
