@@ -55,6 +55,7 @@ class DashboardRepository {
       }
       final page = response.jsonBody!['data'] as Map<String, dynamic>;
       final ventas = page['data'] as List<dynamic>;
+      print("Debug: $ventas");
       return ventas
           .map((e) => VentasResponseModel.fromJson(e as Map<String, dynamic>))
           .toList();

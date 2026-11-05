@@ -152,7 +152,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const Center(child: CircularProgressIndicator())
             else if (dashboard.viewStatus == ViewStatus.error)
               const EmptyListMessage(
-                message: 'No hay ventas ni actividad en el sistema',
+                message: 'Error Cargando las ventas recientes',
               )
             else if (dashboard.ventas.isEmpty)
               const EmptyListMessage(
